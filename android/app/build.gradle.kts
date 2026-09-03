@@ -9,11 +9,12 @@ plugins {
 }
 
 android {
-    namespace = "com.petitworksapps.shougakukore.rika"
+    namespace = "com.yourwish.shougakukore.rika"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
+        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
@@ -36,7 +37,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.petitworksapps.shougakukore.rika"
+        applicationId = "com.yourwish.shougakukore.rika"
         minSdk = 21
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
@@ -59,4 +60,8 @@ android {
 
 flutter {
     source = "../.."
+}
+
+dependencies {
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
 }
