@@ -9,6 +9,7 @@ import '../features/profile/views/profile_select_screen.dart';
 import '../features/profile/views/profile_create_screen.dart';
 import '../features/daily/views/daily_challenge_screen.dart';
 import '../features/review/views/review_screen.dart';
+import '../features/progress/views/today_reviews_screen.dart';
 import '../features/parent/views/parent_dashboard_screen.dart';
 import '../features/parent/views/praise_send_screen.dart';
 import '../features/test/views/comprehensive_test_screen.dart';
@@ -27,6 +28,7 @@ import '../features/ai_chat/views/ai_chat_screen.dart';
 import '../features/home_lab/views/home_lab_screen.dart';
 import '../features/sky/views/tonight_sky_screen.dart';
 import '../features/weekly_challenge/views/weekly_challenge_screen.dart';
+import '../features/progress/views/daily_mystery_omikuji_screen.dart';
 
 class AppRouter {
   static final GoRouter router = GoRouter(
@@ -109,6 +111,12 @@ class AppRouter {
         path: '/review',
         name: 'review',
         builder: (_, __) => const ReviewScreen(),
+      ),
+      // 今日の復習（タイムカプセル）
+      GoRoute(
+        path: '/today-reviews',
+        name: 'today-reviews',
+        builder: (_, __) => const TodayReviewsScreen(),
       ),
       // 保護者ダッシュボード
       GoRoute(
@@ -250,6 +258,13 @@ class AppRouter {
         path: '/weekly-challenge',
         name: 'weekly-challenge',
         builder: (_, __) => const WeeklyChallengeScreen(),
+      ),
+
+      // 今日のふしぎ（おみくじ）
+      GoRoute(
+        path: '/daily-mystery-omikuji',
+        name: 'daily-mystery-omikuji',
+        builder: (_, __) => const DailyMysteryOmikujiScreen(),
       ),
 
       // ほめメッセージ送信（親用）

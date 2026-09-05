@@ -16,7 +16,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 1.0.0+1
+version: 1.0.1+2
 
 environment:
   sdk: ^3.11.5
@@ -55,6 +55,18 @@ dependencies:
   # ============== Local Storage ==============
   shared_preferences: ^2.2.0
   google_fonts: ^6.2.1
+
+  # ============== Media & Notifications ==============
+  image_picker: ^1.0.0
+  flutter_local_notifications: ^17.0.0
+  timezone: ^0.9.0
+
+  # ============== Data Models ==============
+  freezed_annotation: ^2.4.1
+  json_annotation: ^4.9.0
+
+  # ============== Charts ==============
+  fl_chart: ^0.68.0
 
   # ============== Shared Core ==============
   shared_core:
@@ -95,6 +107,8 @@ dev_dependencies:
   # Code Generation
   build_runner: ^2.4.0
   riverpod_generator: ^2.3.0
+  freezed: ^2.5.7
+  json_serializable: ^6.8.0
 
   # Testing
   mockito: ^5.4.0
@@ -115,6 +129,7 @@ flutter:
   assets:
     - assets/icon/
     - assets/illustrations/stage_3/
+    - assets/images/monsters/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

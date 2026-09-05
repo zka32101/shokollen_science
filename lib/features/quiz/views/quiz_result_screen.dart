@@ -8,6 +8,10 @@ import '../../progress/providers/user_progress_provider.dart';
 import '../../progress/views/badge_earned_dialog.dart';
 import '../../parent/providers/praise_provider.dart';
 import '../../../data/seeds/explanations/explanations_index.dart';
+import '../../progress/models/incorrect_monster.dart';
+import '../../progress/providers/incorrect_monster_provider.dart';
+import '../../progress/views/widgets/monster_dialogs.dart';
+import '../../progress/providers/review_time_capsule_provider.dart';
 
 class QuizResultScreen extends ConsumerStatefulWidget {
   const QuizResultScreen({super.key});
@@ -33,14 +37,94 @@ class _QuizResultScreenState extends ConsumerState<QuizResultScreen> {
 
     final quiz = ref.read(quizProvider);
 
-    // 間違えた問題番号リストを計算
-    final wrongNums = quiz.questions.asMap().entries
+    // 間違えた問題のリストを取得
+    final wrongAnswers = quiz.questions.asMap().entries
         .where((e) =>
             e.key < quiz.selectedAnswers.length &&
             quiz.selectedAnswers[e.key] != null &&
             quiz.selectedAnswers[e.key] != quiz.questions[e.key].correctAnswerIndex)
-        .map((e) => e.key + 1) // 1始まりの問題番号
         .toList();
+
+    final wrongNums = wrongAnswers.map((e) => e.key + 1).toList();
+
+    // 🎯 NEW: 間違えた問題をモンスター化 & 正解した問題をチェックして進化判定
+    final monsterNotifier = ref.read(incorrectMonstersProvider.notifier);
+    final evolvedMonsters = <IncorrectMonster>[];
+    final newlyCreatedQuestionIds = <String>[];
+
+    for (final entry in wrongAnswers) {
+      final questionIndex = entry.key;
+      final question = quiz.questions[questionIndex];
+      final questionNumber = questionIndex + 1;
+      final questionId = '${quiz.stageId}_q$questionNumber';
+      final questionTitle = question.question;
+
+      final alreadyExists = await monsterNotifier.hasIncorrectMonster(questionId);
+
+      await monsterNotifier.recordIncorrect(
+        questionId: questionId,
+        stageId: quiz.stageId,
+        questionNumber: questionNumber,
+        questionTitle: questionTitle,
+      );
+
+      if (!alreadyExists) {
+        newlyCreatedQuestionIds.add(questionId);
+      }
+    }
+
+    // 正解した問題をチェック: モンスター進化 + タイムカプセル登録
+    final timeCapsuleNotifier = ref.read(timeCapsuleProvider.notifier);
+
+    for (int i = 0; i < quiz.questions.length; i++) {
+      final selectedAnswer = i < quiz.selectedAnswers.length ? quiz.selectedAnswers[i] : null;
+      final correctIndex = quiz.questions[i].correctAnswerIndex;
+      final question = quiz.questions[i];
+
+      // 正解した問題
+      if (selectedAnswer == correctIndex) {
+        final questionNumber = i + 1;
+        final questionId = '${quiz.stageId}_q$questionNumber';
+        final questionTitle = question.question;
+
+        // 🎯 NEW: タイムカプセルに登録（復習スケジュール追加）
+        await timeCapsuleNotifier.createFromQuestion(
+          questionId: questionId,
+          stageId: quiz.stageId,
+          questionNumber: questionNumber,
+          questionTitle: questionTitle,
+        );
+
+        // モンスター進化チェック
+        final existing = await ref
+            .read(incorrectMonstersProvider.notifier)
+            .hasIncorrectMonster(questionId);
+
+        if (existing) {
+          // モンスターを進化させる
+          final monsters = ref.read(incorrectMonstersProvider);
+          IncorrectMonster? monster;
+          for (final m in monsters) {
+            if (m.questionId == questionId) {
+              monster = m;
+              break;
+            }
+          }
+
+          if (monster != null && monster.canEvolve()) {
+            await monsterNotifier.evolveMonster(monster.id);
+            // 進化後の最新状態を再取得（correctionsCount/evolutionState が更新済み）
+            final updatedMonsters = ref.read(incorrectMonstersProvider);
+            for (final m in updatedMonsters) {
+              if (m.id == monster.id) {
+                evolvedMonsters.add(m); // 進化したモンスターを全て記録
+                break;
+              }
+            }
+          }
+        }
+      }
+    }
 
     final result = await ref
         .read(userProgressProvider.notifier)
@@ -62,6 +146,51 @@ class _QuizResultScreenState extends ConsumerState<QuizResultScreen> {
       await ref
           .read(pendingPraiseProvider.notifier)
           .addClearedStage(quiz.stageId, stageName);
+    }
+
+    // 🎯 NEW: モンスター進化ダイアログを表示（優先度: 最初、複数進化した場合は順番に表示）
+    for (final monster in evolvedMonsters) {
+      if (!mounted) break;
+      await Future.delayed(const Duration(milliseconds: 600));
+      if (mounted) {
+        await showDialog<void>(
+          context: context,
+          barrierDismissible: true,
+          builder: (_) => MonsterEvolutionDialog(
+            monster: monster,
+            onConfirm: () {
+              // 進化完了
+            },
+          ),
+        );
+      }
+    }
+
+    // 🎯 NEW: 新規にモンスター化された問題があれば獲得ダイアログを表示
+    if (newlyCreatedQuestionIds.isNotEmpty && mounted) {
+      await Future.delayed(const Duration(milliseconds: 400));
+      if (mounted) {
+        final monsters = ref.read(incorrectMonstersProvider);
+        IncorrectMonster? newMonster;
+        for (final m in monsters) {
+          if (m.questionId == newlyCreatedQuestionIds.last) {
+            newMonster = m;
+            break;
+          }
+        }
+        if (newMonster != null) {
+          await showDialog<void>(
+            context: context,
+            barrierDismissible: true,
+            builder: (_) => MonsterGetDialog(
+              monster: newMonster!,
+              onDismiss: () {
+                // ダイアログ閉じて、このスクリーンの処理は継続
+              },
+            ),
+          );
+        }
+      }
     }
 
     if (result.badges.isNotEmpty && mounted) {
@@ -569,7 +698,7 @@ class _StatCard extends StatelessWidget {
 }
 
 // ── 問題結果行 ─────────────────────────────────────────────
-class _QuestionResultRow extends StatelessWidget {
+class _QuestionResultRow extends ConsumerWidget {
   final String stageId;
   final int number;
   final String question;
@@ -585,9 +714,9 @@ class _QuestionResultRow extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return GestureDetector(
-      onTap: () => _showExplanationDialog(context),
+      onTap: () => _showExplanationDialog(context, ref),
       child: Container(
         margin: const EdgeInsets.only(bottom: 8),
         padding:
@@ -657,7 +786,7 @@ class _QuestionResultRow extends StatelessWidget {
     );
   }
 
-  void _showExplanationDialog(BuildContext context) {
+  void _showExplanationDialog(BuildContext context, WidgetRef ref) {
     final explanation = getExplanation(stageId, number);
 
     showDialog(

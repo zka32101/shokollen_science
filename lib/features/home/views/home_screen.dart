@@ -20,6 +20,7 @@ import '../../daily/widgets/daily_login_bonus_widget.dart';
 import '../../parent/widgets/praise_received_widget.dart';
 import '../../weekly_challenge/widgets/weekly_challenge_widget.dart';
 import '../../../shared/widgets/furigana_text.dart';
+import '../../progress/providers/daily_mystery_provider.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -83,6 +84,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           _buildEncyclopediaSection(),
           _buildStageListSection(),
           _buildCollectionAndTestSection(),
+          _buildDailyMysteryBadge(),
           _buildInnovationFeatures(),
           const SizedBox(height: 24),
         ],
@@ -1135,6 +1137,103 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       case 'hard': return '⭐⭐⭐ むずかしい';
       default:     return '⭐⭐ ふつう';
     }
+  }
+
+  // ── 今日のふしぎバッジ ────────────────────────────────────────
+  Widget _buildDailyMysteryBadge() {
+    return Consumer(
+      builder: (context, ref, child) {
+        final record = ref.watch(dailyMysteryNotifierProvider);
+        final isRevealed = record != null;
+        final isAnswered = record != null && record.answeredAt != null;
+
+        return GestureDetector(
+              onTap: () => context.push('/daily-mystery-omikuji'),
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
+                child: Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        const Color(0xFF6366F1).withOpacity(0.95),
+                        const Color(0xFF4F46E5).withOpacity(0.85),
+                      ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                    borderRadius: BorderRadius.circular(14),
+                    boxShadow: [
+                      BoxShadow(
+                        color: const Color(0xFF6366F1).withOpacity(0.25),
+                        blurRadius: 8,
+                        offset: const Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  padding: const EdgeInsets.all(16),
+                  child: Row(
+                    children: [
+                      // Emoji with status
+                      Container(
+                        width: 60,
+                        height: 60,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.white.withOpacity(0.15),
+                        ),
+                        child: Center(
+                          child: Text(
+                            isAnswered
+                                ? '✨'
+                                : isRevealed
+                                    ? '📖'
+                                    : '📿',
+                            style: const TextStyle(fontSize: 32),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 14),
+                      // Content
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              '今日のふしぎ',
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              isAnswered
+                                  ? '✅ 完了！'
+                                  : isRevealed
+                                      ? '🔍 答えを見よう'
+                                      : '未引',
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Colors.white.withOpacity(0.8),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      // Arrow
+                      const Icon(
+                        Icons.arrow_forward_rounded,
+                        color: Colors.white,
+                        size: 20,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+      },
+    );
   }
 
   // ── 革新機能セクション ────────────────────────────────────────

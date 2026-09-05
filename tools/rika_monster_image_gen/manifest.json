@@ -1,0 +1,146 @@
+{
+  "grade3_baby": {
+    "grade": 3,
+    "stage": "baby",
+    "file": "grade3_baby.png",
+    "prompt": "small friendly bug-and-sprout spirit creature, tiny insectoid body with a budding leaf on its back, soft rounded antennae, faint spark of static electricity around its feet, newly hatched baby form, small and huddled, teary crying eyes, tiny trembling pose, egg-shell fragments nearby, warm spring green and soft yellow color palette, gentle sunny tones, solid soft green gradient background, simple and clean, cute mascot character design, kawaii chibi proportions, kid-friendly and non-scary, centered character illustration, digital illustration, clean vector-like shading, vibrant colors, professional mascot artwork, no text no watermark no border",
+    "provider": "leonardo",
+    "modelId": "de7d3faf-762f-48e0-b3b7-9d0ac3a3fcf3",
+    "generatedAt": "2026-08-01T06:51:24.911Z"
+  },
+  "grade3_juvenile": {
+    "grade": 3,
+    "stage": "juvenile",
+    "file": "grade3_juvenile.png",
+    "prompt": "small friendly bug-and-sprout spirit creature, tiny insectoid body with a budding leaf on its back, soft rounded antennae, faint spark of static electricity around its feet, young juvenile form, slightly bigger, worried confused expression, unsure wobbly stance, one eyebrow raised, warm spring green and soft yellow color palette, gentle sunny tones, solid soft green gradient background, simple and clean, cute mascot character design, kawaii chibi proportions, kid-friendly and non-scary, centered character illustration, digital illustration, clean vector-like shading, vibrant colors, professional mascot artwork, no text no watermark no border",
+    "provider": "leonardo",
+    "modelId": "de7d3faf-762f-48e0-b3b7-9d0ac3a3fcf3",
+    "generatedAt": "2026-08-01T06:51:33.092Z"
+  },
+  "grade3_adult": {
+    "grade": 3,
+    "stage": "adult",
+    "file": "grade3_adult.png",
+    "prompt": "small friendly bug-and-sprout spirit creature, tiny insectoid body with a budding leaf on its back, soft rounded antennae, faint spark of static electricity around its feet, grown adult form, calm neutral confident expression, balanced standing pose, steady and composed, warm spring green and soft yellow color palette, gentle sunny tones, solid soft green gradient background, simple and clean, cute mascot character design, kawaii chibi proportions, kid-friendly and non-scary, centered character illustration, digital illustration, clean vector-like shading, vibrant colors, professional mascot artwork, no text no watermark no border",
+    "provider": "leonardo",
+    "modelId": "de7d3faf-762f-48e0-b3b7-9d0ac3a3fcf3",
+    "generatedAt": "2026-08-01T06:51:41.457Z"
+  },
+  "grade3_sage": {
+    "grade": 3,
+    "stage": "sage",
+    "file": "grade3_sage.png",
+    "prompt": "small friendly bug-and-sprout spirit creature, tiny insectoid body with a budding leaf on its back, soft rounded antennae, faint spark of static electricity around its feet, wise sage form, joyful proud expression with sparkling eyes, wearing a tiny graduation cap, radiant gentle glow, confident welcoming pose, warm spring green and soft yellow color palette, gentle sunny tones, solid soft green gradient background, simple and clean, cute mascot character design, kawaii chibi proportions, kid-friendly and non-scary, centered character illustration, digital illustration, clean vector-like shading, vibrant colors, professional mascot artwork, no text no watermark no border",
+    "provider": "leonardo",
+    "modelId": "de7d3faf-762f-48e0-b3b7-9d0ac3a3fcf3",
+    "generatedAt": "2026-08-01T06:51:49.608Z"
+  },
+  "grade4_baby": {
+    "grade": 4,
+    "stage": "baby",
+    "file": "grade4_baby.png",
+    "prompt": "small cloud-and-droplet spirit creature, fluffy cloud-like body with a single water droplet marking on its chest, tiny crescent moon charm floating nearby, newly hatched baby form, small and huddled, teary crying eyes, tiny trembling pose, egg-shell fragments nearby, sky blue and soft silver color palette, airy cool tones, solid soft sky-blue gradient background, simple and clean, cute mascot character design, kawaii chibi proportions, kid-friendly and non-scary, centered character illustration, digital illustration, clean vector-like shading, vibrant colors, professional mascot artwork, no text no watermark no border",
+    "provider": "leonardo",
+    "modelId": "de7d3faf-762f-48e0-b3b7-9d0ac3a3fcf3",
+    "generatedAt": "2026-08-01T06:52:00.020Z"
+  },
+  "grade4_juvenile": {
+    "grade": 4,
+    "stage": "juvenile",
+    "file": "grade4_juvenile.png",
+    "prompt": "small cloud-and-droplet spirit creature, fluffy cloud-like body with a single water droplet marking on its chest, tiny crescent moon charm floating nearby, young juvenile form, slightly bigger, worried confused expression, unsure wobbly stance, one eyebrow raised, sky blue and soft silver color palette, airy cool tones, solid soft sky-blue gradient background, simple and clean, cute mascot character design, kawaii chibi proportions, kid-friendly and non-scary, centered character illustration, digital illustration, clean vector-like shading, vibrant colors, professional mascot artwork, no text no watermark no border",
+    "provider": "leonardo",
+    "modelId": "de7d3faf-762f-48e0-b3b7-9d0ac3a3fcf3",
+    "generatedAt": "2026-08-01T06:52:07.947Z"
+  },
+  "grade4_adult": {
+    "grade": 4,
+    "stage": "adult",
+    "file": "grade4_adult.png",
+    "prompt": "small cloud-and-droplet spirit creature, fluffy cloud-like body with a single water droplet marking on its chest, tiny crescent moon charm floating nearby, grown adult form, calm neutral confident expression, balanced standing pose, steady and composed, sky blue and soft silver color palette, airy cool tones, solid soft sky-blue gradient background, simple and clean, cute mascot character design, kawaii chibi proportions, kid-friendly and non-scary, centered character illustration, digital illustration, clean vector-like shading, vibrant colors, professional mascot artwork, no text no watermark no border",
+    "provider": "leonardo",
+    "modelId": "de7d3faf-762f-48e0-b3b7-9d0ac3a3fcf3",
+    "generatedAt": "2026-08-01T06:52:15.964Z"
+  },
+  "grade4_sage": {
+    "grade": 4,
+    "stage": "sage",
+    "file": "grade4_sage.png",
+    "prompt": "small cloud-and-droplet spirit creature, fluffy cloud-like body with a single water droplet marking on its chest, tiny crescent moon charm floating nearby, wise sage form, joyful proud expression with sparkling eyes, wearing a tiny graduation cap, radiant gentle glow, confident welcoming pose, sky blue and soft silver color palette, airy cool tones, solid soft sky-blue gradient background, simple and clean, cute mascot character design, kawaii chibi proportions, kid-friendly and non-scary, centered character illustration, digital illustration, clean vector-like shading, vibrant colors, professional mascot artwork, no text no watermark no border",
+    "provider": "leonardo",
+    "modelId": "de7d3faf-762f-48e0-b3b7-9d0ac3a3fcf3",
+    "generatedAt": "2026-08-01T06:52:23.908Z"
+  },
+  "grade5_baby": {
+    "grade": 5,
+    "stage": "baby",
+    "file": "grade5_baby.png",
+    "prompt": "small crystal-and-ember spirit creature, faceted gem-like body with a warm glowing core, tiny wisps of steam curling from its shoulders, newly hatched baby form, small and huddled, teary crying eyes, tiny trembling pose, egg-shell fragments nearby, amethyst purple and warm amber color palette, mystical tones, solid soft violet gradient background, simple and clean, cute mascot character design, kawaii chibi proportions, kid-friendly and non-scary, centered character illustration, digital illustration, clean vector-like shading, vibrant colors, professional mascot artwork, no text no watermark no border",
+    "provider": "leonardo",
+    "modelId": "de7d3faf-762f-48e0-b3b7-9d0ac3a3fcf3",
+    "generatedAt": "2026-08-01T06:52:34.149Z"
+  },
+  "grade5_juvenile": {
+    "grade": 5,
+    "stage": "juvenile",
+    "file": "grade5_juvenile.png",
+    "prompt": "small crystal-and-ember spirit creature, faceted gem-like body with a warm glowing core, tiny wisps of steam curling from its shoulders, young juvenile form, slightly bigger, worried confused expression, unsure wobbly stance, one eyebrow raised, amethyst purple and warm amber color palette, mystical tones, solid soft violet gradient background, simple and clean, cute mascot character design, kawaii chibi proportions, kid-friendly and non-scary, centered character illustration, digital illustration, clean vector-like shading, vibrant colors, professional mascot artwork, no text no watermark no border",
+    "provider": "leonardo",
+    "modelId": "de7d3faf-762f-48e0-b3b7-9d0ac3a3fcf3",
+    "generatedAt": "2026-08-01T06:52:42.167Z"
+  },
+  "grade5_adult": {
+    "grade": 5,
+    "stage": "adult",
+    "file": "grade5_adult.png",
+    "prompt": "small crystal-and-ember spirit creature, faceted gem-like body with a warm glowing core, tiny wisps of steam curling from its shoulders, grown adult form, calm neutral confident expression, balanced standing pose, steady and composed, amethyst purple and warm amber color palette, mystical tones, solid soft violet gradient background, simple and clean, cute mascot character design, kawaii chibi proportions, kid-friendly and non-scary, centered character illustration, digital illustration, clean vector-like shading, vibrant colors, professional mascot artwork, no text no watermark no border",
+    "provider": "leonardo",
+    "modelId": "de7d3faf-762f-48e0-b3b7-9d0ac3a3fcf3",
+    "generatedAt": "2026-08-01T06:52:50.111Z"
+  },
+  "grade5_sage": {
+    "grade": 5,
+    "stage": "sage",
+    "file": "grade5_sage.png",
+    "prompt": "small crystal-and-ember spirit creature, faceted gem-like body with a warm glowing core, tiny wisps of steam curling from its shoulders, wise sage form, joyful proud expression with sparkling eyes, wearing a tiny graduation cap, radiant gentle glow, confident welcoming pose, amethyst purple and warm amber color palette, mystical tones, solid soft violet gradient background, simple and clean, cute mascot character design, kawaii chibi proportions, kid-friendly and non-scary, centered character illustration, digital illustration, clean vector-like shading, vibrant colors, professional mascot artwork, no text no watermark no border",
+    "provider": "leonardo",
+    "modelId": "de7d3faf-762f-48e0-b3b7-9d0ac3a3fcf3",
+    "generatedAt": "2026-08-01T06:52:58.219Z"
+  },
+  "grade6_baby": {
+    "grade": 6,
+    "stage": "baby",
+    "file": "grade6_baby.png",
+    "prompt": "small mountain-and-star spirit creature, smooth stone-like body dotted with tiny glowing star freckles, faint aura like a distant galaxy, newly hatched baby form, small and huddled, teary crying eyes, tiny trembling pose, egg-shell fragments nearby, deep indigo and warm gold color palette, cosmic tones, solid soft indigo gradient background, simple and clean, cute mascot character design, kawaii chibi proportions, kid-friendly and non-scary, centered character illustration, digital illustration, clean vector-like shading, vibrant colors, professional mascot artwork, no text no watermark no border",
+    "provider": "leonardo",
+    "modelId": "de7d3faf-762f-48e0-b3b7-9d0ac3a3fcf3",
+    "generatedAt": "2026-08-01T06:53:06.230Z"
+  },
+  "grade6_juvenile": {
+    "grade": 6,
+    "stage": "juvenile",
+    "file": "grade6_juvenile.png",
+    "prompt": "small mountain-and-star spirit creature, smooth stone-like body dotted with tiny glowing star freckles, faint aura like a distant galaxy, young juvenile form, slightly bigger, worried confused expression, unsure wobbly stance, one eyebrow raised, deep indigo and warm gold color palette, cosmic tones, solid soft indigo gradient background, simple and clean, cute mascot character design, kawaii chibi proportions, kid-friendly and non-scary, centered character illustration, digital illustration, clean vector-like shading, vibrant colors, professional mascot artwork, no text no watermark no border",
+    "provider": "leonardo",
+    "modelId": "de7d3faf-762f-48e0-b3b7-9d0ac3a3fcf3",
+    "generatedAt": "2026-08-01T06:53:14.308Z"
+  },
+  "grade6_adult": {
+    "grade": 6,
+    "stage": "adult",
+    "file": "grade6_adult.png",
+    "prompt": "small mountain-and-star spirit creature, smooth stone-like body dotted with tiny glowing star freckles, faint aura like a distant galaxy, grown adult form, calm neutral confident expression, balanced standing pose, steady and composed, deep indigo and warm gold color palette, cosmic tones, solid soft indigo gradient background, simple and clean, cute mascot character design, kawaii chibi proportions, kid-friendly and non-scary, centered character illustration, digital illustration, clean vector-like shading, vibrant colors, professional mascot artwork, no text no watermark no border",
+    "provider": "leonardo",
+    "modelId": "de7d3faf-762f-48e0-b3b7-9d0ac3a3fcf3",
+    "generatedAt": "2026-08-01T06:53:22.722Z"
+  },
+  "grade6_sage": {
+    "grade": 6,
+    "stage": "sage",
+    "file": "grade6_sage.png",
+    "prompt": "small mountain-and-star spirit creature, smooth stone-like body dotted with tiny glowing star freckles, faint aura like a distant galaxy, wise sage form, joyful proud expression with sparkling eyes, wearing a tiny graduation cap, radiant gentle glow, confident welcoming pose, deep indigo and warm gold color palette, cosmic tones, solid soft indigo gradient background, simple and clean, cute mascot character design, kawaii chibi proportions, kid-friendly and non-scary, centered character illustration, digital illustration, clean vector-like shading, vibrant colors, professional mascot artwork, no text no watermark no border",
+    "provider": "leonardo",
+    "modelId": "de7d3faf-762f-48e0-b3b7-9d0ac3a3fcf3",
+    "generatedAt": "2026-08-01T06:53:31.012Z"
+  }
+}
