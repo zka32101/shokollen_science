@@ -13,6 +13,7 @@ const List<BaseCharacter> kRikaCharacters = [
         'いつも虫メガネを持って野原を走り回っているんだって。',
     stampPhrases: ['昆虫すごい！', '6本脚だよ', 'コムシと観察しよう', '葉っぱの形が違う',
       '理科大好き！', 'もっと探そう', 'まだ見てない虫がいる', '一緒に探検しよう'],
+    appSubject: Subject.shokollen,
   ),
   BaseCharacter(
     id: 'hanako', name: 'ハナコ', emoji: '🌸', tier: 1, unlockAt: 3,
@@ -23,6 +24,7 @@ const List<BaseCharacter> kRikaCharacters = [
         '今日も誰かの植木鉢をこっそり覗いているよ。',
     stampPhrases: ['芽が出た！', '花が咲いたよ', 'ハナコと育てよう', '水やりしてね',
       '植物も生きてる', 'ありがとう！', '実がなったよ', '一緒に観察しよう'],
+    appSubject: Subject.shokollen,
   ),
   BaseCharacter(
     id: 'magne', name: 'マグネ', emoji: '🧲', tier: 1, unlockAt: 5,
@@ -33,6 +35,7 @@ const List<BaseCharacter> kRikaCharacters = [
         'よく鍋やハサミを引っ張ってしまうのが悩みなんだって。',
     stampPhrases: ['くっついた！', '磁石パワー！', 'マグネと実験', '鉄を見つけた',
       'N極・S極', '反発するよ', 'コンパスも磁石', '理科楽しい'],
+    appSubject: Subject.shokollen,
   ),
   BaseCharacter(
     id: 'densuke', name: 'デンスケ', emoji: '💡', tier: 1, unlockAt: 8,
@@ -43,6 +46,7 @@ const List<BaseCharacter> kRikaCharacters = [
         'でも照らすのはちょっと恥ずかしいらしい。',
     stampPhrases: ['電気が流れた！', '豆電球光った', 'デンスケと回路', '直列・並列',
       '電池の向き大事', '光った！', 'ショートしないで', '理科実験楽しい'],
+    appSubject: Subject.shokollen,
   ),
 
   // ── Tier 2（4年生テーマ） ─────────────────────────────────
@@ -55,6 +59,7 @@ const List<BaseCharacter> kRikaCharacters = [
         '晴れの日は特に元気で、空高く飛んでいくよ。',
     stampPhrases: ['晴れだよ！', '積乱雲発見', 'カゼマルと天気観察', '気温変化に注目',
       '西から雨が来る', '風向き覚えてね', '天気図読めたよ', '明日も晴れるかな'],
+    appSubject: Subject.shokollen,
   ),
   BaseCharacter(
     id: 'tsukimi', name: 'ツキミ', emoji: '🌙', tier: 2, unlockAt: 16,
@@ -65,6 +70,7 @@ const List<BaseCharacter> kRikaCharacters = [
         '星座の話を一晩中してくれる賑やかな子だよ。',
     stampPhrases: ['満月だよ！', '星が見えた', 'ツキミと天体観察', '太陽系の話しよう',
       '月が変わった', '北斗七星発見', '惑星の順番覚えた', '宇宙って広い'],
+    appSubject: Subject.shokollen,
   ),
   BaseCharacter(
     id: 'honetaro', name: 'ホネタロウ', emoji: '🦴', tier: 2, unlockAt: 20,
@@ -75,6 +81,7 @@ const List<BaseCharacter> kRikaCharacters = [
         '牛乳を飲むたびに「カルシウム補給！」と叫ぶクセがある。',
     stampPhrases: ['骨が大事！', '筋肉を動かそう', 'ホネタロウと体の勉強', '関節はここだよ',
       'カルシウム補給', '運動しよう', '体のしくみって面白い', '骨は何本あるかな'],
+    appSubject: Subject.shokollen,
   ),
   BaseCharacter(
     id: 'mizukichi', name: 'ミズキチ', emoji: '💧', tier: 2, unlockAt: 24,
@@ -85,6 +92,7 @@ const List<BaseCharacter> kRikaCharacters = [
         '雨の日は大喜びで水たまりに飛び込む困った子。',
     stampPhrases: ['水の実験！', '空気は縮む', 'ミズキチと実験', '注射器で確認',
       '水圧すごい', '泡が出た！', '体積変化した', '水って不思議'],
+    appSubject: Subject.shokollen,
   ),
 
   // ── Tier 3（5年生テーマ） ─────────────────────────────────
@@ -97,6 +105,7 @@ const List<BaseCharacter> kRikaCharacters = [
         '何でも溶かそうとしてしまう探究心旺盛な子。',
     stampPhrases: ['溶けた！', '結晶ができた', 'トケローと実験', '食塩水の秘密',
       '濃度を測ろう', '蒸発してみた', '飽和溶液発見', '化学面白い'],
+    appSubject: Subject.shokollen,
   ),
   BaseCharacter(
     id: 'furiko', name: 'フリコ', emoji: '⏰', tier: 3, unlockAt: 32,
@@ -107,6 +116,7 @@ const List<BaseCharacter> kRikaCharacters = [
         '「それがフリコのアイデンティティだ」と自慢している。',
     stampPhrases: ['振り子実験！', '周期が合った', 'フリコと時間測定', '糸を長くしたよ',
       'リズムが大事', '等時性すごい', 'ガリレオと同じ発見', '理科って面白い'],
+    appSubject: Subject.shokollen,
   ),
   BaseCharacter(
     id: 'birika', name: 'ビリカ', emoji: '⚡', tier: 3, unlockAt: 36,
@@ -117,6 +127,7 @@ const List<BaseCharacter> kRikaCharacters = [
         '冬になると特に元気になる不思議な子。',
     stampPhrases: ['電磁石完成！', 'コイルを巻こう', 'ビリカと電気実験', '電流の向きに注意',
       'N極が変わった', 'モーター動いた', '電流強いほど強力', '発電してみた'],
+    appSubject: Subject.shokollen,
   ),
   BaseCharacter(
     id: 'tanekichi', name: 'タネキチ', emoji: '🌱', tier: 3, unlockAt: 40,
@@ -127,6 +138,7 @@ const List<BaseCharacter> kRikaCharacters = [
         '育てた植物が大きくなるのを見るのが一番の喜び。',
     stampPhrases: ['発芽した！', '双葉が出た', 'タネキチと栽培', 'でんぷんを作ってる',
       '光合成すごい', '根が伸びてる', '結実したよ！', '生命の不思議'],
+    appSubject: Subject.shokollen,
   ),
 
   // ── Tier 4（6年生・スペシャル） ──────────────────────────
@@ -139,6 +151,7 @@ const List<BaseCharacter> kRikaCharacters = [
         '大昔の生き物の話を始めると止まらないので有名。',
     stampPhrases: ['化石発見！', '地層がきれい', 'チソウンと地質調査', '堆積岩だよ',
       '火成岩も発見', '示準化石すごい', '地球の歴史を見た', '億年単位で考える'],
+    appSubject: Subject.shokollen,
   ),
   BaseCharacter(
     id: 'moeru', name: 'モエール', emoji: '🔥', tier: 4, unlockAt: 48,
@@ -149,6 +162,7 @@ const List<BaseCharacter> kRikaCharacters = [
         '「火は正しく使えば友だち」が座右の銘。',
     stampPhrases: ['燃えた！', '酸素が必要', 'モエールと燃焼実験', '二酸化炭素が出た',
       '消火は3要素を断つ', 'ろうそくの炎だ', '完全燃焼成功', '炎の色が変わる'],
+    appSubject: Subject.shokollen,
   ),
   BaseCharacter(
     id: 'taborun', name: 'タベルン', emoji: '🌿', tier: 4, unlockAt: 52,
@@ -159,6 +173,7 @@ const List<BaseCharacter> kRikaCharacters = [
         '環境破壊のニュースを聞くたびに涙を流す優しい子。',
     stampPhrases: ['食物連鎖！', '生態系大事に', 'タベルンと自然観察', '分解者も必要',
       '水と空気の循環', '環境を守ろう', '生物多様性すごい', 'みんなで生きてる'],
+    appSubject: Subject.shokollen,
   ),
   BaseCharacter(
     id: 'hakase_master', name: '理科マスター', emoji: '🔬', tier: 4, unlockAt: 56,
@@ -169,5 +184,6 @@ const List<BaseCharacter> kRikaCharacters = [
         '一緒に写真を撮ろうとすると「まだ研究中だよ」と照れる。',
     stampPhrases: ['全ステージ制覇！', '理科マスターと握手', 'ありがとう！', 'また実験しよう',
       '好奇心を忘れずに', '科学者になろう', '不思議を探そう', '理科は楽しい！'],
+    appSubject: Subject.shokollen,
   ),
 ];
