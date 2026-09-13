@@ -2,7 +2,7 @@ import 'dart:developer' as developer;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_core/shared_core.dart'
-    hide progressProvider, LearningProgress, ProgressNotifier, FirebaseService;
+    hide progressProvider, LearningProgress, ProgressNotifier, FirebaseService, AppTheme;
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 import 'app/router.dart';
