@@ -54,3 +54,4 @@ app.*.map.json
 
 # Generated plugins
 lib/generated_plugins.dart
+.claude/
