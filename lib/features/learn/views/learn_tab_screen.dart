@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../shared/constants/app_colors.dart';
+import '../../../shared/widgets/furigana_text.dart';
 import '../../../data/seeds/stages.dart';
 import '../../../data/seeds/experiment_data.dart';
 import '../../progress/providers/user_progress_provider.dart';
@@ -327,12 +328,13 @@ class _LearnStageTile extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  FuriganaText(
                     stageData['stageName'] as String,
                     style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
                       color: AppColors.textDark,
+                      height: 1.8,
                     ),
                   ),
                   const SizedBox(height: 2),
