@@ -1,4 +1,5 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
     <application
         android:label="shokollen_science"
         android:name="${applicationName}"
@@ -30,6 +31,9 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+        <!-- 子ども向けアプリ: Analytics に広告IDを収集させない -->
+        <meta-data android:name="google_analytics_adid_collection_enabled" android:value="false" />
+        <meta-data android:name="google_analytics_default_allow_ad_personalization_signals" android:value="false" />
     </application>
     <!-- Required to query activities that can process text, see:
          https://developer.android.com/training/package-visibility and
@@ -59,4 +63,8 @@
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <!-- 広告なし・子ども向け: firebase_analytics が持ち込む広告ID関連の権限を除去 -->
+    <uses-permission android:name="com.google.android.gms.permission.AD_ID" tools:node="remove" />
+    <uses-permission android:name="android.permission.ACCESS_ADSERVICES_ATTRIBUTION" tools:node="remove" />
+    <uses-permission android:name="android.permission.ACCESS_ADSERVICES_AD_ID" tools:node="remove" />
 </manifest>
