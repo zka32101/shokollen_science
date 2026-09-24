@@ -12,7 +12,6 @@ import '../../shop/views/shop_screen.dart';
 import '../../trial/providers/trial_provider.dart';
 import '../../profile/providers/profile_provider.dart';
 import '../../daily/providers/daily_challenge_provider.dart';
-import '../../settings/providers/theme_provider.dart';
 import '../../../shared/widgets/doctor_character_widget.dart';
 import '../../../shared/widgets/mission_card_widget.dart';
 import '../widgets/seasonal_recommendation_widget.dart';
@@ -219,39 +218,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 ),
               ),
               const SizedBox(width: 6),
-              // ダークモード切り替え
-              GestureDetector(
-                onTap: () => ref.read(themeProvider.notifier).toggle(),
-                child: Container(
-                  padding: const EdgeInsets.all(6),
-                  decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.2),
-                    shape: BoxShape.circle,
-                  ),
-                  child: Icon(
-                    ref.watch(themeProvider) == ThemeMode.dark
-                        ? Icons.light_mode_rounded
-                        : Icons.dark_mode_rounded,
-                    color: Colors.white,
-                    size: 18,
-                  ),
-                ),
-              ),
-              const SizedBox(width: 6),
-              // 保護者ダッシュボード
-              GestureDetector(
-                onTap: () => context.push('/parent-dashboard'),
-                child: Container(
-                  padding: const EdgeInsets.all(6),
-                  decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.2),
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(Icons.shield_outlined, color: Colors.white, size: 18),
-                ),
-              ),
-              const SizedBox(width: 6),
-              // せってい
+              // せってい（ダークモード切替・保護者ダッシュボードは設定画面に移動）
               GestureDetector(
                 onTap: () => context.push('/settings'),
                 child: Container(

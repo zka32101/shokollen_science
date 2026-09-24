@@ -30,6 +30,7 @@ import '../features/sky/views/tonight_sky_screen.dart';
 import '../features/weekly_challenge/views/weekly_challenge_screen.dart';
 import '../features/progress/views/daily_mystery_omikuji_screen.dart';
 import '../features/settings/views/settings_screen.dart';
+import '../features/premium/views/premium_screen.dart';
 
 class AppRouter {
   static final GoRouter router = GoRouter(
@@ -118,6 +119,12 @@ class AppRouter {
         path: '/today-reviews',
         name: 'today-reviews',
         builder: (_, __) => const TodayReviewsScreen(),
+      ),
+      // プレミアムプラン
+      GoRoute(
+        path: '/premium',
+        name: 'premium',
+        builder: (_, __) => const PremiumScreen(),
       ),
       // 保護者ダッシュボード
       GoRoute(
