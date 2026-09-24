@@ -6,9 +6,10 @@ class ClaudeService {
   static const String _apiUrl = 'https://api.anthropic.com/v1/messages';
   static const String _model = 'claude-haiku-4-5-20251001';
 
-  // APIキーは本番前に環境変数か設定ファイルから取得する
-  // ここはプレースホルダ — 実際のキーに差し替えること
-  static const String _apiKey = 'YOUR_ANTHROPIC_API_KEY';
+  // APIキーはビルド時に --dart-define=ANTHROPIC_API_KEY=... で渡す。
+  // リポジトリに実キーをハードコードしないこと。
+  static const String _apiKey =
+      String.fromEnvironment('ANTHROPIC_API_KEY', defaultValue: '');
 
   static const String _systemPrompt = '''
 あなたは「りかハカセ」という小学生の理科の先生キャラクターです。
@@ -29,6 +30,9 @@ class ClaudeService {
 ''';
 
   Future<String> askHaiku(String question) async {
+    if (_apiKey.isEmpty) {
+      return 'いまはりかハカセとお話しできません。もう少し待ってね！';
+    }
     try {
       final response = await http
           .post(
