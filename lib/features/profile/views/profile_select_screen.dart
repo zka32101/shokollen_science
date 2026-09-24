@@ -212,7 +212,7 @@ class _ProfileCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Text(
-                '${profile.gradeLevel}年生',
+                profile.gradeLabel,
                 style: const TextStyle(
                   fontSize: 11,
                   color: AppColors.sciencePrimary,

@@ -30,6 +30,23 @@ const _rikaExchangeItems = [
   AppShopItem(id: 'stamp_coupon', emoji: '🎁', name: 'LINEスタンプ無料引換券',
       description: '好きなスタンプ1セットが無料に！',
       category: 'スペシャル', coinCost: 1000),
+  // ── アバターアイコン（最初の4体は無料、残りはここで購入） ──────
+  AppShopItem(id: 'avatar_penguin', emoji: '🐧', name: 'ペンギンアバター',
+      description: 'プロフィールのアバターに使える', category: 'アバター', coinCost: 50),
+  AppShopItem(id: 'avatar_lion', emoji: '🦁', name: 'ライオンアバター',
+      description: 'プロフィールのアバターに使える', category: 'アバター', coinCost: 50),
+  AppShopItem(id: 'avatar_koala', emoji: '🐨', name: 'コアラアバター',
+      description: 'プロフィールのアバターに使える', category: 'アバター', coinCost: 50),
+  AppShopItem(id: 'avatar_panda', emoji: '🐼', name: 'パンダアバター',
+      description: 'プロフィールのアバターに使える', category: 'アバター', coinCost: 50),
+  AppShopItem(id: 'avatar_rabbit', emoji: '🐰', name: 'ウサギアバター',
+      description: 'プロフィールのアバターに使える', category: 'アバター', coinCost: 60),
+  AppShopItem(id: 'avatar_hamster', emoji: '🐹', name: 'ハムスターアバター',
+      description: 'プロフィールのアバターに使える', category: 'アバター', coinCost: 60),
+  AppShopItem(id: 'avatar_butterfly', emoji: '🦋', name: 'チョウアバター',
+      description: 'プロフィールのアバターに使える', category: 'アバター', coinCost: 70),
+  AppShopItem(id: 'avatar_dolphin', emoji: '🐬', name: 'イルカアバター',
+      description: 'プロフィールのアバターに使える', category: 'アバター', coinCost: 70),
 ];
 
 // ── 理科コレ 期間限定アイテム ──────────────────────────────────────────────

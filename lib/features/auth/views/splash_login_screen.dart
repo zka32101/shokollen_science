@@ -49,8 +49,17 @@ class _SplashLoginScreenState extends ConsumerState<SplashLoginScreen>
       return;
     }
 
-    final profileState = ref.read(profileProvider).value;
-    if (profileState == null || !profileState.hasProfiles) {
+    // profileProvider の非同期ロードが完了するまで待つ
+    // (ref.read(profileProvider).value はロード中に null になり、
+    //  プロフィール作成済みでも毎回プロフィール作成画面に飛ばされるバグの原因だった)
+    ProfileState profileState;
+    try {
+      profileState = await ref.read(profileProvider.future);
+    } catch (_) {
+      profileState = const ProfileState();
+    }
+    if (!mounted) return;
+    if (!profileState.hasProfiles) {
       // プロフィール未作成 → 作成画面へ
       context.go('/profile-create');
     } else {

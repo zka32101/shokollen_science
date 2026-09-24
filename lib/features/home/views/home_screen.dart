@@ -250,6 +250,19 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   child: const Icon(Icons.shield_outlined, color: Colors.white, size: 18),
                 ),
               ),
+              const SizedBox(width: 6),
+              // せってい
+              GestureDetector(
+                onTap: () => context.push('/settings'),
+                child: Container(
+                  padding: const EdgeInsets.all(6),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withValues(alpha: 0.2),
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(Icons.settings_outlined, color: Colors.white, size: 18),
+                ),
+              ),
             ],
           ),
           // トライアル期限切れバナー

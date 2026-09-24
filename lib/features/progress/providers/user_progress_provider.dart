@@ -33,6 +33,7 @@ const int _totalStageCount = 47;
 const int kCoinsPerCorrect = 5;     // 正解1問につき
 const int kCoinsBonusPerfect = 20;  // 全問正解ボーナス
 const int kCoinsStreakBonus = 10;   // 3日連続ボーナス
+const int kCoinsExperimentBonus = 15; // じっけん完了ボーナス
 
 class UserProgressNotifier extends AsyncNotifier<UserProgress> {
   // v3: hintsRemaining, activeThemeId追加
@@ -144,6 +145,39 @@ class UserProgressNotifier extends AsyncNotifier<UserProgress> {
       ],
       wrongAnswers: newWrongAnswers,
       dailyActivity: newDailyActivity,
+    );
+
+    await _save(finalProgress);
+    state = AsyncData(finalProgress);
+    return (badges: newBadges, coinsEarned: coinsEarned);
+  }
+
+  // ────────────────────────────────────────────────────────
+  /// 実験を完了としてチェックする。獲得バッジと獲得コインを返す
+  // ────────────────────────────────────────────────────────
+  Future<({List<BadgeModel> badges, int coinsEarned})> completeExperiment(
+    String experimentId,
+  ) async {
+    final current = state.value ?? const UserProgress();
+    if (current.isExperimentCompleted(experimentId)) {
+      return (badges: <BadgeModel>[], coinsEarned: 0);
+    }
+
+    const coinsEarned = kCoinsExperimentBonus;
+    final newProgress = current.copyWith(
+      coins: current.coins + coinsEarned,
+      completedExperimentIds: [
+        ...current.completedExperimentIds,
+        experimentId,
+      ],
+    );
+
+    final newBadges = _checkNewBadges(current, newProgress);
+    final finalProgress = newProgress.copyWith(
+      earnedBadgeIds: [
+        ...current.earnedBadgeIds,
+        ...newBadges.map((b) => b.id),
+      ],
     );
 
     await _save(finalProgress);
@@ -273,6 +307,10 @@ class UserProgressNotifier extends AsyncNotifier<UserProgress> {
             .where((sid) => p.clearedStages.containsKey(sid))
             .length;
         return count6 >= 10; // 10/12
+      // じっけん
+      case 'experiment_first': return p.completedExperimentIds.length >= 1;
+      case 'experiment_5':     return p.completedExperimentIds.length >= 5;
+      case 'experiment_10':    return p.completedExperimentIds.length >= 10;
       // 全ステージ制覇
       case 'science_master':  return p.clearedCount >= _totalStageCount;
       default:                return false;

@@ -194,6 +194,32 @@ const List<BadgeModel> allBadges = [
     requiredCount: 12,
   ),
 
+  // ── じっけん ────────────────────────────────────────────────
+  BadgeModel(
+    id: 'experiment_first',
+    title: 'はじめてのじっけん',
+    description: 'じっけんを1つやってみた',
+    emoji: '🧫',
+    category: BadgeCategory.special,
+    requiredCount: 1,
+  ),
+  BadgeModel(
+    id: 'experiment_5',
+    title: 'じっけんはかせ見習い',
+    description: 'じっけんを5つやってみた',
+    emoji: '🥼',
+    category: BadgeCategory.special,
+    requiredCount: 5,
+  ),
+  BadgeModel(
+    id: 'experiment_10',
+    title: 'じっけんマスター',
+    description: 'じっけんを10このやってみた',
+    emoji: '👨‍🔬',
+    category: BadgeCategory.special,
+    requiredCount: 10,
+  ),
+
   // ── 理科マスター（全ステージ制覇） ─────────────────────────
   BadgeModel(
     id: 'science_master',
