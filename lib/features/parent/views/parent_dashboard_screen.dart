@@ -6,6 +6,7 @@ import '../../progress/providers/user_progress_provider.dart';
 import '../../profile/providers/profile_provider.dart';
 import '../../../data/seeds/stages.dart';
 import '../providers/praise_provider.dart';
+import '../../../shared/widgets/avatar_image.dart';
 
 class ParentDashboardScreen extends ConsumerStatefulWidget {
   const ParentDashboardScreen({super.key});
@@ -275,7 +276,7 @@ class _ParentDashboardScreenState extends ConsumerState<ParentDashboardScreen> {
       ),
       child: Row(
         children: [
-          Text(profile.avatarEmoji as String, style: const TextStyle(fontSize: 40)),
+          AvatarImage(imagePath: profile.avatarImagePath as String, size: 40),
           const SizedBox(width: 12),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,

@@ -70,7 +70,7 @@ class ProfileNotifier extends AsyncNotifier<ProfileState> {
   /// プロフィールを作成して選択状態にする
   Future<ProfileModel> createProfile({
     required String nickname,
-    required String avatarEmoji,
+    required String avatarImagePath,
     required int gradeLevel,
   }) async {
     final current = state.value ?? const ProfileState();
@@ -78,7 +78,7 @@ class ProfileNotifier extends AsyncNotifier<ProfileState> {
     final profile = ProfileModel(
       id: const Uuid().v4(),
       nickname: nickname,
-      avatarEmoji: avatarEmoji,
+      avatarImagePath: avatarImagePath,
       gradeLevel: gradeLevel,
       createdAt:
           '${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}',
