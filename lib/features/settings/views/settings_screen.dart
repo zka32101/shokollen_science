@@ -71,6 +71,23 @@ class SettingsScreen extends ConsumerWidget {
                 style: const TextStyle(fontWeight: FontWeight.bold)),
           ),
           const Divider(),
+          _SectionHeader(title: 'プレミアム'),
+          ListTile(
+            leading: const Text('🏆', style: TextStyle(fontSize: 20)),
+            title: const Text('プレミアムプラン'),
+            subtitle: const Text('全きのう使い放題・広告なし'),
+            trailing: const Icon(Icons.arrow_forward_ios, size: 14),
+            onTap: () => context.push('/premium'),
+          ),
+          const Divider(),
+          _SectionHeader(title: 'ほごしゃ向け'),
+          ListTile(
+            leading: const Text('👨‍👩‍👧', style: TextStyle(fontSize: 20)),
+            title: const Text('保護者ダッシュボード'),
+            trailing: const Icon(Icons.arrow_forward_ios, size: 14),
+            onTap: () => context.push('/parent-dashboard'),
+          ),
+          const Divider(),
           _SectionHeader(title: 'アプリについて'),
           ListTile(
             leading: const Text('🏅', style: TextStyle(fontSize: 20)),

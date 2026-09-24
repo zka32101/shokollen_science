@@ -98,9 +98,9 @@ class UserProgressNotifier extends AsyncNotifier<UserProgress> {
         ? 0
         : ((correctCount / totalQuestions) * 100).round();
     final newCleared = Map<String, int>.from(current.clearedStages);
-    // 全問正解のみをクリア扱いにする
-    if (correctCount == totalQuestions && totalQuestions > 0) {
-      newCleared[stageId] = bestScore; // bestScore は 100
+    // 正答率60%以上でクリア扱いにする（満点ボーナスは別途100%のみ）
+    if (totalQuestions > 0 && correctCount / totalQuestions >= 0.6) {
+      newCleared[stageId] = bestScore;
     }
 
     // ── コイン計算 ────────────────────
