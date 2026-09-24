@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-/// {漢字|ふりがな} 形式のテキストをルビ付きで表示するウィジェット
+/// {漢字|ふりがな} 形式のテキストを「漢字（ふりがな）」の通常テキストとして表示するウィジェット
 ///
 /// 使い方:
 ///   FuriganaText('{昆虫|こんちゅう}は{体|からだ}が3つに分かれます')
@@ -22,7 +22,6 @@ class FuriganaText extends StatelessWidget {
         DefaultTextStyle.of(context).style.copyWith(
               fontSize: 14,
               color: Colors.black87,
-              height: 2.0, // ふりがな分の行間を確保
             );
     return Text.rich(
       TextSpan(children: _parse(text, base)),
@@ -43,14 +42,10 @@ class FuriganaText extends StatelessWidget {
           style: base,
         ));
       }
-      // ルビ付きセグメント
-      result.add(WidgetSpan(
-        alignment: PlaceholderAlignment.bottom,
-        child: _RubySegment(
-          kanji: m.group(1)!,
-          reading: m.group(2)!,
-          baseStyle: base,
-        ),
+      // 漢字（ふりがな）形式で表示
+      result.add(TextSpan(
+        text: '${m.group(1)!}（${m.group(2)!}）',
+        style: base,
       ));
       cursor = m.end;
     }
@@ -62,44 +57,5 @@ class FuriganaText extends StatelessWidget {
       ));
     }
     return result;
-  }
-}
-
-class _RubySegment extends StatelessWidget {
-  final String kanji;
-  final String reading;
-  final TextStyle baseStyle;
-
-  const _RubySegment({
-    required this.kanji,
-    required this.reading,
-    required this.baseStyle,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final kanjiSize = baseStyle.fontSize ?? 14.0;
-    final rubySize = kanjiSize * 0.52;
-
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Text(
-          reading,
-          style: baseStyle.copyWith(
-            fontSize: rubySize,
-            height: 1.0,
-            letterSpacing: 0,
-          ),
-          textAlign: TextAlign.center,
-        ),
-        Text(
-          kanji,
-          style: baseStyle.copyWith(height: 1.0),
-          textAlign: TextAlign.center,
-        ),
-      ],
-    );
   }
 }
