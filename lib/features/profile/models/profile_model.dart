@@ -9,9 +9,9 @@ class ProfileModel {
   String get gradeLabel {
     switch (gradeLevel) {
       case 0:
-        return '小学未満';
+        return '小学生未満';
       case 7:
-        return '中学以上';
+        return '中学生以上';
       default:
         return '$gradeLevel年生';
     }
