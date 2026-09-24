@@ -29,6 +29,7 @@ import '../features/home_lab/views/home_lab_screen.dart';
 import '../features/sky/views/tonight_sky_screen.dart';
 import '../features/weekly_challenge/views/weekly_challenge_screen.dart';
 import '../features/progress/views/daily_mystery_omikuji_screen.dart';
+import '../features/settings/views/settings_screen.dart';
 
 class AppRouter {
   static final GoRouter router = GoRouter(
@@ -265,6 +266,13 @@ class AppRouter {
         path: '/daily-mystery-omikuji',
         name: 'daily-mystery-omikuji',
         builder: (_, __) => const DailyMysteryOmikujiScreen(),
+      ),
+
+      // せってい
+      GoRoute(
+        path: '/settings',
+        name: 'settings',
+        builder: (_, __) => const SettingsScreen(),
       ),
 
       // ほめメッセージ送信（親用）

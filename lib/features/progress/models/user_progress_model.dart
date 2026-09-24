@@ -13,6 +13,7 @@ class UserProgress {
   final String activeThemeId; // 適用中テーマID
   final Map<String, List<int>> wrongAnswers; // ステージIDごとの間違えた問題番号リスト
   final Map<String, int> dailyActivity; // 'YYYY-MM-DD' -> その日の正解数
+  final List<String> completedExperimentIds; // じっけん完了済みID
 
   const UserProgress({
     this.totalPoints = 0,
@@ -26,7 +27,11 @@ class UserProgress {
     this.activeThemeId = 'default',
     this.wrongAnswers = const {},
     this.dailyActivity = const {},
+    this.completedExperimentIds = const [],
   });
+
+  bool isExperimentCompleted(String experimentId) =>
+      completedExperimentIds.contains(experimentId);
 
   int get clearedCount => clearedStages.length;
   bool get isFirstTime => totalPoints == 0 && clearedCount == 0;
@@ -52,6 +57,7 @@ class UserProgress {
     String? activeThemeId,
     Map<String, List<int>>? wrongAnswers,
     Map<String, int>? dailyActivity,
+    List<String>? completedExperimentIds,
   }) {
     return UserProgress(
       totalPoints: totalPoints ?? this.totalPoints,
@@ -65,6 +71,8 @@ class UserProgress {
       activeThemeId: activeThemeId ?? this.activeThemeId,
       wrongAnswers: wrongAnswers ?? this.wrongAnswers,
       dailyActivity: dailyActivity ?? this.dailyActivity,
+      completedExperimentIds:
+          completedExperimentIds ?? this.completedExperimentIds,
     );
   }
 
@@ -80,6 +88,7 @@ class UserProgress {
         'activeThemeId': activeThemeId,
         'wrongAnswers': wrongAnswers.map((k, v) => MapEntry(k, v)),
         'dailyActivity': dailyActivity,
+        'completedExperimentIds': completedExperimentIds,
       };
 
   factory UserProgress.fromJson(Map<String, dynamic> json) {
@@ -103,6 +112,8 @@ class UserProgress {
       ),
       dailyActivity: ((json['dailyActivity'] as Map<String, dynamic>?) ?? {})
           .map((k, v) => MapEntry(k, (v as num).toInt())),
+      completedExperimentIds:
+          List<String>.from(json['completedExperimentIds'] as List? ?? []),
     );
   }
 

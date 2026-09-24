@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../shared/constants/app_colors.dart';
+import '../../progress/providers/user_progress_provider.dart';
 import '../providers/profile_provider.dart';
 import '../models/profile_model.dart';
 
@@ -12,6 +13,18 @@ class ProfileCreateScreen extends ConsumerStatefulWidget {
   ConsumerState<ProfileCreateScreen> createState() =>
       _ProfileCreateScreenState();
 }
+
+/// 学年選択肢: 小学未満(0) / 1〜6年 / 中学以上(7)
+const List<(int, String)> kGradeOptions = [
+  (0, '小学未満'),
+  (1, '1年'),
+  (2, '2年'),
+  (3, '3年'),
+  (4, '4年'),
+  (5, '5年'),
+  (6, '6年'),
+  (7, '中学以上'),
+];
 
 class _ProfileCreateScreenState
     extends ConsumerState<ProfileCreateScreen> {
@@ -28,6 +41,9 @@ class _ProfileCreateScreenState
 
   @override
   Widget build(BuildContext context) {
+    final purchasedItemIds =
+        ref.watch(userProgressProvider).value?.purchasedItemIds ?? const [];
+
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
@@ -79,8 +95,23 @@ class _ProfileCreateScreenState
                   itemBuilder: (_, i) {
                     final emoji = ProfileModel.avatarChoices[i];
                     final selected = emoji == _selectedEmoji;
+                    final shopItemId =
+                        ProfileModel.avatarShopItemIdFor(i);
+                    final isLocked = shopItemId != null &&
+                        !purchasedItemIds.contains(shopItemId);
                     return GestureDetector(
-                      onTap: () => setState(() => _selectedEmoji = emoji),
+                      onTap: () {
+                        if (isLocked) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('このアバターはショップで購入すると使えるよ'),
+                              duration: Duration(seconds: 2),
+                            ),
+                          );
+                          return;
+                        }
+                        setState(() => _selectedEmoji = emoji);
+                      },
                       child: AnimatedContainer(
                         duration: const Duration(milliseconds: 150),
                         width: 52,
@@ -98,8 +129,22 @@ class _ProfileCreateScreenState
                             width: 2,
                           ),
                         ),
-                        child: Text(emoji,
-                            style: const TextStyle(fontSize: 28)),
+                        child: isLocked
+                            ? Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  Opacity(
+                                    opacity: 0.35,
+                                    child: Text(emoji,
+                                        style:
+                                            const TextStyle(fontSize: 28)),
+                                  ),
+                                  const Icon(Icons.lock,
+                                      size: 18, color: Colors.white),
+                                ],
+                              )
+                            : Text(emoji,
+                                style: const TextStyle(fontSize: 28)),
                       ),
                     );
                   },
@@ -152,36 +197,35 @@ class _ProfileCreateScreenState
                         ),
                       ),
                       const SizedBox(height: 10),
-                      Row(
-                        children: [3, 4, 5, 6].map((g) {
+                      Wrap(
+                        spacing: 8,
+                        runSpacing: 8,
+                        children: kGradeOptions.map((option) {
+                          final g = option.$1;
+                          final label = option.$2;
                           final sel = _selectedGrade == g;
-                          return Expanded(
-                            child: GestureDetector(
-                              onTap: () =>
-                                  setState(() => _selectedGrade = g),
-                              child: AnimatedContainer(
-                                duration:
-                                    const Duration(milliseconds: 150),
-                                margin: const EdgeInsets.only(right: 8),
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 12),
-                                decoration: BoxDecoration(
+                          return GestureDetector(
+                            onTap: () =>
+                                setState(() => _selectedGrade = g),
+                            child: AnimatedContainer(
+                              duration: const Duration(milliseconds: 150),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 14, vertical: 12),
+                              decoration: BoxDecoration(
+                                color: sel
+                                    ? AppColors.sciencePrimary
+                                    : const Color(0xFFF5F5F5),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Text(
+                                label,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
                                   color: sel
-                                      ? AppColors.sciencePrimary
-                                      : const Color(0xFFF5F5F5),
-                                  borderRadius:
-                                      BorderRadius.circular(12),
-                                ),
-                                child: Text(
-                                  '$g年',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                    color: sel
-                                        ? Colors.white
-                                        : AppColors.textDark,
-                                  ),
+                                      ? Colors.white
+                                      : AppColors.textDark,
                                 ),
                               ),
                             ),

@@ -282,7 +282,7 @@ class _ParentDashboardScreenState extends ConsumerState<ParentDashboardScreen> {
             children: [
               Text(profile.nickname as String,
                   style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-              Text('${profile.gradeLevel}年生',
+              Text(profile.gradeLabel as String,
                   style: const TextStyle(fontSize: 13, color: AppColors.textGray)),
             ],
           ),

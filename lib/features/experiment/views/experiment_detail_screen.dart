@@ -1,18 +1,64 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../shared/constants/app_colors.dart';
 import '../../../data/seeds/experiment_data.dart';
+import '../../progress/providers/user_progress_provider.dart';
+import '../../progress/views/badge_earned_dialog.dart';
 
-class ExperimentDetailScreen extends StatelessWidget {
+class ExperimentDetailScreen extends ConsumerStatefulWidget {
   final String experimentId;
   const ExperimentDetailScreen({super.key, required this.experimentId});
 
   @override
+  ConsumerState<ExperimentDetailScreen> createState() =>
+      _ExperimentDetailScreenState();
+}
+
+class _ExperimentDetailScreenState
+    extends ConsumerState<ExperimentDetailScreen> {
+  bool _isSubmitting = false;
+
+  Future<void> _markDone() async {
+    if (_isSubmitting) return;
+    setState(() => _isSubmitting = true);
+    final result = await ref
+        .read(userProgressProvider.notifier)
+        .completeExperiment(widget.experimentId);
+    if (!mounted) return;
+    setState(() => _isSubmitting = false);
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(result.coinsEarned > 0
+            ? 'じっけんかんりょう！ +${result.coinsEarned}コイン'
+            : 'すでにチェックずみだよ'),
+        duration: const Duration(seconds: 2),
+      ),
+    );
+
+    if (result.badges.isNotEmpty) {
+      await Future.delayed(const Duration(milliseconds: 300));
+      if (mounted) {
+        await showDialog<void>(
+          context: context,
+          barrierDismissible: false,
+          builder: (_) => BadgeEarnedDialog(badges: result.badges),
+        );
+      }
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final data = experimentData.firstWhere(
-      (e) => e['id'] == experimentId,
+      (e) => e['id'] == widget.experimentId,
       orElse: () => experimentData[0],
     );
+    final progressAsync = ref.watch(userProgressProvider);
+    final isDone =
+        progressAsync.value?.isExperimentCompleted(widget.experimentId) ??
+            false;
 
     return Scaffold(
       backgroundColor: const Color(0xFFF7F9FC),
@@ -35,12 +81,39 @@ class ExperimentDetailScreen extends StatelessWidget {
                   _buildPointCard(data),
                   const SizedBox(height: 12),
                   _buildSafetyCard(data),
+                  const SizedBox(height: 20),
+                  _buildDoneButton(isDone),
                   const SizedBox(height: 32),
                 ],
               ),
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildDoneButton(bool isDone) {
+    return SizedBox(
+      width: double.infinity,
+      height: 52,
+      child: ElevatedButton.icon(
+        onPressed: (_isSubmitting || isDone) ? null : _markDone,
+        icon: Icon(isDone ? Icons.check_circle : Icons.check_circle_outline),
+        label: Text(
+          isDone ? 'じっけんしたよ ✅' : 'じっけんした！チェックする',
+          style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+        ),
+        style: ElevatedButton.styleFrom(
+          backgroundColor:
+              isDone ? Colors.green[600] : Colors.orange[700],
+          foregroundColor: Colors.white,
+          disabledBackgroundColor: Colors.green[600],
+          disabledForegroundColor: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(14),
+          ),
+        ),
       ),
     );
   }
