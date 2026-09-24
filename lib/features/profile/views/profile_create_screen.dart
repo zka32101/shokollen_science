@@ -5,6 +5,7 @@ import '../../../shared/constants/app_colors.dart';
 import '../../progress/providers/user_progress_provider.dart';
 import '../providers/profile_provider.dart';
 import '../models/profile_model.dart';
+import '../../../shared/widgets/avatar_image.dart';
 
 class ProfileCreateScreen extends ConsumerStatefulWidget {
   const ProfileCreateScreen({super.key});
@@ -26,7 +27,7 @@ const List<(int, String)> kGradeOptions = [
 class _ProfileCreateScreenState
     extends ConsumerState<ProfileCreateScreen> {
   final _controller = TextEditingController();
-  String _selectedEmoji = ProfileModel.avatarChoices[0];
+  String _selectedAvatar = ProfileModel.avatarChoices[0];
   int _selectedGrade = 3;
   bool _isCreating = false;
 
@@ -76,22 +77,24 @@ class _ProfileCreateScreenState
               ),
               const SizedBox(height: 24),
               // アバター表示
-              Text(
-                _selectedEmoji,
-                style: const TextStyle(fontSize: 80),
-              ),
+              AvatarImage(imagePath: _selectedAvatar, size: 96),
               const SizedBox(height: 8),
-              // アバター選択
-              SizedBox(
-                height: 60,
-                child: ListView.separated(
-                  scrollDirection: Axis.horizontal,
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
+              // アバター選択（16体グリッド）
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: GridView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
                   itemCount: ProfileModel.avatarChoices.length,
-                  separatorBuilder: (_, __) => const SizedBox(width: 10),
+                  gridDelegate:
+                      const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 4,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
+                  ),
                   itemBuilder: (_, i) {
-                    final emoji = ProfileModel.avatarChoices[i];
-                    final selected = emoji == _selectedEmoji;
+                    final avatar = ProfileModel.avatarChoices[i];
+                    final selected = avatar == _selectedAvatar;
                     final shopItemId =
                         ProfileModel.avatarShopItemIdFor(i);
                     final isLocked = shopItemId != null &&
@@ -107,12 +110,10 @@ class _ProfileCreateScreenState
                           );
                           return;
                         }
-                        setState(() => _selectedEmoji = emoji);
+                        setState(() => _selectedAvatar = avatar);
                       },
                       child: AnimatedContainer(
                         duration: const Duration(milliseconds: 150),
-                        width: 52,
-                        height: 52,
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
                           color: selected
@@ -132,16 +133,14 @@ class _ProfileCreateScreenState
                                 children: [
                                   Opacity(
                                     opacity: 0.35,
-                                    child: Text(emoji,
-                                        style:
-                                            const TextStyle(fontSize: 28)),
+                                    child: AvatarImage(
+                                        imagePath: avatar, size: 44),
                                   ),
                                   const Icon(Icons.lock,
                                       size: 18, color: Colors.white),
                                 ],
                               )
-                            : Text(emoji,
-                                style: const TextStyle(fontSize: 28)),
+                            : AvatarImage(imagePath: avatar, size: 44),
                       ),
                     );
                   },
@@ -276,7 +275,7 @@ class _ProfileCreateScreenState
     setState(() => _isCreating = true);
     await ref.read(profileProvider.notifier).createProfile(
           nickname: name,
-          avatarEmoji: _selectedEmoji,
+          avatarImagePath: _selectedAvatar,
           gradeLevel: _selectedGrade,
         );
     if (mounted) context.go('/home');

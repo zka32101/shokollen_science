@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../../shared/constants/app_colors.dart';
 import '../providers/profile_provider.dart';
 import '../models/profile_model.dart';
+import '../../../shared/widgets/avatar_image.dart';
 
 class ProfileSelectScreen extends ConsumerWidget {
   const ProfileSelectScreen({super.key});
@@ -189,8 +190,7 @@ class _ProfileCard extends StatelessWidget {
                       fontWeight: FontWeight.bold),
                 ),
               ),
-            Text(profile.avatarEmoji,
-                style: const TextStyle(fontSize: 52)),
+            AvatarImage(imagePath: profile.avatarImagePath, size: 52),
             const SizedBox(height: 8),
             Text(
               profile.nickname,

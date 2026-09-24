@@ -5,6 +5,8 @@ import '../../../shared/constants/app_colors.dart';
 import '../../profile/providers/profile_provider.dart';
 import '../../progress/providers/user_progress_provider.dart';
 import '../providers/theme_provider.dart';
+import '../../profile/models/profile_model.dart';
+import '../../../shared/widgets/avatar_image.dart';
 
 /// せってい画面（国語コレの settings_screen 構成を参考に、理科コレ向けに簡略化）
 class SettingsScreen extends ConsumerWidget {
@@ -26,8 +28,10 @@ class SettingsScreen extends ConsumerWidget {
         children: [
           _SectionHeader(title: 'がくしゅうしゃ'),
           ListTile(
-            leading: Text(activeProfile?.avatarEmoji ?? '🐻',
-                style: const TextStyle(fontSize: 24)),
+            leading: AvatarImage(
+                imagePath: activeProfile?.avatarImagePath ??
+                    ProfileModel.avatarChoices[0],
+                size: 32),
             title: Text(activeProfile?.nickname ?? 'なし'),
             subtitle: Text(activeProfile?.gradeLabel ?? ''),
             trailing:
