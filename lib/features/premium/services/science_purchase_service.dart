@@ -9,7 +9,10 @@ class SciencePurchaseService {
   static final SciencePurchaseService instance = SciencePurchaseService._();
 
   static const String _googleKey = 'goog_MkXRvFoWQEuQHtjhIHDCzczDbQL';
-  static const String premiumEntitlementId = '小学コレ理科_pro';
+  // RevenueCatダッシュボードには「小学コレ_pro」という単一のEntitlementのみ
+  // 存在し、他アプリ（社会等）も同じIDを共有している。アプリごとにAPIキー
+  // （＝Play Storeアプリ）が分かれているため衝突しない。
+  static const String premiumEntitlementId = '小学コレ_pro';
 
   bool _configured = false;
   bool get isConfigured => _configured;
