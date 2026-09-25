@@ -131,6 +131,7 @@ flutter:
     - assets/illustrations/stage_3/
     - assets/images/monsters/
     - assets/images/avatars/
+    - assets/characters/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

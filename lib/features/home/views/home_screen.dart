@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shared_core/shared_core.dart' show coinProvider;
 import '../../../shared/constants/app_colors.dart';
 import '../../../data/seeds/stages.dart';
 import '../../../data/seeds/creatures.dart';
@@ -69,17 +70,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           const DailyLoginBonusWidget(), // デイリーログインボーナス
           const PraiseReceivedWidget(), // 親からのほめメッセージ
           const WeeklyChallengeWidget(), // 今週のチャレンジ
-          _buildDailyChallengeCard(),    // デイリーチャレンジ追加
+          _buildDailyChallengeCard(), // デイリーチャレンジ追加
           SeasonalRecommendationWidget(
             onTap: (stageId) => context.push('/quiz/$stageId'),
           ),
-          _buildCharacterCard(),         // キャラ図鑑
+          _buildCharacterCard(), // キャラ図鑑
           _buildWeeklyReportCard(),
           _buildGradeTestCard(),
-          const MissionCardWidget(),     // ミッションカード
+          const MissionCardWidget(), // ミッションカード
           const DoctorCharacterWidget(), // 博士キャラ追加
           const SizedBox(height: 8),
-          _buildReviewCard(),            // にがて問題追加
+          _buildReviewCard(), // にがて問題追加
           _buildTodayThemeCard(),
           _buildEncyclopediaSection(),
           _buildStageListSection(),
@@ -98,197 +99,212 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final trialAsync = ref.watch(trialProvider);
     final profileAsync = ref.watch(profileProvider);
     final activeProfile = profileAsync.value?.activeProfile;
-    final coins = progressAsync.value?.coins ?? 0;
+    // ショップ画面（shared_core の CoinShopPage）と同じ coinProvider を参照し、
+    // コイン残高の表示元を統一する（独自 progress.coins との二重管理を解消）。
+    final coins = ref.watch(coinProvider).totalCoins;
     final isPremium = trialAsync.value?.isPremium ?? false;
     final trialRemaining = trialAsync.value?.trialDaysRemaining ?? 14;
 
     return Stack(
       clipBehavior: Clip.hardEdge,
       children: [
-      Container(
-      width: double.infinity,
-      padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
-      decoration: const BoxDecoration(
-        gradient: AppColors.scienceGradient,
-      ),
-      child: Column(
-        children: [
-          Row(
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
+          decoration: const BoxDecoration(gradient: AppColors.scienceGradient),
+          child: Column(
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              Row(
                 children: [
-                  const Text(
-                    '小学コレ！',
-                    style: TextStyle(
-                      color: Colors.white70,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        '小学コレ！',
+                        style: TextStyle(
+                          color: Colors.white70,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      const Text(
+                        '理科',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const Spacer(),
+                  // プロフィール切り替えボタン
+                  GestureDetector(
+                    onTap: () => context.push('/profile-select'),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 4,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withValues(alpha: 0.2),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: Colors.white.withValues(alpha: 0.4),
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          AvatarImage(
+                            imagePath:
+                                activeProfile?.avatarImagePath ??
+                                ProfileModel.avatarChoices[0],
+                            size: 20,
+                          ),
+                          const SizedBox(width: 4),
+                          Text(
+                            activeProfile?.nickname ?? 'たろう',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                  const Text(
-                    '理科',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
+                  const SizedBox(width: 8),
+                  // コイン残高
+                  GestureDetector(
+                    onTap: () => setState(() => _selectedIndex = 3),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 5,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Row(
+                        children: [
+                          const Text('🪙', style: TextStyle(fontSize: 14)),
+                          const SizedBox(width: 4),
+                          Text(
+                            '$coins',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 13,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  // プレミアム / トライアル状態
+                  GestureDetector(
+                    onTap: () => setState(() => _selectedIndex = 3),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 5,
+                      ),
+                      decoration: BoxDecoration(
+                        color: isPremium
+                            ? Colors.amber.withOpacity(0.8)
+                            : Colors.white.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Text(
+                        isPremium ? '👑 プレミアム' : '⏳ あと${trialRemaining}日',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 11,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 6),
+                  // せってい（ダークモード切替・保護者ダッシュボードは設定画面に移動）
+                  GestureDetector(
+                    onTap: () => context.push('/settings'),
+                    child: Container(
+                      padding: const EdgeInsets.all(6),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withValues(alpha: 0.2),
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(
+                        Icons.settings_outlined,
+                        color: Colors.white,
+                        size: 18,
+                      ),
                     ),
                   ),
                 ],
               ),
-              const Spacer(),
-              // プロフィール切り替えボタン
-              GestureDetector(
-                onTap: () => context.push('/profile-select'),
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.2),
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: Colors.white.withValues(alpha: 0.4)),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      AvatarImage(
-                          imagePath: activeProfile?.avatarImagePath ??
-                              ProfileModel.avatarChoices[0],
-                          size: 20),
-                      const SizedBox(width: 4),
-                      Text(
-                        activeProfile?.nickname ?? 'たろう',
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
+              // トライアル期限切れバナー
+              if (!isPremium && trialRemaining <= 0) ...[
+                const SizedBox(height: 8),
+                GestureDetector(
+                  onTap: () => setState(() => _selectedIndex = 3),
+                  child: Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 7,
+                      horizontal: 12,
+                    ),
+                    decoration: BoxDecoration(
+                      color: AppColors.error.withOpacity(0.85),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text('⚠️ ', style: TextStyle(fontSize: 14)),
+                        Text(
+                          'トライアル終了！プレミアムにアップグレードしよう',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              const SizedBox(width: 8),
-              // コイン残高
-              GestureDetector(
-                onTap: () => setState(() => _selectedIndex = 3),
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 10, vertical: 5),
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Row(
-                    children: [
-                      const Text('🪙',
-                          style: TextStyle(fontSize: 14)),
-                      const SizedBox(width: 4),
-                      Text(
-                        '$coins',
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 13,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              const SizedBox(width: 8),
-              // プレミアム / トライアル状態
-              GestureDetector(
-                onTap: () => setState(() => _selectedIndex = 3),
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 10, vertical: 5),
-                  decoration: BoxDecoration(
-                    color: isPremium
-                        ? Colors.amber.withOpacity(0.8)
-                        : Colors.white.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Text(
-                    isPremium
-                        ? '👑 プレミアム'
-                        : '⏳ あと${trialRemaining}日',
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 11,
-                      fontWeight: FontWeight.bold,
+                      ],
                     ),
                   ),
                 ),
-              ),
-              const SizedBox(width: 6),
-              // せってい（ダークモード切替・保護者ダッシュボードは設定画面に移動）
-              GestureDetector(
-                onTap: () => context.push('/settings'),
-                child: Container(
-                  padding: const EdgeInsets.all(6),
-                  decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.2),
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(Icons.settings_outlined, color: Colors.white, size: 18),
-                ),
-              ),
+              ],
             ],
           ),
-          // トライアル期限切れバナー
-          if (!isPremium && trialRemaining <= 0) ...[
-            const SizedBox(height: 8),
-            GestureDetector(
-              onTap: () => setState(() => _selectedIndex = 3),
-              child: Container(
-                width: double.infinity,
-                padding: const EdgeInsets.symmetric(
-                    vertical: 7, horizontal: 12),
-                decoration: BoxDecoration(
-                  color: AppColors.error.withOpacity(0.85),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('⚠️ ', style: TextStyle(fontSize: 14)),
-                    Text(
-                      'トライアル終了！プレミアムにアップグレードしよう',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+        ),
+        const Positioned(
+          right: 8,
+          top: 4,
+          child: IgnorePointer(
+            child: Opacity(
+              opacity: 0.10,
+              child: Text('⚛️', style: TextStyle(fontSize: 56)),
             ),
-          ],
-        ],
-      ),
-    ),
-    const Positioned(
-      right: 8,
-      top: 4,
-      child: IgnorePointer(
-        child: Opacity(
-          opacity: 0.10,
-          child: Text('⚛️', style: TextStyle(fontSize: 56)),
+          ),
         ),
-      ),
-    ),
-    const Positioned(
-      right: 76,
-      bottom: 6,
-      child: IgnorePointer(
-        child: Opacity(
-          opacity: 0.07,
-          child: Text('🔭', style: TextStyle(fontSize: 30)),
+        const Positioned(
+          right: 76,
+          bottom: 6,
+          child: IgnorePointer(
+            child: Opacity(
+              opacity: 0.07,
+              child: Text('🔭', style: TextStyle(fontSize: 30)),
+            ),
+          ),
         ),
-      ),
-    ),
-    ],);
+      ],
+    );
   }
 
   // ── ストリークバナー ──────────────────────────────────
@@ -332,7 +348,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               children: [
                 Container(
                   padding: const EdgeInsets.symmetric(
-                      horizontal: 10, vertical: 4),
+                    horizontal: 10,
+                    vertical: 4,
+                  ),
                   decoration: BoxDecoration(
                     color: Colors.white.withOpacity(0.2),
                     borderRadius: BorderRadius.circular(20),
@@ -384,10 +402,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   width: double.infinity,
                   height: 46,
                   child: ElevatedButton.icon(
-                    onPressed: () => context
-                        .go('/quiz/${_todayStage['id']}'),
-                    icon: const Icon(Icons.play_arrow_rounded,
-                        size: 22),
+                    onPressed: () => context.go('/quiz/${_todayStage['id']}'),
+                    icon: const Icon(Icons.play_arrow_rounded, size: 22),
                     label: const Text(
                       '探索を開始 →',
                       style: TextStyle(
@@ -469,10 +485,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             children: [
               Text(
                 '$completedCreatures / $_totalCreatures 発見',
-                style: const TextStyle(
-                  fontSize: 12,
-                  color: AppColors.textGray,
-                ),
+                style: const TextStyle(fontSize: 12, color: AppColors.textGray),
               ),
               const SizedBox(width: 8),
               Expanded(
@@ -481,8 +494,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   child: LinearProgressIndicator(
                     value: completedCreatures / _totalCreatures,
                     backgroundColor: AppColors.borderGray,
-                    valueColor: const AlwaysStoppedAnimation(
-                        AppColors.success),
+                    valueColor: const AlwaysStoppedAnimation(AppColors.success),
                     minHeight: 6,
                   ),
                 ),
@@ -493,8 +505,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           GridView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            gridDelegate:
-                const SliverGridDelegateWithFixedCrossAxisCount(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 4,
               mainAxisSpacing: 8,
               crossAxisSpacing: 8,
@@ -572,13 +583,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
               return Expanded(
                 child: GestureDetector(
-                  onTap: () =>
-                      setState(() => _selectedGrade = grade),
+                  onTap: () => setState(() => _selectedGrade = grade),
                   child: AnimatedContainer(
                     duration: const Duration(milliseconds: 200),
                     margin: const EdgeInsets.only(right: 6),
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 8),
+                    padding: const EdgeInsets.symmetric(vertical: 8),
                     decoration: BoxDecoration(
                       color: selected
                           ? AppColors.sciencePrimary
@@ -597,15 +606,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.bold,
-                            color: selected
-                                ? Colors.white
-                                : AppColors.textDark,
+                            color: selected ? Colors.white : AppColors.textDark,
                           ),
                         ),
                         Text(
-                          isComplete
-                              ? '✅'
-                              : '$cleared/${gradeStages.length}',
+                          isComplete ? '✅' : '$cleared/${gradeStages.length}',
                           style: TextStyle(
                             fontSize: 10,
                             color: selected
@@ -647,8 +652,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('📚 学習メニュー',
-              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.textDark)),
+          const Text(
+            '📚 学習メニュー',
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+              color: AppColors.textDark,
+            ),
+          ),
           const SizedBox(height: 8),
           Row(
             children: [
@@ -661,15 +672,25 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(14),
                       border: Border.all(color: AppColors.borderGray),
-                      boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.04), blurRadius: 6)],
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withValues(alpha: 0.04),
+                          blurRadius: 6,
+                        ),
+                      ],
                     ),
                     child: const Column(
                       children: [
                         Text('📚', style: TextStyle(fontSize: 28)),
                         SizedBox(height: 4),
-                        Text('コレクション帳',
-                            style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-                            textAlign: TextAlign.center),
+                        Text(
+                          'コレクション帳',
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
                       ],
                     ),
                   ),
@@ -683,34 +704,59 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     showModalBottomSheet<void>(
                       context: context,
                       shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(20),
+                        ),
+                      ),
                       builder: (_) => Padding(
                         padding: const EdgeInsets.all(20),
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            const Text('学年を選んでください',
-                                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                            const Text(
+                              '学年を選んでください',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                             const SizedBox(height: 16),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [3, 4, 5, 6].map((g) => GestureDetector(
-                                onTap: () {
-                                  Navigator.pop(context);
-                                  context.push('/comprehensive-test/$g');
-                                },
-                                child: Container(
-                                  width: 64, height: 64,
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                        colors: [Colors.purple[700]!, Colors.purple[400]!]),
-                                    borderRadius: BorderRadius.circular(16),
-                                  ),
-                                  child: Text('$g年',
-                                      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)),
-                                ),
-                              )).toList(),
+                              children: [3, 4, 5, 6]
+                                  .map(
+                                    (g) => GestureDetector(
+                                      onTap: () {
+                                        Navigator.pop(context);
+                                        context.push('/comprehensive-test/$g');
+                                      },
+                                      child: Container(
+                                        width: 64,
+                                        height: 64,
+                                        alignment: Alignment.center,
+                                        decoration: BoxDecoration(
+                                          gradient: LinearGradient(
+                                            colors: [
+                                              Colors.purple[700]!,
+                                              Colors.purple[400]!,
+                                            ],
+                                          ),
+                                          borderRadius: BorderRadius.circular(
+                                            16,
+                                          ),
+                                        ),
+                                        child: Text(
+                                          '$g年',
+                                          style: const TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                  .toList(),
                             ),
                             const SizedBox(height: 8),
                           ],
@@ -721,17 +767,30 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   child: Container(
                     padding: const EdgeInsets.all(14),
                     decoration: BoxDecoration(
-                      gradient: LinearGradient(colors: [Colors.purple[700]!, Colors.purple[400]!]),
+                      gradient: LinearGradient(
+                        colors: [Colors.purple[700]!, Colors.purple[400]!],
+                      ),
                       borderRadius: BorderRadius.circular(14),
-                      boxShadow: [BoxShadow(color: Colors.purple.withValues(alpha: 0.3), blurRadius: 6)],
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.purple.withValues(alpha: 0.3),
+                          blurRadius: 6,
+                        ),
+                      ],
                     ),
                     child: const Column(
                       children: [
                         Text('📝', style: TextStyle(fontSize: 28)),
                         SizedBox(height: 4),
-                        Text('まとめテスト',
-                            style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white),
-                            textAlign: TextAlign.center),
+                        Text(
+                          'まとめテスト',
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
                       ],
                     ),
                   ),
@@ -758,11 +817,19 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         decoration: BoxDecoration(
           gradient: completed
               ? LinearGradient(colors: [Colors.grey[300]!, Colors.grey[200]!])
-              : LinearGradient(colors: [Colors.amber[700]!, Colors.orange[500]!]),
+              : LinearGradient(
+                  colors: [Colors.amber[700]!, Colors.orange[500]!],
+                ),
           borderRadius: BorderRadius.circular(16),
           boxShadow: completed
               ? []
-              : [BoxShadow(color: Colors.amber.withValues(alpha: 0.3), blurRadius: 10, offset: const Offset(0, 4))],
+              : [
+                  BoxShadow(
+                    color: Colors.amber.withValues(alpha: 0.3),
+                    blurRadius: 10,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
         ),
         child: Row(
           children: [
@@ -806,9 +873,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         margin: const EdgeInsets.fromLTRB(16, 8, 16, 0),
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
         decoration: BoxDecoration(
-          gradient: LinearGradient(colors: [Colors.purple[600]!, Colors.indigo[500]!]),
+          gradient: LinearGradient(
+            colors: [Colors.purple[600]!, Colors.indigo[500]!],
+          ),
           borderRadius: BorderRadius.circular(14),
-          boxShadow: [BoxShadow(color: Colors.purple.withValues(alpha: 0.25), blurRadius: 10, offset: const Offset(0, 4))],
+          boxShadow: [
+            BoxShadow(
+              color: Colors.purple.withValues(alpha: 0.25),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            ),
+          ],
         ),
         child: Row(
           children: [
@@ -818,8 +893,18 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('今週のレポート', style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold)),
-                  Text('学習グラフ・弱点チェック', style: TextStyle(color: Colors.white70, fontSize: 12)),
+                  Text(
+                    '今週のレポート',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    '学習グラフ・弱点チェック',
+                    style: TextStyle(color: Colors.white70, fontSize: 12),
+                  ),
                 ],
               ),
             ),
@@ -841,13 +926,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
         decoration: BoxDecoration(
           gradient: LinearGradient(
-              colors: [Colors.teal[600]!, Colors.cyan[500]!]),
+            colors: [Colors.teal[600]!, Colors.cyan[500]!],
+          ),
           borderRadius: BorderRadius.circular(14),
           boxShadow: [
             BoxShadow(
-                color: Colors.teal.withValues(alpha: 0.3),
-                blurRadius: 10,
-                offset: const Offset(0, 4))
+              color: Colors.teal.withValues(alpha: 0.3),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            ),
           ],
         ),
         child: Row(
@@ -858,14 +945,18 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('理科博士コレクション',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold)),
-                  Text('$cleared ステージクリア・16体のキャラを集めよう',
-                      style: const TextStyle(
-                          color: Colors.white70, fontSize: 12)),
+                  const Text(
+                    '理科博士コレクション',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    '$cleared ステージクリア・16体のキャラを集めよう',
+                    style: const TextStyle(color: Colors.white70, fontSize: 12),
+                  ),
                 ],
               ),
             ),
@@ -884,9 +975,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         margin: const EdgeInsets.fromLTRB(16, 8, 16, 0),
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
         decoration: BoxDecoration(
-          gradient: LinearGradient(colors: [Colors.orange[700]!, Colors.deepOrange[500]!]),
+          gradient: LinearGradient(
+            colors: [Colors.orange[700]!, Colors.deepOrange[500]!],
+          ),
           borderRadius: BorderRadius.circular(14),
-          boxShadow: [BoxShadow(color: Colors.orange.withValues(alpha: 0.3), blurRadius: 10, offset: const Offset(0, 4))],
+          boxShadow: [
+            BoxShadow(
+              color: Colors.orange.withValues(alpha: 0.3),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            ),
+          ],
         ),
         child: Row(
           children: [
@@ -896,8 +995,18 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('学年末まとめテスト', style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold)),
-                  Text('認定証をゲットしよう！', style: TextStyle(color: Colors.white70, fontSize: 12)),
+                  Text(
+                    '学年末まとめテスト',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    '認定証をゲットしよう！',
+                    style: TextStyle(color: Colors.white70, fontSize: 12),
+                  ),
                 ],
               ),
             ),
@@ -911,8 +1020,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   // ── にがて問題カード ──────────────────────────────────────
   Widget _buildReviewCard() {
     final progressAsync = ref.watch(userProgressProvider);
-    final wrongCount = progressAsync.value?.wrongAnswers.values
-        .fold(0, (sum, list) => sum + list.length) ?? 0;
+    final wrongCount =
+        progressAsync.value?.wrongAnswers.values.fold(
+          0,
+          (sum, list) => sum + list.length,
+        ) ??
+        0;
     if (wrongCount == 0) return const SizedBox.shrink();
 
     return GestureDetector(
@@ -932,7 +1045,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             Expanded(
               child: Text(
                 'にがて問題 $wrongCount問 — やり直してみよう！',
-                style: TextStyle(fontSize: 13, color: Colors.red[700], fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  fontSize: 13,
+                  color: Colors.red[700],
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
             Icon(Icons.chevron_right_rounded, color: Colors.red[400]),
@@ -948,15 +1065,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(title,
-              style: const TextStyle(
-                  fontSize: 36, color: AppColors.textGray)),
+          Text(
+            title,
+            style: const TextStyle(fontSize: 36, color: AppColors.textGray),
+          ),
           const SizedBox(height: 16),
           Text(
             message,
             textAlign: TextAlign.center,
-            style: const TextStyle(
-                fontSize: 15, color: AppColors.textGray),
+            style: const TextStyle(fontSize: 15, color: AppColors.textGray),
           ),
         ],
       ),
@@ -1019,9 +1136,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   String _diffLabel(String level) {
     switch (level) {
-      case 'easy': return '⭐ かんたん';
-      case 'hard': return '⭐⭐⭐ むずかしい';
-      default:     return '⭐⭐ ふつう';
+      case 'easy':
+        return '⭐ かんたん';
+      case 'hard':
+        return '⭐⭐⭐ むずかしい';
+      default:
+        return '⭐⭐ ふつう';
     }
   }
 
@@ -1034,90 +1154,90 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         final isAnswered = record != null && record.answeredAt != null;
 
         return GestureDetector(
-              onTap: () => context.push('/daily-mystery-omikuji'),
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
-                child: Container(
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        const Color(0xFF6366F1).withOpacity(0.95),
-                        const Color(0xFF4F46E5).withOpacity(0.85),
-                      ],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    ),
-                    borderRadius: BorderRadius.circular(14),
-                    boxShadow: [
-                      BoxShadow(
-                        color: const Color(0xFF6366F1).withOpacity(0.25),
-                        blurRadius: 8,
-                        offset: const Offset(0, 3),
-                      ),
-                    ],
+          onTap: () => context.push('/daily-mystery-omikuji'),
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    const Color(0xFF6366F1).withOpacity(0.95),
+                    const Color(0xFF4F46E5).withOpacity(0.85),
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                borderRadius: BorderRadius.circular(14),
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color(0xFF6366F1).withOpacity(0.25),
+                    blurRadius: 8,
+                    offset: const Offset(0, 3),
                   ),
-                  padding: const EdgeInsets.all(16),
-                  child: Row(
-                    children: [
-                      // Emoji with status
-                      Container(
-                        width: 60,
-                        height: 60,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.white.withOpacity(0.15),
-                        ),
-                        child: Center(
-                          child: Text(
-                            isAnswered
-                                ? '✨'
-                                : isRevealed
-                                    ? '📖'
-                                    : '📿',
-                            style: const TextStyle(fontSize: 32),
+                ],
+              ),
+              padding: const EdgeInsets.all(16),
+              child: Row(
+                children: [
+                  // Emoji with status
+                  Container(
+                    width: 60,
+                    height: 60,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.white.withOpacity(0.15),
+                    ),
+                    child: Center(
+                      child: Text(
+                        isAnswered
+                            ? '✨'
+                            : isRevealed
+                            ? '📖'
+                            : '📿',
+                        style: const TextStyle(fontSize: 32),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 14),
+                  // Content
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          '今日のふしぎ',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
                           ),
                         ),
-                      ),
-                      const SizedBox(width: 14),
-                      // Content
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              '今日のふしぎ',
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                              ),
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              isAnswered
-                                  ? '✅ 完了！'
-                                  : isRevealed
-                                      ? '🔍 答えを見よう'
-                                      : '未引',
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: Colors.white.withOpacity(0.8),
-                              ),
-                            ),
-                          ],
+                        const SizedBox(height: 4),
+                        Text(
+                          isAnswered
+                              ? '✅ 完了！'
+                              : isRevealed
+                              ? '🔍 答えを見よう'
+                              : '未引',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.white.withOpacity(0.8),
+                          ),
                         ),
-                      ),
-                      // Arrow
-                      const Icon(
-                        Icons.arrow_forward_rounded,
-                        color: Colors.white,
-                        size: 20,
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
+                  // Arrow
+                  const Icon(
+                    Icons.arrow_forward_rounded,
+                    color: Colors.white,
+                    size: 20,
+                  ),
+                ],
               ),
-            );
+            ),
+          ),
+        );
       },
     );
   }
@@ -1221,7 +1341,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               bottom: -12,
               child: Text(
                 emoji,
-                style: TextStyle(fontSize: 64, color: Colors.white.withOpacity(0.12)),
+                style: TextStyle(
+                  fontSize: 64,
+                  color: Colors.white.withOpacity(0.12),
+                ),
               ),
             ),
             Padding(
@@ -1236,7 +1359,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       color: Colors.white.withOpacity(0.22),
                       shape: BoxShape.circle,
                     ),
-                    child: Center(child: Text(emoji, style: const TextStyle(fontSize: 20))),
+                    child: Center(
+                      child: Text(emoji, style: const TextStyle(fontSize: 20)),
+                    ),
                   ),
                   const Spacer(),
                   Text(
@@ -1283,9 +1408,10 @@ class _Badge extends StatelessWidget {
       child: Text(
         text,
         style: const TextStyle(
-            color: Colors.white,
-            fontSize: 11,
-            fontWeight: FontWeight.bold),
+          color: Colors.white,
+          fontSize: 11,
+          fontWeight: FontWeight.bold,
+        ),
       ),
     );
   }
@@ -1294,8 +1420,7 @@ class _Badge extends StatelessWidget {
 class _CreatureCell extends StatelessWidget {
   final Map<String, dynamic> creatureData;
   final bool unlocked;
-  const _CreatureCell(
-      {required this.creatureData, required this.unlocked});
+  const _CreatureCell({required this.creatureData, required this.unlocked});
 
   static const _categoryEmoji = {
     'insect': '🦋',
@@ -1310,9 +1435,7 @@ class _CreatureCell extends StatelessWidget {
     final emoji = _categoryEmoji[creatureData['category']] ?? '🔬';
     return Container(
       decoration: BoxDecoration(
-        color: unlocked
-            ? AppColors.scienceLight
-            : const Color(0xFFEEEEEE),
+        color: unlocked ? AppColors.scienceLight : const Color(0xFFEEEEEE),
         borderRadius: BorderRadius.circular(10),
         border: Border.all(
           color: unlocked
@@ -1330,16 +1453,15 @@ class _CreatureCell extends StatelessWidget {
           Text(
             unlocked
                 ? (creatureData['name'] as String)
-                    .replaceAll(RegExp(r'[ぁ-ん]+'), '')
-                    .substring(0, (creatureData['name'] as String)
-                            .length
-                            .clamp(0, 4))
+                      .replaceAll(RegExp(r'[ぁ-ん]+'), '')
+                      .substring(
+                        0,
+                        (creatureData['name'] as String).length.clamp(0, 4),
+                      )
                 : '???',
             style: TextStyle(
               fontSize: 9,
-              color: unlocked
-                  ? AppColors.textDark
-                  : AppColors.textGray,
+              color: unlocked ? AppColors.textDark : AppColors.textGray,
             ),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
@@ -1388,19 +1510,34 @@ class _StageListTile extends StatelessWidget {
       onTap: onTap,
       child: Container(
         margin: const EdgeInsets.only(bottom: 8),
-        padding: const EdgeInsets.symmetric(
-            horizontal: 12, vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
         decoration: BoxDecoration(
           color: isCleared ? const Color(0xFFF0FFF4) : Colors.white,
           borderRadius: BorderRadius.circular(12),
           border: Border(
             left: BorderSide(color: color, width: 4),
-            top: BorderSide(color: isCleared ? AppColors.success.withOpacity(0.3) : AppColors.borderGray),
-            right: BorderSide(color: isCleared ? AppColors.success.withOpacity(0.3) : AppColors.borderGray),
-            bottom: BorderSide(color: isCleared ? AppColors.success.withOpacity(0.3) : AppColors.borderGray),
+            top: BorderSide(
+              color: isCleared
+                  ? AppColors.success.withOpacity(0.3)
+                  : AppColors.borderGray,
+            ),
+            right: BorderSide(
+              color: isCleared
+                  ? AppColors.success.withOpacity(0.3)
+                  : AppColors.borderGray,
+            ),
+            bottom: BorderSide(
+              color: isCleared
+                  ? AppColors.success.withOpacity(0.3)
+                  : AppColors.borderGray,
+            ),
           ),
           boxShadow: [
-            BoxShadow(color: color.withOpacity(0.08), blurRadius: 6, offset: const Offset(0, 2)),
+            BoxShadow(
+              color: color.withOpacity(0.08),
+              blurRadius: 6,
+              offset: const Offset(0, 2),
+            ),
           ],
         ),
         child: Row(
@@ -1413,8 +1550,7 @@ class _StageListTile extends StatelessWidget {
                 color: color.withOpacity(0.12),
                 shape: BoxShape.circle,
               ),
-              child: Text(emoji,
-                  style: const TextStyle(fontSize: 18)),
+              child: Text(emoji, style: const TextStyle(fontSize: 18)),
             ),
             const SizedBox(width: 12),
             Expanded(
@@ -1446,8 +1582,11 @@ class _StageListTile extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  const Icon(Icons.check_circle,
-                      color: AppColors.success, size: 18),
+                  const Icon(
+                    Icons.check_circle,
+                    color: AppColors.success,
+                    size: 18,
+                  ),
                   Text(
                     '$bestScore%',
                     style: const TextStyle(

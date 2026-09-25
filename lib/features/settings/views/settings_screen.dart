@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shared_core/shared_core.dart' show coinProvider;
 import '../../../shared/constants/app_colors.dart';
 import '../../profile/providers/profile_provider.dart';
 import '../../progress/providers/user_progress_provider.dart';
@@ -15,6 +16,7 @@ class SettingsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final progress = ref.watch(userProgressProvider).value;
     final activeProfile = ref.watch(profileProvider).value?.activeProfile;
+    final coins = ref.watch(coinProvider).totalCoins;
 
     return Scaffold(
       appBar: AppBar(
@@ -27,13 +29,14 @@ class SettingsScreen extends ConsumerWidget {
           _SectionHeader(title: 'がくしゅうしゃ'),
           ListTile(
             leading: AvatarImage(
-                imagePath: activeProfile?.avatarImagePath ??
-                    ProfileModel.avatarChoices[0],
-                size: 32),
+              imagePath:
+                  activeProfile?.avatarImagePath ??
+                  ProfileModel.avatarChoices[0],
+              size: 32,
+            ),
             title: Text(activeProfile?.nickname ?? 'なし'),
             subtitle: Text(activeProfile?.gradeLabel ?? ''),
-            trailing:
-                const Icon(Icons.arrow_forward_ios, size: 14),
+            trailing: const Icon(Icons.arrow_forward_ios, size: 14),
             onTap: () => context.push('/profile-select'),
           ),
           const Divider(),
@@ -41,27 +44,34 @@ class SettingsScreen extends ConsumerWidget {
           ListTile(
             leading: const Text('🔥', style: TextStyle(fontSize: 20)),
             title: const Text('れんぞく学習'),
-            trailing: Text('${progress?.streakDays ?? 0}日',
-                style: const TextStyle(fontWeight: FontWeight.bold)),
+            trailing: Text(
+              '${progress?.streakDays ?? 0}日',
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
           ),
           ListTile(
             leading: const Text('🪙', style: TextStyle(fontSize: 20)),
             title: const Text('コイン'),
-            trailing: Text('${progress?.coins ?? 0}',
-                style: const TextStyle(fontWeight: FontWeight.bold)),
+            trailing: Text(
+              '$coins',
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
           ),
           ListTile(
             leading: const Text('🏁', style: TextStyle(fontSize: 20)),
             title: const Text('クリアしたステージ'),
-            trailing: Text('${progress?.clearedCount ?? 0}',
-                style: const TextStyle(fontWeight: FontWeight.bold)),
+            trailing: Text(
+              '${progress?.clearedCount ?? 0}',
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
           ),
           ListTile(
             leading: const Text('🧪', style: TextStyle(fontSize: 20)),
             title: const Text('やったじっけん'),
             trailing: Text(
-                '${progress?.completedExperimentIds.length ?? 0}',
-                style: const TextStyle(fontWeight: FontWeight.bold)),
+              '${progress?.completedExperimentIds.length ?? 0}',
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
           ),
           const Divider(),
           _SectionHeader(title: 'プレミアム'),
@@ -93,13 +103,16 @@ class SettingsScreen extends ConsumerWidget {
             padding: const EdgeInsets.all(16),
             child: OutlinedButton.icon(
               icon: const Icon(Icons.refresh, color: Colors.red),
-              label: const Text('がくしゅうきろくをリセット',
-                  style: TextStyle(color: Colors.red)),
+              label: const Text(
+                'がくしゅうきろくをリセット',
+                style: TextStyle(color: Colors.red),
+              ),
               style: OutlinedButton.styleFrom(
                 side: const BorderSide(color: Colors.red),
                 padding: const EdgeInsets.symmetric(vertical: 14),
-                shape:
-                    RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
               ),
               onPressed: () => _confirmReset(context, ref),
             ),
@@ -118,7 +131,9 @@ class SettingsScreen extends ConsumerWidget {
         content: const Text('すべての学習記録とバッジが消えます。この操作は元に戻せません。'),
         actions: [
           TextButton(
-              onPressed: () => Navigator.pop(ctx), child: const Text('キャンセル')),
+            onPressed: () => Navigator.pop(ctx),
+            child: const Text('キャンセル'),
+          ),
           TextButton(
             onPressed: () async {
               Navigator.pop(ctx);
