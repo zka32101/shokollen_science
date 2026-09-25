@@ -2,15 +2,13 @@ import 'package:purchases_flutter/purchases_flutter.dart';
 
 /// 小学コレ！理科用 RevenueCat サービス（月額¥300 固定）。
 ///
-/// API キーは `--dart-define=REVENUE_CAT_GOOGLE_KEY=goog_...` で渡す。
-/// 未設定、またはダッシュボードに商品/オファリングが未登録の場合は
+/// ダッシュボードに商品/オファリングが未登録の場合は
 /// 例外を投げず null / false を返し、呼び出し側でフォールバック表示する。
 class SciencePurchaseService {
   SciencePurchaseService._();
   static final SciencePurchaseService instance = SciencePurchaseService._();
 
-  static const String _googleKey =
-      String.fromEnvironment('REVENUE_CAT_GOOGLE_KEY');
+  static const String _googleKey = 'goog_MkXRvFoWQEuQHtjhIHDCzczDbQL';
   static const String premiumEntitlementId = '小学コレ理科_pro';
 
   bool _configured = false;
@@ -21,8 +19,11 @@ class SciencePurchaseService {
     try {
       await Purchases.configure(PurchasesConfiguration(_googleKey));
       _configured = true;
-    } catch (_) {
+    } catch (e) {
       // 初期化失敗時は未設定として扱う（アプリはクラッシュさせない）
+      // ただし原因はログに残す（読み込みエラーの原因調査用）。
+      // ignore: avoid_print
+      print('[RevenueCat] initialize 失敗: $e');
       _configured = false;
     }
   }
@@ -62,11 +63,15 @@ class SciencePurchaseService {
         expiry: _expiryOf(result.customerInfo),
       );
     } on PurchasesErrorCode catch (e) {
+      // ignore: avoid_print
+      print('[RevenueCat] purchaseMonthly 失敗: $e');
       if (e == PurchasesErrorCode.purchaseCancelledError) {
         return const PurchaseResult(outcome: PurchaseOutcome.cancelled);
       }
       return const PurchaseResult(outcome: PurchaseOutcome.error);
     } catch (e) {
+      // ignore: avoid_print
+      print('[RevenueCat] purchaseMonthly 失敗: $e');
       // purchase_cancelled 判定（PlatformException経由で来る場合の保険）
       final message = e.toString();
       if (message.contains('PurchaseCancelledError') ||
