@@ -39,9 +39,6 @@ class _ProfileCreateScreenState
 
   @override
   Widget build(BuildContext context) {
-    final purchasedItemIds =
-        ref.watch(userProgressProvider).value?.purchasedItemIds ?? const [];
-
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
@@ -79,6 +76,28 @@ class _ProfileCreateScreenState
               // アバター表示
               AvatarImage(imagePath: _selectedAvatar, size: 96),
               const SizedBox(height: 8),
+              // 以下（アバター選択グリッド＋フォーム）は縦幅が画面に収まらない
+              // 端末があるため、ボタンだけ画面下に固定しスクロール可能にする。
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: EdgeInsets.zero,
+                  child: _buildScrollableContent(),
+                ),
+              ),
+              _buildBottomButton(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildScrollableContent() {
+    final purchasedItemIds =
+        ref.watch(userProgressProvider).value?.purchasedItemIds ?? const [];
+
+    return Column(
+      children: [
               // アバター選択（16体グリッド）
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -148,117 +167,118 @@ class _ProfileCreateScreenState
               ),
               const SizedBox(height: 24),
               // フォーム
-              Expanded(
-                child: Container(
-                  padding: const EdgeInsets.all(24),
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius:
-                        BorderRadius.vertical(top: Radius.circular(28)),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'なまえ',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.textGray,
-                        ),
+              Container(
+                padding: const EdgeInsets.all(24),
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius:
+                      BorderRadius.vertical(top: Radius.circular(28)),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'なまえ',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.textGray,
                       ),
-                      const SizedBox(height: 8),
-                      TextField(
-                        controller: _controller,
-                        autofocus: true,
-                        maxLength: 10,
-                        decoration: InputDecoration(
-                          hintText: 'れい：たろう',
-                          filled: true,
-                          fillColor: const Color(0xFFF5F5F5),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide.none,
-                          ),
-                          counterText: '',
+                    ),
+                    const SizedBox(height: 8),
+                    TextField(
+                      controller: _controller,
+                      autofocus: true,
+                      maxLength: 10,
+                      decoration: InputDecoration(
+                        hintText: 'れい：たろう',
+                        filled: true,
+                        fillColor: const Color(0xFFF5F5F5),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide.none,
                         ),
+                        counterText: '',
                       ),
-                      const SizedBox(height: 20),
-                      const Text(
-                        'なんねんせい？',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.textGray,
-                        ),
+                    ),
+                    const SizedBox(height: 20),
+                    const Text(
+                      'なんねんせい？',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.textGray,
                       ),
-                      const SizedBox(height: 10),
-                      Wrap(
-                        spacing: 8,
-                        runSpacing: 8,
-                        children: kGradeOptions.map((option) {
-                          final g = option.$1;
-                          final label = option.$2;
-                          final sel = _selectedGrade == g;
-                          return GestureDetector(
-                            onTap: () =>
-                                setState(() => _selectedGrade = g),
-                            child: AnimatedContainer(
-                              duration: const Duration(milliseconds: 150),
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 14, vertical: 12),
-                              decoration: BoxDecoration(
+                    ),
+                    const SizedBox(height: 10),
+                    Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                      children: kGradeOptions.map((option) {
+                        final g = option.$1;
+                        final label = option.$2;
+                        final sel = _selectedGrade == g;
+                        return GestureDetector(
+                          onTap: () =>
+                              setState(() => _selectedGrade = g),
+                          child: AnimatedContainer(
+                            duration: const Duration(milliseconds: 150),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 14, vertical: 12),
+                            decoration: BoxDecoration(
+                              color: sel
+                                  ? AppColors.sciencePrimary
+                                  : const Color(0xFFF5F5F5),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Text(
+                              label,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
                                 color: sel
-                                    ? AppColors.sciencePrimary
-                                    : const Color(0xFFF5F5F5),
-                                borderRadius: BorderRadius.circular(12),
+                                    ? Colors.white
+                                    : AppColors.textDark,
                               ),
-                              child: Text(
-                                label,
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold,
-                                  color: sel
-                                      ? Colors.white
-                                      : AppColors.textDark,
-                                ),
-                              ),
-                            ),
-                          );
-                        }).toList(),
-                      ),
-                      const Spacer(),
-                      SizedBox(
-                        width: double.infinity,
-                        height: 52,
-                        child: ElevatedButton(
-                          onPressed: _isCreating ? null : _create,
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.sciencePrimary,
-                            foregroundColor: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(14),
                             ),
                           ),
-                          child: _isCreating
-                              ? const CircularProgressIndicator(
-                                  color: Colors.white)
-                              : const Text(
-                                  'つくる！',
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                        ),
-                      ),
-                    ],
-                  ),
+                        );
+                      }).toList(),
+                    ),
+                  ],
                 ),
               ),
             ],
+          );
+  }
+
+  Widget _buildBottomButton() {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
+      color: Colors.white,
+      child: SizedBox(
+        width: double.infinity,
+        height: 52,
+        child: ElevatedButton(
+          onPressed: _isCreating ? null : _create,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: AppColors.sciencePrimary,
+            foregroundColor: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(14),
+            ),
           ),
+          child: _isCreating
+              ? const CircularProgressIndicator(color: Colors.white)
+              : const Text(
+                  'つくる！',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
         ),
       ),
     );
