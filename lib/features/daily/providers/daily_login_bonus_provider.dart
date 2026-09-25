@@ -1,12 +1,12 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-const int _coinsDay1 = 10;
-const int _coinsDay2 = 15;
-const int _coinsDay3 = 20;
-const int _coinsDay4 = 25;
-const int _coinsDay5 = 30;
-const int _coinsDay6 = 40;
+const int _coinsDay1 = 5;
+const int _coinsDay2 = 8;
+const int _coinsDay3 = 10;
+const int _coinsDay4 = 13;
+const int _coinsDay5 = 15;
+const int _coinsDay6 = 20;
 
 class DailyBonusState {
   final int consecutiveDays;

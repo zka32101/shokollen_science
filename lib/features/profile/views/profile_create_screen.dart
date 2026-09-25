@@ -15,13 +15,12 @@ class ProfileCreateScreen extends ConsumerStatefulWidget {
       _ProfileCreateScreenState();
 }
 
-/// 学年選択肢（簡略化版）: どの学年を選んでも理科コレは3年生相当の
-/// クイズ内容を提供する（プロダクト仕様として承認済み）。
+/// 学年選択肢: 理科コレは3〜6年生の内容を提供する。
 const List<(int, String)> kGradeOptions = [
-  (0, '小学生未満'),
-  (1, '1年'),
-  (2, '2年'),
-  (7, '中学生以上'),
+  (3, '3年'),
+  (4, '4年'),
+  (5, '5年'),
+  (6, '6年'),
 ];
 
 class _ProfileCreateScreenState

@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import '../../../shared/constants/app_colors.dart';
 import '../../profile/providers/profile_provider.dart';
 import '../../progress/providers/user_progress_provider.dart';
-import '../providers/theme_provider.dart';
 import '../../profile/models/profile_model.dart';
 import '../../../shared/widgets/avatar_image.dart';
 
@@ -16,7 +15,6 @@ class SettingsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final progress = ref.watch(userProgressProvider).value;
     final activeProfile = ref.watch(profileProvider).value?.activeProfile;
-    final themeMode = ref.watch(themeProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -37,15 +35,6 @@ class SettingsScreen extends ConsumerWidget {
             trailing:
                 const Icon(Icons.arrow_forward_ios, size: 14),
             onTap: () => context.push('/profile-select'),
-          ),
-          const Divider(),
-          _SectionHeader(title: 'ひょうじ'),
-          SwitchListTile(
-            secondary: const Text('🌙', style: TextStyle(fontSize: 20)),
-            title: const Text('ダークモード'),
-            value: themeMode == ThemeMode.dark,
-            activeThumbColor: AppColors.sciencePrimary,
-            onChanged: (_) => ref.read(themeProvider.notifier).toggle(),
           ),
           const Divider(),
           _SectionHeader(title: 'きろく'),
