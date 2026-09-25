@@ -1,38 +1,74 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shared_core/shared_core.dart' show coinProvider;
 import '../models/user_progress_model.dart';
 import '../models/badge_model.dart';
 import '../../profile/providers/profile_provider.dart';
 
 // 学年別ステージID一覧
 const _grade3StageIds = [
-  'stage_3_001', 'stage_3_002', 'stage_3_003', 'stage_3_004',
-  'stage_3_005', 'stage_3_006', 'stage_3_007', 'stage_3_008',
-  'stage_3_009', 'stage_3_010', 'stage_3_011', 'stage_3_012',
+  'stage_3_001',
+  'stage_3_002',
+  'stage_3_003',
+  'stage_3_004',
+  'stage_3_005',
+  'stage_3_006',
+  'stage_3_007',
+  'stage_3_008',
+  'stage_3_009',
+  'stage_3_010',
+  'stage_3_011',
+  'stage_3_012',
 ];
 const _grade4StageIds = [
-  'stage_4_001', 'stage_4_002', 'stage_4_003', 'stage_4_004',
-  'stage_4_005', 'stage_4_006', 'stage_4_007', 'stage_4_008',
-  'stage_4_009', 'stage_4_010', 'stage_4_011',
+  'stage_4_001',
+  'stage_4_002',
+  'stage_4_003',
+  'stage_4_004',
+  'stage_4_005',
+  'stage_4_006',
+  'stage_4_007',
+  'stage_4_008',
+  'stage_4_009',
+  'stage_4_010',
+  'stage_4_011',
 ];
 const _grade5StageIds = [
-  'stage_5_001', 'stage_5_002', 'stage_5_003', 'stage_5_004',
-  'stage_5_005', 'stage_5_006', 'stage_5_007', 'stage_5_008',
-  'stage_5_009', 'stage_5_010', 'stage_5_011', 'stage_5_012',
+  'stage_5_001',
+  'stage_5_002',
+  'stage_5_003',
+  'stage_5_004',
+  'stage_5_005',
+  'stage_5_006',
+  'stage_5_007',
+  'stage_5_008',
+  'stage_5_009',
+  'stage_5_010',
+  'stage_5_011',
+  'stage_5_012',
 ];
 const _grade6StageIds = [
-  'stage_6_001', 'stage_6_002', 'stage_6_003', 'stage_6_004',
-  'stage_6_005', 'stage_6_006', 'stage_6_007', 'stage_6_008',
-  'stage_6_009', 'stage_6_010', 'stage_6_011', 'stage_6_012',
+  'stage_6_001',
+  'stage_6_002',
+  'stage_6_003',
+  'stage_6_004',
+  'stage_6_005',
+  'stage_6_006',
+  'stage_6_007',
+  'stage_6_008',
+  'stage_6_009',
+  'stage_6_010',
+  'stage_6_011',
+  'stage_6_012',
 ];
 
 // 総ステージ数（stages.dart の合計）
 const int _totalStageCount = 47;
 
 // コイン獲得量
-const int kCoinsPerCorrect = 5;     // 正解1問につき
-const int kCoinsBonusPerfect = 20;  // 全問正解ボーナス
-const int kCoinsStreakBonus = 10;   // 3日連続ボーナス
+const int kCoinsPerCorrect = 5; // 正解1問につき
+const int kCoinsBonusPerfect = 20; // 全問正解ボーナス
+const int kCoinsStreakBonus = 10; // 3日連続ボーナス
 const int kCoinsExperimentBonus = 15; // じっけん完了ボーナス
 
 class UserProgressNotifier extends AsyncNotifier<UserProgress> {
@@ -48,7 +84,26 @@ class UserProgressNotifier extends AsyncNotifier<UserProgress> {
   Future<UserProgress> build() async {
     // アクティブプロフィールが変わったら再ロード
     ref.watch(profileProvider);
-    return _load();
+    final loaded = await _load();
+    await _reconcileSharedCoins(loaded);
+    return loaded;
+  }
+
+  // ────────────────────────────────────────────────────────
+  /// shared_core の coinProvider（ショップ画面が参照する残高）を
+  /// このアプリ独自の進捗コインと同期する。
+  /// coinProvider 側が未ロード/0 の場合は既存の progress.coins を
+  /// 引き継ぎ（初回移行）、以降は差分を都度反映する。
+  // ────────────────────────────────────────────────────────
+  Future<void> _reconcileSharedCoins(UserProgress progress) async {
+    final coinNotifier = ref.read(coinProvider.notifier);
+    await coinNotifier.load();
+    final sharedTotal = ref.read(coinProvider).totalCoins;
+    if (sharedTotal < progress.coins) {
+      // 独自進捗の方が多い（＝過去に貯めたコインが shared_core 側に
+      // 未反映）ケース。差分を shared_core 側に加算して追いつかせる。
+      await coinNotifier.addCoins(progress.coins - sharedTotal);
+    }
   }
 
   Future<UserProgress> _load() async {
@@ -149,6 +204,9 @@ class UserProgressNotifier extends AsyncNotifier<UserProgress> {
 
     await _save(finalProgress);
     state = AsyncData(finalProgress);
+    if (coinsEarned > 0) {
+      await ref.read(coinProvider.notifier).addCoins(coinsEarned);
+    }
     return (badges: newBadges, coinsEarned: coinsEarned);
   }
 
@@ -166,10 +224,7 @@ class UserProgressNotifier extends AsyncNotifier<UserProgress> {
     const coinsEarned = kCoinsExperimentBonus;
     final newProgress = current.copyWith(
       coins: current.coins + coinsEarned,
-      completedExperimentIds: [
-        ...current.completedExperimentIds,
-        experimentId,
-      ],
+      completedExperimentIds: [...current.completedExperimentIds, experimentId],
     );
 
     final newBadges = _checkNewBadges(current, newProgress);
@@ -182,6 +237,9 @@ class UserProgressNotifier extends AsyncNotifier<UserProgress> {
 
     await _save(finalProgress);
     state = AsyncData(finalProgress);
+    if (coinsEarned > 0) {
+      await ref.read(coinProvider.notifier).addCoins(coinsEarned);
+    }
     return (badges: newBadges, coinsEarned: coinsEarned);
   }
 
@@ -193,6 +251,9 @@ class UserProgressNotifier extends AsyncNotifier<UserProgress> {
     final updated = current.copyWith(coins: current.coins + amount);
     await _save(updated);
     state = AsyncData(updated);
+    if (amount > 0) {
+      await ref.read(coinProvider.notifier).addCoins(amount);
+    }
   }
 
   // ────────────────────────────────────────────────────────
@@ -217,6 +278,8 @@ class UserProgressNotifier extends AsyncNotifier<UserProgress> {
     );
     await _save(updated);
     state = AsyncData(updated);
+    // shared_core 側（ショップ画面 CoinShopPage が参照する残高）も同期して減算
+    await ref.read(coinProvider.notifier).spendCoins(cost);
     return true;
   }
 
@@ -267,25 +330,41 @@ class UserProgressNotifier extends AsyncNotifier<UserProgress> {
   bool _isBadgeEarned(String id, UserProgress p) {
     switch (id) {
       // ストリーク
-      case 'streak_3':        return p.streakDays >= 3;
-      case 'streak_7':        return p.streakDays >= 7;
-      case 'streak_14':       return p.streakDays >= 14;
-      case 'streak_30':       return p.streakDays >= 30;
+      case 'streak_3':
+        return p.streakDays >= 3;
+      case 'streak_7':
+        return p.streakDays >= 7;
+      case 'streak_14':
+        return p.streakDays >= 14;
+      case 'streak_30':
+        return p.streakDays >= 30;
       // 満点
-      case 'perfect_score':   return p.clearedStages.values.any((s) => s == 100);
+      case 'perfect_score':
+        return p.clearedStages.values.any((s) => s == 100);
       // ポイント
-      case 'points_100':      return p.totalPoints >= 100;
-      case 'points_500':      return p.totalPoints >= 500;
-      case 'points_1000':     return p.totalPoints >= 1000;
+      case 'points_100':
+        return p.totalPoints >= 100;
+      case 'points_500':
+        return p.totalPoints >= 500;
+      case 'points_1000':
+        return p.totalPoints >= 1000;
       // ステージ数マイルストーン
-      case 'first_quiz':      return p.clearedCount >= 1;
-      case 'five_stages':     return p.clearedCount >= 5;
-      case 'ten_stages':      return p.clearedCount >= 10;
-      case 'stage_20':        return p.clearedCount >= 20;
-      case 'stage_30':        return p.clearedCount >= 30;
-      case 'stage_40':        return p.clearedCount >= 40;
-      case 'stage_45':        return p.clearedCount >= 45;
-      case 'stage_47':        return p.clearedCount >= 47;
+      case 'first_quiz':
+        return p.clearedCount >= 1;
+      case 'five_stages':
+        return p.clearedCount >= 5;
+      case 'ten_stages':
+        return p.clearedCount >= 10;
+      case 'stage_20':
+        return p.clearedCount >= 20;
+      case 'stage_30':
+        return p.clearedCount >= 30;
+      case 'stage_40':
+        return p.clearedCount >= 40;
+      case 'stage_45':
+        return p.clearedCount >= 45;
+      case 'stage_47':
+        return p.clearedCount >= 47;
       // 学年コンプリート（緩和: 80%以上で獲得）
       case 'grade3_complete':
         final count3 = _grade3StageIds
@@ -308,12 +387,17 @@ class UserProgressNotifier extends AsyncNotifier<UserProgress> {
             .length;
         return count6 >= 10; // 10/12
       // じっけん
-      case 'experiment_first': return p.completedExperimentIds.length >= 1;
-      case 'experiment_5':     return p.completedExperimentIds.length >= 5;
-      case 'experiment_10':    return p.completedExperimentIds.length >= 10;
+      case 'experiment_first':
+        return p.completedExperimentIds.length >= 1;
+      case 'experiment_5':
+        return p.completedExperimentIds.length >= 5;
+      case 'experiment_10':
+        return p.completedExperimentIds.length >= 10;
       // 全ステージ制覇
-      case 'science_master':  return p.clearedCount >= _totalStageCount;
-      default:                return false;
+      case 'science_master':
+        return p.clearedCount >= _totalStageCount;
+      default:
+        return false;
     }
   }
 
@@ -334,4 +418,5 @@ class UserProgressNotifier extends AsyncNotifier<UserProgress> {
 
 final userProgressProvider =
     AsyncNotifierProvider<UserProgressNotifier, UserProgress>(
-        UserProgressNotifier.new);
+      UserProgressNotifier.new,
+    );
