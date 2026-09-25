@@ -24,7 +24,6 @@ import '../features/character/views/character_screen.dart';
 import '../features/experiments/views/prediction_quiz_screen.dart';
 import '../features/experiments/views/troubleshoot_screen.dart';
 import '../features/battle/views/prediction_battle_screen.dart';
-import '../features/ai_chat/views/ai_chat_screen.dart';
 import '../features/home_lab/views/home_lab_screen.dart';
 import '../features/sky/views/tonight_sky_screen.dart';
 import '../features/weekly_challenge/views/weekly_challenge_screen.dart';
@@ -238,13 +237,6 @@ class AppRouter {
         path: '/prediction-battle',
         name: 'prediction-battle',
         builder: (_, __) => const PredictionBattleScreen(),
-      ),
-
-      // ② AIはかせチャット
-      GoRoute(
-        path: '/ai-chat',
-        name: 'ai-chat',
-        builder: (_, __) => const AiChatScreen(),
       ),
 
       // ③ おうちラボ

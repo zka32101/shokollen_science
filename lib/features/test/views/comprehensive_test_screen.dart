@@ -285,7 +285,7 @@ class _ComprehensiveTestScreenState
                                 color: isCorrect ? AppColors.success : AppColors.error, size: 18),
                             const SizedBox(width: 8),
                             Expanded(
-                              child: Text('問${i + 1}. ${(q['question'] as String).replaceAll(RegExp(r'\{([^|{}]+)\|([^}]+)\}'), r'$1')}',
+                              child: Text('問${i + 1}. ${(q['question'] as String).replaceAllMapped(RegExp(r'\{([^|{}]+)\|([^}]+)\}'), (m) => '${m.group(1)}（${m.group(2)}）')}',
                                   style: const TextStyle(fontSize: 11.5),
                                   maxLines: 1, overflow: TextOverflow.ellipsis),
                             ),

@@ -2,26 +2,35 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../shared/constants/app_colors.dart';
 import '../../trial/providers/trial_provider.dart';
+import '../services/science_purchase_service.dart';
 
-/// プレミアムプラン紹介・購入画面
-///
-/// NOTE: RevenueCat 等の実IAP連携は未実装。現時点では UI 導線のみで、
-/// 「購入する」ボタンは trialProvider.activatePremium() を呼び本体機能は
-/// アンロックされるが、実際の課金処理・レシート検証は行っていない。
-/// 本番リリース前に RevenueCat SDK を組み込むこと。
-class PremiumScreen extends ConsumerWidget {
+/// プレミアムプラン紹介・購入画面（RevenueCat 連携）
+class PremiumScreen extends ConsumerStatefulWidget {
   const PremiumScreen({super.key});
+
+  @override
+  ConsumerState<PremiumScreen> createState() => _PremiumScreenState();
+}
 
   static const List<_PlanFeature> _features = [
     _PlanFeature(icon: '🔬', label: '全ステージ・全学年の理科クイズが遊び放題'),
     _PlanFeature(icon: '🧪', label: '実験ラボ・よそうラボ・失敗ラボが全て解放'),
-    _PlanFeature(icon: '🤖', label: 'AIはかせチャットが使い放題'),
     _PlanFeature(icon: '📊', label: '保護者ダッシュボードで週次レポート閲覧'),
     _PlanFeature(icon: '🚫', label: '広告表示なし'),
   ];
+}
+
+class _PremiumScreenState extends ConsumerState<PremiumScreen> {
+  bool _isProcessing = false;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  void initState() {
+    super.initState();
+    SciencePurchaseService.instance.initialize();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final trial = ref.watch(trialProvider).value;
     final isPremium = trial?.isPremium ?? false;
 
@@ -63,7 +72,7 @@ class PremiumScreen extends ConsumerWidget {
             ),
           ),
           const SizedBox(height: 24),
-          ..._features.map((f) => Padding(
+          ...PremiumScreen._features.map((f) => Padding(
                 padding: const EdgeInsets.symmetric(vertical: 6),
                 child: Row(
                   children: [
@@ -126,19 +135,27 @@ class PremiumScreen extends ConsumerWidget {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(14)),
                 ),
-                onPressed: () => _purchase(context, ref),
-                child: const Text(
-                  'プレミアムに登録する',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
+                onPressed: _isProcessing ? null : _purchase,
+                child: _isProcessing
+                    ? const SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(
+                          color: Colors.white,
+                          strokeWidth: 2,
+                        ),
+                      )
+                    : const Text(
+                        'プレミアムに登録する',
+                        style:
+                            TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
               ),
             ),
             const SizedBox(height: 8),
-            const Text(
-              '※ このボタンは現在プレースホルダーです。実際の決済処理は未実装のため、'
-              '本番リリース前に課金SDKとの連携が必要です。',
-              style: TextStyle(fontSize: 11, color: AppColors.textGray),
-              textAlign: TextAlign.center,
+            TextButton(
+              onPressed: _isProcessing ? null : _restore,
+              child: const Text('購入を復元する'),
             ),
           ] else ...[
             const Center(
@@ -152,27 +169,51 @@ class PremiumScreen extends ConsumerWidget {
     );
   }
 
-  void _purchase(BuildContext context, WidgetRef ref) {
-    showDialog<void>(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text('プレミアムに登録しますか？'),
-        content: const Text(
-          '（開発中）実際の決済は行われません。動作確認のためプレミアム機能を有効にします。',
-        ),
-        actions: [
-          TextButton(
-              onPressed: () => Navigator.pop(ctx), child: const Text('キャンセル')),
-          TextButton(
-            onPressed: () async {
-              Navigator.pop(ctx);
-              await ref.read(trialProvider.notifier).activatePremium();
-            },
-            child: const Text('登録する'),
-          ),
-        ],
-      ),
-    );
+  Future<void> _purchase() async {
+    setState(() => _isProcessing = true);
+    final result = await SciencePurchaseService.instance.purchaseMonthly();
+    if (!mounted) return;
+    setState(() => _isProcessing = false);
+
+    switch (result.outcome) {
+      case PurchaseOutcome.success:
+        await ref.read(trialProvider.notifier).activatePremium();
+        if (!mounted) return;
+        _showMessage('🎉 プレミアムに登録しました！');
+        break;
+      case PurchaseOutcome.cancelled:
+        // ユーザーがキャンセル。何もしない。
+        break;
+      case PurchaseOutcome.notConfigured:
+        _showMessage('現在、購入機能を準備中です。しばらくしてから再度お試しください。');
+        break;
+      case PurchaseOutcome.noOfferings:
+        _showMessage('現在、購入可能なプランがありません。しばらくしてから再度お試しください。');
+        break;
+      case PurchaseOutcome.error:
+        _showMessage('購入処理でエラーが発生しました。時間をおいて再度お試しください。');
+        break;
+    }
+  }
+
+  Future<void> _restore() async {
+    setState(() => _isProcessing = true);
+    final result = await SciencePurchaseService.instance.restore();
+    if (!mounted) return;
+    setState(() => _isProcessing = false);
+
+    if (result.outcome == PurchaseOutcome.success) {
+      await ref.read(trialProvider.notifier).activatePremium();
+      if (!mounted) return;
+      _showMessage('購入情報を復元しました！');
+    } else {
+      _showMessage('復元できる購入情報が見つかりませんでした。');
+    }
+  }
+
+  void _showMessage(String message) {
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(message)));
   }
 }
 

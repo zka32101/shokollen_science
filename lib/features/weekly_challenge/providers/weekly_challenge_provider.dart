@@ -30,35 +30,35 @@ List<WeeklyMission> _buildMissions() => [
         emoji: '🧪',
         title: 'クイズ3回チャレンジ',
         description: '今週クイズを3ステージやってみよう',
-        coinReward: 10,
+        coinReward: 5,
       ),
       WeeklyMission(
         id: 'learn_2',
         emoji: '📖',
         title: 'まなぶモード2回',
         description: 'まなぶモードで2つのステージを学ぼう',
-        coinReward: 10,
+        coinReward: 5,
       ),
       WeeklyMission(
         id: 'perfect',
         emoji: '⭐',
         title: 'パーフェクト達成',
         description: 'クイズで全問正解しよう',
-        coinReward: 15,
+        coinReward: 8,
       ),
       WeeklyMission(
         id: 'daily',
         emoji: '📅',
         title: 'デイリーチャレンジ',
         description: 'デイリーチャレンジに挑戦しよう',
-        coinReward: 10,
+        coinReward: 5,
       ),
       WeeklyMission(
         id: 'grade_mix',
         emoji: '🎯',
         title: 'いろんな学年に挑戦',
         description: '2つの異なる学年のクイズをやろう',
-        coinReward: 15,
+        coinReward: 8,
       ),
     ];
 
@@ -75,7 +75,7 @@ class WeeklyChallengeState {
   }) : completedCount = missions.where((m) => m.completed).length;
 
   bool get allComplete => completedCount >= missions.length;
-  int get bonusCoins => 50;
+  int get bonusCoins => 25;
 }
 
 class WeeklyChallengeNotifier extends AsyncNotifier<WeeklyChallengeState> {

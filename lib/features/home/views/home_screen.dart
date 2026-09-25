@@ -66,7 +66,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildAppBar(),
-          _buildStreakBanner(),
           const DailyLoginBonusWidget(), // デイリーログインボーナス
           const PraiseReceivedWidget(), // 親からのほめメッセージ
           const WeeklyChallengeWidget(), // 今週のチャレンジ
@@ -293,103 +292,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
 
   // ── ストリークバナー ──────────────────────────────────
-  Widget _buildStreakBanner() {
-    final progressAsync = ref.watch(userProgressProvider);
-    final streakDays = progressAsync.value?.streakDays ?? 0;
-    final totalPoints = progressAsync.value?.totalPoints ?? 0;
-
-    return Container(
-      margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      decoration: BoxDecoration(
-        color: const Color(0xFFFFF8E1),
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: const Color(0xFFFFD54F), width: 1.5),
-      ),
-      child: Row(
-        children: [
-          const Text('🔥', style: TextStyle(fontSize: 28)),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                RichText(
-                  text: TextSpan(
-                    children: [
-                      TextSpan(
-                        text: streakDays > 0 ? '$streakDays日 ' : '今日から ',
-                        style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFFE65100),
-                        ),
-                      ),
-                      TextSpan(
-                        text: streakDays > 0 ? '連続学習中！' : '学習を始めよう！',
-                        style: const TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.textDark,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Text(
-                  '累計 $totalPoints pt',
-                  style: const TextStyle(
-                      fontSize: 12, color: AppColors.textGray),
-                ),
-                const SizedBox(height: 6),
-                Row(
-                  children: List.generate(7, (i) {
-                    final weekFilled = streakDays > 0 &&
-                        i < (streakDays % 7 == 0 ? 7 : streakDays % 7);
-                    return Container(
-                      margin: const EdgeInsets.only(right: 4),
-                      width: 10,
-                      height: 10,
-                      decoration: BoxDecoration(
-                        color: weekFilled
-                            ? const Color(0xFFE65100)
-                            : const Color(0xFFFFD54F).withOpacity(0.35),
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: weekFilled
-                              ? const Color(0xFFE65100)
-                              : const Color(0xFFFFD54F),
-                          width: 1.5,
-                        ),
-                      ),
-                    );
-                  }),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(width: 8),
-          Container(
-            padding: const EdgeInsets.symmetric(
-                horizontal: 10, vertical: 4),
-            decoration: BoxDecoration(
-              color: const Color(0xFFFF8F00),
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: const Text(
-              '⭐',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   // ── 今日のテーマカード ────────────────────────────────
   Widget _buildTodayThemeCard() {
     return Container(
@@ -1250,13 +1152,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 subtitle: '実験前に予想しよう！',
                 color: const Color(0xFF3498DB),
                 onTap: () => context.push('/prediction-quiz/exp_magnet_001'),
-              ),
-              _buildFeatureCard(
-                emoji: '🤖',
-                title: 'りかハカセ',
-                subtitle: 'AIに質問しよう！',
-                color: const Color(0xFF5C6BC0),
-                onTap: () => context.push('/ai-chat'),
               ),
               _buildFeatureCard(
                 emoji: '🕵️',
