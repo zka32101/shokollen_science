@@ -8,16 +8,15 @@ import '../services/science_purchase_service.dart';
 class PremiumScreen extends ConsumerStatefulWidget {
   const PremiumScreen({super.key});
 
-  @override
-  ConsumerState<PremiumScreen> createState() => _PremiumScreenState();
-}
-
   static const List<_PlanFeature> _features = [
     _PlanFeature(icon: '🔬', label: '全ステージ・全学年の理科クイズが遊び放題'),
     _PlanFeature(icon: '🧪', label: '実験ラボ・よそうラボ・失敗ラボが全て解放'),
     _PlanFeature(icon: '📊', label: '保護者ダッシュボードで週次レポート閲覧'),
     _PlanFeature(icon: '🚫', label: '広告表示なし'),
   ];
+
+  @override
+  ConsumerState<PremiumScreen> createState() => _PremiumScreenState();
 }
 
 class _PremiumScreenState extends ConsumerState<PremiumScreen> {
