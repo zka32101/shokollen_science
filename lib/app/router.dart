@@ -30,6 +30,7 @@ import '../features/weekly_challenge/views/weekly_challenge_screen.dart';
 import '../features/progress/views/daily_mystery_omikuji_screen.dart';
 import '../features/settings/views/settings_screen.dart';
 import '../features/premium/views/premium_screen.dart';
+import '../shared/widgets/quiz_access_guard.dart';
 
 class AppRouter {
   static final GoRouter router = GoRouter(
@@ -56,7 +57,7 @@ class AppRouter {
         builder: (_, state) {
           final stageId =
               state.pathParameters['stageId'] ?? 'stage_3_001';
-          return QuizScreen(stageId: stageId);
+          return QuizAccessGuard(child: QuizScreen(stageId: stageId));
         },
       ),
 
@@ -105,7 +106,8 @@ class AppRouter {
       GoRoute(
         path: '/daily-challenge',
         name: 'daily-challenge',
-        builder: (_, __) => const DailyChallengeScreen(),
+        builder: (_, __) =>
+            const QuizAccessGuard(child: DailyChallengeScreen()),
       ),
       // 復習モード
       GoRoute(
@@ -137,7 +139,7 @@ class AppRouter {
         name: 'comprehensive-test',
         builder: (_, state) {
           final grade = int.tryParse(state.pathParameters['grade'] ?? '3') ?? 3;
-          return ComprehensiveTestScreen(grade: grade);
+          return QuizAccessGuard(child: ComprehensiveTestScreen(grade: grade));
         },
       ),
       // コレクション帳
@@ -162,7 +164,7 @@ class AppRouter {
       GoRoute(
         path: '/grade-test',
         name: 'grade-test',
-        builder: (_, __) => const GradeTestScreen(),
+        builder: (_, __) => const QuizAccessGuard(child: GradeTestScreen()),
       ),
       // 認定証
       GoRoute(
@@ -184,7 +186,7 @@ class AppRouter {
         name: 'quiz-timer',
         builder: (_, state) {
           final stageId = state.pathParameters['stageId'] ?? 'stage_3_001';
-          return TimerQuizScreen(stageId: stageId);
+          return QuizAccessGuard(child: TimerQuizScreen(stageId: stageId));
         },
       ),
       // タイマークイズ結果
@@ -217,7 +219,8 @@ class AppRouter {
         builder: (_, state) {
           final experimentId =
               state.pathParameters['experimentId'] ?? 'exp_magnet_001';
-          return PredictionQuizScreen(experimentId: experimentId);
+          return QuizAccessGuard(
+              child: PredictionQuizScreen(experimentId: experimentId));
         },
       ),
 
@@ -228,7 +231,8 @@ class AppRouter {
         builder: (_, state) {
           final experimentId =
               state.pathParameters['experimentId'] ?? 'exp_001';
-          return TroubleshootScreen(experimentId: experimentId);
+          return QuizAccessGuard(
+              child: TroubleshootScreen(experimentId: experimentId));
         },
       ),
 
@@ -236,7 +240,8 @@ class AppRouter {
       GoRoute(
         path: '/prediction-battle',
         name: 'prediction-battle',
-        builder: (_, __) => const PredictionBattleScreen(),
+        builder: (_, __) =>
+            const QuizAccessGuard(child: PredictionBattleScreen()),
       ),
 
       // ③ おうちラボ
