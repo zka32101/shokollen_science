@@ -49,14 +49,19 @@ class SciencePurchaseService {
   /// - [PurchaseOutcome.notConfigured]: RevenueCat 未設定（APIキー未設定）
   /// - [PurchaseOutcome.noOfferings]: ダッシュボードに商品未登録
   /// - [PurchaseOutcome.error]: その他のエラー
-  Future<PurchaseResult> purchaseMonthly() async {
+  Future<PurchaseResult> purchaseMonthly() => _purchase(monthly: true);
+
+  /// 年額プランを購入する。挙動は [purchaseMonthly] と同じ。
+  Future<PurchaseResult> purchaseAnnual() => _purchase(monthly: false);
+
+  Future<PurchaseResult> _purchase({required bool monthly}) async {
     if (!_configured) {
       return const PurchaseResult(outcome: PurchaseOutcome.notConfigured);
     }
     try {
       final offerings = await Purchases.getOfferings();
       final current = offerings.current;
-      final package = current?.monthly;
+      final package = monthly ? current?.monthly : current?.annual;
       if (package == null) {
         return const PurchaseResult(outcome: PurchaseOutcome.noOfferings);
       }
@@ -67,14 +72,14 @@ class SciencePurchaseService {
       );
     } on PurchasesErrorCode catch (e) {
       // ignore: avoid_print
-      print('[RevenueCat] purchaseMonthly 失敗: $e');
+      print('[RevenueCat] purchase 失敗 (monthly=$monthly): $e');
       if (e == PurchasesErrorCode.purchaseCancelledError) {
         return const PurchaseResult(outcome: PurchaseOutcome.cancelled);
       }
       return const PurchaseResult(outcome: PurchaseOutcome.error);
     } catch (e) {
       // ignore: avoid_print
-      print('[RevenueCat] purchaseMonthly 失敗: $e');
+      print('[RevenueCat] purchase 失敗 (monthly=$monthly): $e');
       // purchase_cancelled 判定（PlatformException経由で来る場合の保険）
       final message = e.toString();
       if (message.contains('PurchaseCancelledError') ||

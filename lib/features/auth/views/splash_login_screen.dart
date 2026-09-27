@@ -131,7 +131,32 @@ class _SplashLoginScreenState extends ConsumerState<SplashLoginScreen>
                       'たのしく　まなぼう！',
                       style: TextStyle(fontSize: 16, color: Colors.white70),
                     ),
-                    const SizedBox(height: 64),
+                    const SizedBox(height: 40),
+                    // 組織アイコン + 組織名
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: Image.asset(
+                            'assets/logos/company_app_icon.jpg',
+                            width: 32,
+                            height: 32,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        const Text(
+                          'Your Wish',
+                          style: TextStyle(
+                            color: Colors.white70,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 32),
                     // ローディングドット
                     _LoadingDots(),
                   ],
