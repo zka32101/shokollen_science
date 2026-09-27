@@ -64,8 +64,9 @@ class _PremiumScreenState extends ConsumerState<PremiumScreen> {
                 const SizedBox(height: 4),
                 if (!isPremium)
                   const Text(
-                    'すべてのきのうが使い放題に！',
+                    '14日間の無料期間が終わっても、\nプレミアムならすべてのきのうが使い放題！',
                     style: TextStyle(color: Colors.white70, fontSize: 14),
+                    textAlign: TextAlign.center,
                   ),
               ],
             ),
@@ -89,68 +90,39 @@ class _PremiumScreenState extends ConsumerState<PremiumScreen> {
               )),
           const SizedBox(height: 24),
           if (!isPremium) ...[
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: AppColors.scienceLight,
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: AppColors.sciencePrimary, width: 2),
-              ),
-              child: Column(
-                children: [
-                  const Text(
-                    '月額プラン',
-                    style: TextStyle(
-                        fontSize: 14, color: AppColors.scienceSecondary),
-                  ),
-                  const SizedBox(height: 4),
-                  const Text(
-                    '¥300 / 月',
-                    style: TextStyle(
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.sciencePrimary,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    trial != null && trial.isTrialActive
-                        ? '無料トライアル残り ${trial.trialDaysRemaining} 日'
-                        : '無料トライアルは終了しています',
-                    style: const TextStyle(
-                        fontSize: 12, color: AppColors.textGray),
-                  ),
-                ],
-              ),
+            Text(
+              trial != null && trial.isTrialActive
+                  ? '無料トライアル残り ${trial.trialDaysRemaining} 日'
+                  : '無料トライアルは終了しています',
+              style: const TextStyle(fontSize: 12, color: AppColors.textGray),
+              textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 20),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.sciencePrimary,
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(14)),
+            const SizedBox(height: 12),
+            _PlanCard(
+              title: '月額プラン',
+              price: '¥300 / 月',
+              badge: null,
+              enabled: !_isProcessing,
+              onTap: () => _purchase(monthly: true),
+            ),
+            const SizedBox(height: 12),
+            _PlanCard(
+              title: '年額プラン',
+              price: '¥2,400 / 年',
+              badge: 'おトク',
+              enabled: !_isProcessing,
+              onTap: () => _purchase(monthly: false),
+            ),
+            if (_isProcessing) ...[
+              const SizedBox(height: 16),
+              const Center(
+                child: SizedBox(
+                  width: 24,
+                  height: 24,
+                  child: CircularProgressIndicator(strokeWidth: 2),
                 ),
-                onPressed: _isProcessing ? null : _purchase,
-                child: _isProcessing
-                    ? const SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: CircularProgressIndicator(
-                          color: Colors.white,
-                          strokeWidth: 2,
-                        ),
-                      )
-                    : const Text(
-                        'プレミアムに登録する',
-                        style:
-                            TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                      ),
               ),
-            ),
+            ],
             const SizedBox(height: 8),
             TextButton(
               onPressed: _isProcessing ? null : _restore,
@@ -168,9 +140,11 @@ class _PremiumScreenState extends ConsumerState<PremiumScreen> {
     );
   }
 
-  Future<void> _purchase() async {
+  Future<void> _purchase({required bool monthly}) async {
     setState(() => _isProcessing = true);
-    final result = await SciencePurchaseService.instance.purchaseMonthly();
+    final result = monthly
+        ? await SciencePurchaseService.instance.purchaseMonthly()
+        : await SciencePurchaseService.instance.purchaseAnnual();
     if (!mounted) return;
     setState(() => _isProcessing = false);
 
@@ -220,4 +194,83 @@ class _PlanFeature {
   final String icon;
   final String label;
   const _PlanFeature({required this.icon, required this.label});
+}
+
+class _PlanCard extends StatelessWidget {
+  final String title;
+  final String price;
+  final String? badge;
+  final bool enabled;
+  final VoidCallback onTap;
+
+  const _PlanCard({
+    required this.title,
+    required this.price,
+    required this.badge,
+    required this.enabled,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: enabled ? onTap : null,
+      borderRadius: BorderRadius.circular(16),
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: AppColors.scienceLight,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: AppColors.sciencePrimary, width: 2),
+        ),
+        child: Row(
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        title,
+                        style: const TextStyle(
+                            fontSize: 14, color: AppColors.scienceSecondary),
+                      ),
+                      if (badge != null) ...[
+                        const SizedBox(width: 6),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 6, vertical: 2),
+                          decoration: BoxDecoration(
+                            color: AppColors.sciencePrimary,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Text(
+                            badge!,
+                            style: const TextStyle(
+                                fontSize: 10, color: Colors.white),
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    price,
+                    style: const TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.sciencePrimary,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const Icon(Icons.chevron_right_rounded,
+                color: AppColors.sciencePrimary),
+          ],
+        ),
+      ),
+    );
+  }
 }

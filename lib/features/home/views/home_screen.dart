@@ -529,10 +529,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   Widget _buildStageListSection() {
     final progressAsync = ref.watch(userProgressProvider);
     final clearedStages = progressAsync.value?.clearedStages ?? {};
+    final hasAccess = ref.watch(trialProvider).value?.hasAccess ?? true;
 
     final filteredStages = stagesData
         .where((s) => s['gradeLevel'] == _selectedGrade)
         .toList();
+    // 無料ユーザー（トライアル終了・未購入）は後半のステージを非公開にする
+    final freeVisibleCount = (filteredStages.length / 2).ceil();
 
     return Container(
       margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
@@ -629,15 +632,21 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           const SizedBox(height: 14),
 
           // ── ステージリスト ──
-          ...filteredStages.map((s) {
+          ...filteredStages.asMap().entries.map((entry) {
+            final index = entry.key;
+            final s = entry.value;
             final stageId = s['id'] as String;
             final bestScore = clearedStages[stageId];
             final isCleared = bestScore != null;
+            final locked = !hasAccess && index >= freeVisibleCount;
             return _StageListTile(
               stageData: s,
               isCleared: isCleared,
               bestScore: bestScore,
-              onTap: () => context.go('/quiz/$stageId'),
+              locked: locked,
+              onTap: locked
+                  ? () => context.push('/premium')
+                  : () => context.go('/quiz/$stageId'),
             );
           }),
         ],
@@ -737,8 +746,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                         decoration: BoxDecoration(
                                           gradient: LinearGradient(
                                             colors: [
-                                              Colors.purple[700]!,
                                               Colors.purple[400]!,
+                                              Colors.purple[300]!,
                                             ],
                                           ),
                                           borderRadius: BorderRadius.circular(
@@ -768,12 +777,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     padding: const EdgeInsets.all(14),
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
-                        colors: [Colors.purple[700]!, Colors.purple[400]!],
+                        colors: [Colors.purple[400]!, Colors.purple[300]!],
                       ),
                       borderRadius: BorderRadius.circular(14),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.purple.withValues(alpha: 0.3),
+                          color: Colors.purple.withValues(alpha: 0.18),
                           blurRadius: 6,
                         ),
                       ],
@@ -818,14 +827,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           gradient: completed
               ? LinearGradient(colors: [Colors.grey[300]!, Colors.grey[200]!])
               : LinearGradient(
-                  colors: [Colors.amber[700]!, Colors.orange[500]!],
+                  colors: [Colors.amber[400]!, Colors.orange[300]!],
                 ),
           borderRadius: BorderRadius.circular(16),
           boxShadow: completed
               ? []
               : [
                   BoxShadow(
-                    color: Colors.amber.withValues(alpha: 0.3),
+                    color: Colors.amber.withValues(alpha: 0.18),
                     blurRadius: 10,
                     offset: const Offset(0, 4),
                   ),
@@ -874,12 +883,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Colors.purple[600]!, Colors.indigo[500]!],
+            colors: [Colors.purple[400]!, Colors.indigo[300]!],
           ),
           borderRadius: BorderRadius.circular(14),
           boxShadow: [
             BoxShadow(
-              color: Colors.purple.withValues(alpha: 0.25),
+              color: Colors.purple.withValues(alpha: 0.15),
               blurRadius: 10,
               offset: const Offset(0, 4),
             ),
@@ -926,12 +935,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Colors.teal[600]!, Colors.cyan[500]!],
+            colors: [Colors.teal[400]!, Colors.cyan[300]!],
           ),
           borderRadius: BorderRadius.circular(14),
           boxShadow: [
             BoxShadow(
-              color: Colors.teal.withValues(alpha: 0.3),
+              color: Colors.teal.withValues(alpha: 0.18),
               blurRadius: 10,
               offset: const Offset(0, 4),
             ),
@@ -976,12 +985,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Colors.orange[700]!, Colors.deepOrange[500]!],
+            colors: [Colors.orange[400]!, Colors.deepOrange[300]!],
           ),
           borderRadius: BorderRadius.circular(14),
           boxShadow: [
             BoxShadow(
-              color: Colors.orange.withValues(alpha: 0.3),
+              color: Colors.orange.withValues(alpha: 0.18),
               blurRadius: 10,
               offset: const Offset(0, 4),
             ),
@@ -1478,12 +1487,14 @@ class _StageListTile extends StatelessWidget {
   final VoidCallback onTap;
   final bool isCleared;
   final int? bestScore;
+  final bool locked;
 
   const _StageListTile({
     required this.stageData,
     required this.onTap,
     this.isCleared = false,
     this.bestScore,
+    this.locked = false,
   });
 
   static const _categoryColor = {
@@ -1503,7 +1514,7 @@ class _StageListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cat = stageData['category'] as String;
-    final color = _categoryColor[cat] ?? AppColors.sciencePrimary;
+    final color = locked ? AppColors.textGray : (_categoryColor[cat] ?? AppColors.sciencePrimary);
     final emoji = _categoryEmoji[cat] ?? '🔬';
 
     return GestureDetector(
@@ -1512,7 +1523,9 @@ class _StageListTile extends StatelessWidget {
         margin: const EdgeInsets.only(bottom: 8),
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
         decoration: BoxDecoration(
-          color: isCleared ? const Color(0xFFF0FFF4) : Colors.white,
+          color: locked
+              ? const Color(0xFFF5F5F5)
+              : (isCleared ? const Color(0xFFF0FFF4) : Colors.white),
           borderRadius: BorderRadius.circular(12),
           border: Border(
             left: BorderSide(color: color, width: 4),
@@ -1532,13 +1545,15 @@ class _StageListTile extends StatelessWidget {
                   : AppColors.borderGray,
             ),
           ),
-          boxShadow: [
-            BoxShadow(
-              color: color.withOpacity(0.08),
-              blurRadius: 6,
-              offset: const Offset(0, 2),
-            ),
-          ],
+          boxShadow: locked
+              ? []
+              : [
+                  BoxShadow(
+                    color: color.withOpacity(0.08),
+                    blurRadius: 6,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
         ),
         child: Row(
           children: [
@@ -1550,35 +1565,56 @@ class _StageListTile extends StatelessWidget {
                 color: color.withOpacity(0.12),
                 shape: BoxShape.circle,
               ),
-              child: Text(emoji, style: const TextStyle(fontSize: 18)),
+              child: Text(locked ? '🔒' : emoji,
+                  style: const TextStyle(fontSize: 18)),
             ),
             const SizedBox(width: 12),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  FuriganaText(
-                    stageData['stageName'] as String,
-                    style: const TextStyle(
-                      fontSize: 13.5,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.textDark,
-                    ),
-                  ),
-                  Text(
-                    stageData['description'] as String,
-                    style: const TextStyle(
-                      fontSize: 11,
-                      color: AppColors.textGray,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ],
+                children: locked
+                    ? const [
+                        Text(
+                          'プレミアムで解放',
+                          style: TextStyle(
+                            fontSize: 13.5,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.textGray,
+                          ),
+                        ),
+                        Text(
+                          'この先はプレミアム会員限定です',
+                          style: TextStyle(
+                            fontSize: 11,
+                            color: AppColors.textGray,
+                          ),
+                        ),
+                      ]
+                    : [
+                        FuriganaText(
+                          stageData['stageName'] as String,
+                          style: const TextStyle(
+                            fontSize: 13.5,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.textDark,
+                          ),
+                        ),
+                        Text(
+                          stageData['description'] as String,
+                          style: const TextStyle(
+                            fontSize: 11,
+                            color: AppColors.textGray,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
               ),
             ),
             const SizedBox(width: 8),
-            if (isCleared) ...[
+            if (locked)
+              const Icon(Icons.lock_outline, color: AppColors.textGray, size: 20)
+            else if (isCleared) ...[
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
