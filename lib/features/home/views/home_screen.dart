@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:shared_core/shared_core.dart' show coinProvider;
+import 'package:shared_core/shared_core.dart'
+    show coinProvider, inventoryProvider;
 import '../../../shared/constants/app_colors.dart';
 import '../../../data/seeds/stages.dart';
 import '../../../data/seeds/creatures.dart';
@@ -23,6 +24,8 @@ import '../../profile/models/profile_model.dart';
 import '../../../shared/widgets/avatar_image.dart';
 import '../../../shared/widgets/furigana_text.dart';
 import '../../progress/providers/daily_mystery_provider.dart';
+import '../../../providers/selected_background_provider.dart';
+import '../../../data/background_shop_items.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -105,13 +108,29 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final isPremium = trialAsync.value?.isPremium ?? false;
     final trialRemaining = trialAsync.value?.trialDaysRemaining ?? 14;
 
+    // 購入済みの背景がショップで選択されていれば、その配色をヘッダーに反映する。
+    final selectedBackgroundId = ref.watch(selectedBackgroundProvider);
+    final ownedItems = ref.watch(inventoryProvider);
+    final backgroundColors =
+        selectedBackgroundId != null && ownedItems.contains(selectedBackgroundId)
+            ? kBackgroundGradients[selectedBackgroundId]
+            : null;
+
     return Stack(
       clipBehavior: Clip.hardEdge,
       children: [
         Container(
           width: double.infinity,
           padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
-          decoration: const BoxDecoration(gradient: AppColors.scienceGradient),
+          decoration: BoxDecoration(
+            gradient: backgroundColors != null
+                ? LinearGradient(
+                    colors: backgroundColors,
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  )
+                : AppColors.scienceGradient,
+          ),
           child: Column(
             children: [
               Row(

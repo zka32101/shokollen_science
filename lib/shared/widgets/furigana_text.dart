@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import '../data/grade1_2_kanji.dart';
 
 /// {漢字|ふりがな} 形式のテキストを「漢字（ふりがな）」の通常テキストとして表示するウィジェット
+///
+/// このアプリは3〜6年生向けのため、小学1・2年生で学ぶ漢字（[kGrade1And2Kanji]）は
+/// 既に学習済みとみなし、ふりがなを表示しない（漢字のみ表示する）。
 ///
 /// 使い方:
 ///   FuriganaText('{昆虫|こんちゅう}は{体|からだ}が3つに分かれます')
@@ -42,9 +46,13 @@ class FuriganaText extends StatelessWidget {
           style: base,
         ));
       }
-      // 漢字（ふりがな）形式で表示
+      // 漢字（ふりがな）形式で表示。ただし1・2年生で学ぶ漢字だけで
+      // 構成されている場合はすでに学習済みとみなし、ふりがなを省略する。
+      final kanji = m.group(1)!;
+      final isGrade1Or2Only =
+          kanji.runes.every((r) => kGrade1And2Kanji.contains(String.fromCharCode(r)));
       result.add(TextSpan(
-        text: '${m.group(1)!}（${m.group(2)!}）',
+        text: isGrade1Or2Only ? kanji : '$kanji（${m.group(2)!}）',
         style: base,
       ));
       cursor = m.end;
