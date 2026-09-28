@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:shared_core/shared_core.dart' show coinProvider;
+import 'package:shared_core/shared_core.dart'
+    show coinProvider, inventoryProvider;
 import '../../../shared/constants/app_colors.dart';
 import '../../profile/providers/profile_provider.dart';
 import '../../progress/providers/user_progress_provider.dart';
 import '../../profile/models/profile_model.dart';
 import '../../../shared/widgets/avatar_image.dart';
+import '../../../providers/selected_background_provider.dart';
+import '../../../data/background_shop_items.dart';
 
 /// せってい画面（国語コレの settings_screen 構成を参考に、理科コレ向けに簡略化）
 class SettingsScreen extends ConsumerWidget {
@@ -73,6 +76,9 @@ class SettingsScreen extends ConsumerWidget {
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
           ),
+          const Divider(),
+          _SectionHeader(title: '見た目'),
+          _BackgroundSelector(),
           const Divider(),
           _SectionHeader(title: 'プレミアム'),
           ListTile(
@@ -141,6 +147,60 @@ class SettingsScreen extends ConsumerWidget {
             },
             child: const Text('リセット', style: TextStyle(color: Colors.red)),
           ),
+        ],
+      ),
+    );
+  }
+}
+
+/// 所持している背景アイテムだけを選べる（未所持はショップ購入を促す）。
+class _BackgroundSelector extends ConsumerWidget {
+  static const _labels = {
+    'bg_space': '🌌 宇宙の背景',
+    'bg_forest': '🌲 森の背景',
+    'bg_lab': '🧪 実験室の背景',
+    'bg_spring_flowers': '🌸 春の花畑',
+    'bg_ocean': '🌊 海の中の背景',
+    'bg_autumn_leaves': '🍁 紅葉の背景',
+    'bg_snow': '❄️ 雪の結晶の背景',
+  };
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final owned = ref.watch(inventoryProvider);
+    final selected = ref.watch(selectedBackgroundProvider);
+    final ownedBackgrounds =
+        kBackgroundGradients.keys.where(owned.contains).toList();
+
+    if (ownedBackgrounds.isEmpty) {
+      return const Padding(
+        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        child: Text(
+          'ショップで背景を購入すると、ここから選べるようになります',
+          style: TextStyle(fontSize: 12, color: AppColors.textGray),
+        ),
+      );
+    }
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+      child: Wrap(
+        spacing: 8,
+        runSpacing: 8,
+        children: [
+          ChoiceChip(
+            label: const Text('デフォルト'),
+            selected: selected == null,
+            onSelected: (_) =>
+                ref.read(selectedBackgroundProvider.notifier).select(null),
+          ),
+          for (final id in ownedBackgrounds)
+            ChoiceChip(
+              label: Text(_labels[id] ?? id),
+              selected: selected == id,
+              onSelected: (_) =>
+                  ref.read(selectedBackgroundProvider.notifier).select(id),
+            ),
         ],
       ),
     );

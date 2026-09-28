@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:shared_core/shared_core.dart' show coinProvider;
+import 'package:shared_core/shared_core.dart'
+    show coinProvider, characterStateProvider;
 import '../models/user_progress_model.dart';
 import '../models/badge_model.dart';
 import '../../profile/providers/profile_provider.dart';
@@ -136,17 +137,7 @@ class UserProgressNotifier extends AsyncNotifier<UserProgress> {
     final today = _todayStr();
 
     // ── ストリーク更新 ────────────────
-    int newStreak = current.streakDays;
-    if (current.lastPlayedDate != today) {
-      final yesterday = _yesterdayStr();
-      if (current.lastPlayedDate == yesterday) {
-        newStreak = current.streakDays + 1;
-      } else if (current.lastPlayedDate.isEmpty) {
-        newStreak = 1;
-      } else {
-        newStreak = 1;
-      }
-    }
+    final newStreak = _nextStreak(current, today);
 
     // ── ベストスコア更新（全問正解のみクリア） ──────────────
     final bestScore = totalQuestions == 0
@@ -207,6 +198,10 @@ class UserProgressNotifier extends AsyncNotifier<UserProgress> {
     if (coinsEarned > 0) {
       await ref.read(coinProvider.notifier).addCoins(coinsEarned);
     }
+    // 図鑑キャラの解放チェック（クリア数が増えたときのみ意味がある）
+    await ref.read(characterStateProvider.notifier).checkUnlocks(
+          finalProgress.clearedCount,
+        );
     return (badges: newBadges, coinsEarned: coinsEarned);
   }
 
@@ -221,10 +216,17 @@ class UserProgressNotifier extends AsyncNotifier<UserProgress> {
       return (badges: <BadgeModel>[], coinsEarned: 0);
     }
 
+    final today = _todayStr();
+    // じっけんのみで遊んだ日もれんぞく学習カウントに反映する
+    // （以前はクイズ完了時のみ更新され、じっけんだけの日は途切れて見えていた）
+    final newStreak = _nextStreak(current, today);
+
     const coinsEarned = kCoinsExperimentBonus;
     final newProgress = current.copyWith(
       coins: current.coins + coinsEarned,
       completedExperimentIds: [...current.completedExperimentIds, experimentId],
+      streakDays: newStreak,
+      lastPlayedDate: today,
     );
 
     final newBadges = _checkNewBadges(current, newProgress);
@@ -241,6 +243,18 @@ class UserProgressNotifier extends AsyncNotifier<UserProgress> {
       await ref.read(coinProvider.notifier).addCoins(coinsEarned);
     }
     return (badges: newBadges, coinsEarned: coinsEarned);
+  }
+
+  // ────────────────────────────────────────────────────────
+  /// 「最後に遊んだ日」を元にれんぞく学習日数を計算する
+  // ────────────────────────────────────────────────────────
+  int _nextStreak(UserProgress current, String today) {
+    if (current.lastPlayedDate == today) return current.streakDays;
+    final yesterday = _yesterdayStr();
+    if (current.lastPlayedDate == yesterday) {
+      return current.streakDays + 1;
+    }
+    return 1;
   }
 
   // ────────────────────────────────────────────────────────
