@@ -7,6 +7,7 @@ import '../../../shared/widgets/furigana_text.dart';
 import '../../../data/seeds/stages.dart';
 import '../../../data/seeds/learn_content_data.dart';
 import '../../progress/providers/user_progress_provider.dart';
+import '../../mission/providers/mission_provider.dart';
 
 /// まなぶモード - ステージの学習ページ
 class LearnScreen extends ConsumerWidget {
@@ -22,6 +23,11 @@ class LearnScreen extends ConsumerWidget {
     final sections = learnContentData[stageId] ?? _defaultSections(stageData);
     final progressAsync = ref.watch(userProgressProvider);
     final bestScore = progressAsync.value?.clearedStages[stageId];
+
+    // 「まなぶを1つ読む」ミッション：この画面を開いた時点で達成扱いにする。
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(missionProvider.notifier).completeMission('read_learn');
+    });
 
     return Scaffold(
       backgroundColor: const Color(0xFFF7F9FC),

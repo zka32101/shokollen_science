@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/question_model.dart';
 import '../../../data/seeds/sample_questions.dart';
 import '../../../data/seeds/stages.dart';
+import '../../mission/providers/mission_provider.dart';
 
 // ─── ポイント定数 ────────────────────────────────────────
 const int kPointsPerCorrect   = 10;
@@ -129,6 +130,10 @@ class QuizNotifier extends Notifier<QuizState> {
       selectedAnswers: updated,
       isAnswered: true,
     );
+
+    if (answerIndex == state.currentQuestion.correctAnswerIndex) {
+      ref.read(missionProvider.notifier).recordCorrectAnswer();
+    }
   }
 
   /// 次の問題へ進む
