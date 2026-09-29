@@ -5,6 +5,7 @@ import 'package:shared_core/shared_core.dart'
 import '../models/user_progress_model.dart';
 import '../models/badge_model.dart';
 import '../../profile/providers/profile_provider.dart';
+import '../../mission/providers/mission_provider.dart';
 
 // 学年別ステージID一覧
 const _grade3StageIds = [
@@ -202,6 +203,10 @@ class UserProgressNotifier extends AsyncNotifier<UserProgress> {
     await ref.read(characterStateProvider.notifier).checkUnlocks(
           finalProgress.clearedCount,
         );
+    if (newCleared.containsKey(stageId) &&
+        !current.clearedStages.containsKey(stageId)) {
+      await ref.read(missionProvider.notifier).completeMission('clear_stage');
+    }
     return (badges: newBadges, coinsEarned: coinsEarned);
   }
 

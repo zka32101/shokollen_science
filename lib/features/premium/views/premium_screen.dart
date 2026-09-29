@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 import '../../../shared/constants/app_colors.dart';
 import '../../trial/providers/trial_provider.dart';
 import '../services/science_purchase_service.dart';
@@ -21,11 +22,32 @@ class PremiumScreen extends ConsumerStatefulWidget {
 
 class _PremiumScreenState extends ConsumerState<PremiumScreen> {
   bool _isProcessing = false;
+  // ストアから取得できるまでの概算表示。取得できたら実際の価格に差し替える。
+  String _monthlyPrice = '¥300 / 月';
+  String _annualPrice = '¥2,400 / 年';
 
   @override
   void initState() {
     super.initState();
-    SciencePurchaseService.instance.initialize();
+    _init();
+  }
+
+  Future<void> _init() async {
+    await SciencePurchaseService.instance.initialize();
+    if (!SciencePurchaseService.instance.isConfigured) return;
+    try {
+      final offerings = await Purchases.getOfferings();
+      final current = offerings.current;
+      final monthly = current?.monthly?.storeProduct.priceString;
+      final annual = current?.annual?.storeProduct.priceString;
+      if (!mounted) return;
+      setState(() {
+        if (monthly != null) _monthlyPrice = '$monthly / 月';
+        if (annual != null) _annualPrice = '$annual / 年';
+      });
+    } catch (_) {
+      // 取得失敗時は概算表示のまま（購入自体は _purchase 側で改めて検証される）
+    }
   }
 
   @override
@@ -100,7 +122,7 @@ class _PremiumScreenState extends ConsumerState<PremiumScreen> {
             const SizedBox(height: 12),
             _PlanCard(
               title: '月額プラン',
-              price: '¥300 / 月',
+              price: _monthlyPrice,
               badge: null,
               enabled: !_isProcessing,
               onTap: () => _purchase(monthly: true),
@@ -108,7 +130,7 @@ class _PremiumScreenState extends ConsumerState<PremiumScreen> {
             const SizedBox(height: 12),
             _PlanCard(
               title: '年額プラン',
-              price: '¥2,400 / 年',
+              price: _annualPrice,
               badge: 'おトク',
               enabled: !_isProcessing,
               onTap: () => _purchase(monthly: false),

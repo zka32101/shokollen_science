@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shared_core/shared_core.dart' show coinProvider;
 import '../../profile/providers/profile_provider.dart';
 
 /// 今日のミッション
@@ -24,11 +25,12 @@ class DailyMission {
 }
 
 /// 静的ミッション定義
+// 2026-09: 付与コインが多すぎたため全体的に引き下げ（50→26コイン/日）
 const _missionDefs = [
-  DailyMission(id: 'quiz_3', title: '3問クイズに正解する', emoji: '🎯', coinReward: 15),
-  DailyMission(id: 'clear_stage', title: 'ステージを1つクリアする', emoji: '⭐', coinReward: 20),
-  DailyMission(id: 'read_learn', title: 'まなぶを1つ読む', emoji: '📖', coinReward: 10),
-  DailyMission(id: 'streak', title: '今日もログインする', emoji: '🔥', coinReward: 5),
+  DailyMission(id: 'quiz_3', title: '3問クイズに正解する', emoji: '🎯', coinReward: 8),
+  DailyMission(id: 'clear_stage', title: 'ステージを1つクリアする', emoji: '⭐', coinReward: 10),
+  DailyMission(id: 'read_learn', title: 'まなぶを1つ読む', emoji: '📖', coinReward: 5),
+  DailyMission(id: 'streak', title: '今日もログインする', emoji: '🔥', coinReward: 3),
 ];
 
 class MissionState {
@@ -47,7 +49,22 @@ class MissionNotifier extends AsyncNotifier<MissionState> {
   @override
   Future<MissionState> build() async {
     ref.watch(profileProvider);
-    return _load();
+    final loaded = await _load();
+    // 「今日もログインする」はアプリを開いた時点で条件を満たすため自動達成にする。
+    final streak = loaded.missions.firstWhere((m) => m.id == 'streak');
+    if (!streak.completed) {
+      final today = _todayStr();
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setBool('${_keyPrefix}${_profileId}_${today}_streak', true);
+      await ref.read(coinProvider.notifier).addCoins(streak.coinReward);
+      return MissionState(
+        date: loaded.date,
+        missions: loaded.missions
+            .map((m) => m.id == 'streak' ? m.withCompleted(true) : m)
+            .toList(),
+      );
+    }
+    return loaded;
   }
 
   String get _profileId => ref.read(profileProvider).value?.activeProfileId ?? 'default';
@@ -75,6 +92,20 @@ class MissionNotifier extends AsyncNotifier<MissionState> {
 
     final updated = current.missions.map((m) => m.id == missionId ? m.withCompleted(true) : m).toList();
     state = AsyncData(MissionState(date: today, missions: updated));
+    await ref.read(coinProvider.notifier).addCoins(mission.coinReward);
+  }
+
+  /// 「3問クイズに正解する」用：正解のたびに呼び出し、
+  /// 本日3問目の正解でミッション完了にする。
+  static const _correctCountKey = 'mission_quiz_correct_count_v1_';
+
+  Future<void> recordCorrectAnswer() async {
+    final today = _todayStr();
+    final prefs = await SharedPreferences.getInstance();
+    final key = '$_correctCountKey${_profileId}_$today';
+    final count = (prefs.getInt(key) ?? 0) + 1;
+    await prefs.setInt(key, count);
+    if (count >= 3) await completeMission('quiz_3');
   }
 
   static String _todayStr() {

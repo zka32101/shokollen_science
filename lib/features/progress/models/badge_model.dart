@@ -106,7 +106,7 @@ const List<BadgeModel> allBadges = [
   BadgeModel(
     id: 'five_stages',
     title: '5ステージ突破',
-    description: '5つのステージを満点クリアした',
+    description: '5つのステージをクリアした',
     emoji: '⭐',
     category: BadgeCategory.special,
     requiredCount: 5,
@@ -114,7 +114,7 @@ const List<BadgeModel> allBadges = [
   BadgeModel(
     id: 'ten_stages',
     title: '10ステージ突破',
-    description: '10のステージを満点クリアした',
+    description: '10のステージをクリアした',
     emoji: '🎖️',
     category: BadgeCategory.special,
     requiredCount: 10,
@@ -122,7 +122,7 @@ const List<BadgeModel> allBadges = [
   BadgeModel(
     id: 'stage_20',
     title: '20ステージ突破',
-    description: '20のステージを満点クリアした',
+    description: '20のステージをクリアした',
     emoji: '🚀',
     category: BadgeCategory.special,
     requiredCount: 20,
@@ -130,7 +130,7 @@ const List<BadgeModel> allBadges = [
   BadgeModel(
     id: 'stage_30',
     title: '30ステージ突破',
-    description: '30のステージを満点クリアした',
+    description: '30のステージをクリアした',
     emoji: '🌈',
     category: BadgeCategory.special,
     requiredCount: 30,
@@ -138,7 +138,7 @@ const List<BadgeModel> allBadges = [
   BadgeModel(
     id: 'stage_40',
     title: '40ステージ突破',
-    description: '40のステージを満点クリアした',
+    description: '40のステージをクリアした',
     emoji: '💫',
     category: BadgeCategory.special,
     requiredCount: 40,
@@ -146,7 +146,7 @@ const List<BadgeModel> allBadges = [
   BadgeModel(
     id: 'stage_45',
     title: '45ステージ突破',
-    description: '45のステージを満点クリアした',
+    description: '45のステージをクリアした',
     emoji: '🌠',
     category: BadgeCategory.special,
     requiredCount: 45,
@@ -154,17 +154,17 @@ const List<BadgeModel> allBadges = [
   BadgeModel(
     id: 'stage_47',
     title: '理科マスター前夜',
-    description: '47のステージをすべて満点クリアした',
+    description: '47のステージをすべてクリアした',
     emoji: '✨',
     category: BadgeCategory.special,
     requiredCount: 47,
   ),
 
-  // ── 学年コンプリート ────────────────────────────────────────
+  // ── 学年コンプリート（各学年の単元数の8割以上クリアで獲得） ──
   BadgeModel(
     id: 'grade3_complete',
     title: '3年生コンプリート',
-    description: '3年生の全12単元を満点クリアした',
+    description: '3年生の単元をほぼすべて（11/12）クリアした',
     emoji: '🔭',
     category: BadgeCategory.content2,
     requiredCount: 12,
@@ -172,7 +172,7 @@ const List<BadgeModel> allBadges = [
   BadgeModel(
     id: 'grade4_complete',
     title: '4年生コンプリート',
-    description: '4年生の全11単元を満点クリアした',
+    description: '4年生の単元をほぼすべて（10/11）クリアした',
     emoji: '🌡️',
     category: BadgeCategory.content2,
     requiredCount: 11,
@@ -180,7 +180,7 @@ const List<BadgeModel> allBadges = [
   BadgeModel(
     id: 'grade5_complete',
     title: '5年生コンプリート',
-    description: '5年生の全12単元を満点クリアした',
+    description: '5年生の単元をほぼすべて（10/12）クリアした',
     emoji: '⚗️',
     category: BadgeCategory.content2,
     requiredCount: 12,
@@ -188,7 +188,7 @@ const List<BadgeModel> allBadges = [
   BadgeModel(
     id: 'grade6_complete',
     title: '6年生コンプリート',
-    description: '6年生の全12単元を満点クリアした',
+    description: '6年生の単元をほぼすべて（10/12）クリアした',
     emoji: '🧬',
     category: BadgeCategory.content2,
     requiredCount: 12,
@@ -224,7 +224,7 @@ const List<BadgeModel> allBadges = [
   BadgeModel(
     id: 'science_master',
     title: '理科マスター',
-    description: 'すべての47ステージを満点クリアした',
+    description: 'すべての47ステージをクリアした',
     emoji: '🔬',
     category: BadgeCategory.special,
     requiredCount: 47,

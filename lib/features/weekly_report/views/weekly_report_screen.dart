@@ -113,7 +113,7 @@ class _WeeklyReportBody extends StatelessWidget {
                       child: _SummaryCard(
                         icon: '🏆',
                         label: 'クリアステージ',
-                        value: '${progress.streakDays * 2}',
+                        value: '${progress.clearedCount}',
                         unit: 'ステージ',
                       ),
                     ),
