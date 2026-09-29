@@ -63,17 +63,19 @@ class _CharacterCard extends StatelessWidget {
             child: ClipRRect(
               borderRadius:
                   const BorderRadius.vertical(top: Radius.circular(16)),
-              child: unlocked
-                  ? Image.asset(character.imageAsset, fit: BoxFit.cover)
-                  : ColorFiltered(
-                      colorFilter: const ColorFilter.mode(
-                          Colors.grey, BlendMode.saturation),
-                      child: Opacity(
-                        opacity: 0.5,
-                        child: Image.asset(character.imageAsset,
-                            fit: BoxFit.cover),
-                      ),
-                    ),
+              child: character.imageAsset == null
+                  ? Container(color: Colors.grey.shade300)
+                  : unlocked
+                      ? Image.asset(character.imageAsset!, fit: BoxFit.cover)
+                      : ColorFiltered(
+                          colorFilter: const ColorFilter.mode(
+                              Colors.grey, BlendMode.saturation),
+                          child: Opacity(
+                            opacity: 0.5,
+                            child: Image.asset(character.imageAsset!,
+                                fit: BoxFit.cover),
+                          ),
+                        ),
             ),
           ),
           Padding(
