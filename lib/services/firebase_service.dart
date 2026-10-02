@@ -12,9 +12,15 @@ class FirebaseService {
 
   static Future<void> initialize() async {
     try {
-      await Firebase.initializeApp(
-        options: DefaultFirebaseOptions.currentPlatform,
-      );
+      // google-services プラグインがネイティブ側で [DEFAULT] を先に作るため、
+      // 既存なら再初期化せず流用する（duplicate-app でローカルモード化していた）。
+      try {
+        await Firebase.initializeApp(
+          options: DefaultFirebaseOptions.currentPlatform,
+        );
+      } on FirebaseException catch (e) {
+        if (e.code != 'duplicate-app') rethrow;
+      }
       _initialized = true;
       final auth = FirebaseAuth.instance;
       if (auth.currentUser == null) {

@@ -1,11 +1,10 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_core/shared_core.dart'
     show coinProvider, inventoryProvider;
 import '../../../shared/constants/app_colors.dart';
 import '../../../data/seeds/stages.dart';
-import '../../../data/seeds/creatures.dart';
 import '../../progress/providers/user_progress_provider.dart';
 import '../../progress/views/progress_screen.dart';
 import '../../encyclopedia/views/encyclopedia_screen.dart';
@@ -14,9 +13,7 @@ import '../../shop/views/shop_screen.dart';
 import '../../trial/providers/trial_provider.dart';
 import '../../profile/providers/profile_provider.dart';
 import '../../daily/providers/daily_challenge_provider.dart';
-import '../../../shared/widgets/doctor_character_widget.dart';
 import '../../../shared/widgets/mission_card_widget.dart';
-import '../widgets/seasonal_recommendation_widget.dart';
 import '../../daily/widgets/daily_login_bonus_widget.dart';
 import '../../parent/widgets/praise_received_widget.dart';
 import '../../weekly_challenge/widgets/weekly_challenge_widget.dart';
@@ -36,11 +33,9 @@ class HomeScreen extends ConsumerStatefulWidget {
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   int _selectedIndex = 0;
-  int _selectedGrade = 3; // ステージリストの選択学年
 
   // 今日のステージ（本来は Firestore の学習進度から取得）
   final _todayStage = stagesData[0]; // stage_3_001 昆虫と植物
-  final int _totalCreatures = 16;
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +57,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     );
   }
 
+
   // ── ホームタブ ────────────────────────────────────────
+  // 主役は「今日のテーマ」1枚。毎日系は横並び、その他の機能は統一色のメニューにまとめる。
+  // 図鑑・ステージ一覧は専用タブにあるためホームには置かない。
   Widget _buildHomeTab() {
     return SingleChildScrollView(
       physics: const BouncingScrollPhysics(),
@@ -70,27 +68,171 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildAppBar(),
-          const DailyLoginBonusWidget(), // デイリーログインボーナス
-          const PraiseReceivedWidget(), // 親からのほめメッセージ
-          const WeeklyChallengeWidget(), // 今週のチャレンジ
-          _buildDailyChallengeCard(), // デイリーチャレンジ追加
-          SeasonalRecommendationWidget(
-            onTap: (stageId) => context.push('/quiz/$stageId'),
-          ),
-          _buildCharacterCard(), // キャラ図鑑
-          _buildWeeklyReportCard(),
-          _buildGradeTestCard(),
-          const MissionCardWidget(), // ミッションカード
-          const DoctorCharacterWidget(), // 博士キャラ追加
-          const SizedBox(height: 8),
-          _buildReviewCard(), // にがて問題追加
+          const DailyLoginBonusWidget(),
+          const PraiseReceivedWidget(),
           _buildTodayThemeCard(),
-          _buildEncyclopediaSection(),
-          _buildStageListSection(),
-          _buildCollectionAndTestSection(),
-          _buildDailyMysteryBadge(),
-          _buildInnovationFeatures(),
+          _buildDailyRow(),
+          const WeeklyChallengeWidget(),
+          const MissionCardWidget(),
+          _buildReviewCard(),
+          _buildMenuGrid(),
           const SizedBox(height: 24),
+        ],
+      ),
+    );
+  }
+
+  // ── デイリーチャレンジ / 今日のふしぎ（横並び） ─────────────
+  Widget _buildDailyRow() {
+    final completed = ref.watch(dailyChallengeProvider).value?.completed ?? false;
+    final mystery = ref.watch(dailyMysteryNotifierProvider);
+    final mysteryDone = mystery != null && mystery.answeredAt != null;
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
+      child: Row(
+        children: [
+          Expanded(
+            child: _buildDailyTile(
+              emoji: completed ? '✅' : '⚡',
+              title: 'デイリー',
+              subtitle: completed ? 'また明日！' : '3問で🪙+30',
+              done: completed,
+              onTap: completed ? null : () => context.push('/daily-challenge'),
+            ),
+          ),
+          const SizedBox(width: 10),
+          Expanded(
+            child: _buildDailyTile(
+              emoji: mysteryDone ? '✅' : '✨',
+              title: '今日のふしぎ',
+              subtitle: mysteryDone ? '完了！' : 'ひいてみよう',
+              done: mysteryDone,
+              onTap: () => context.push('/daily-mystery-omikuji'),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDailyTile({
+    required String emoji,
+    required String title,
+    required String subtitle,
+    required bool done,
+    required VoidCallback? onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(14),
+          border: Border.all(
+            color: done ? AppColors.borderGray : AppColors.sciencePrimary,
+          ),
+        ),
+        child: Row(
+          children: [
+            Text(emoji, style: const TextStyle(fontSize: 24)),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.bold,
+                      color: done ? AppColors.textGray : AppColors.textDark,
+                    ),
+                  ),
+                  Text(
+                    subtitle,
+                    style: const TextStyle(
+                      fontSize: 11,
+                      color: AppColors.textGray,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // ── その他の機能メニュー（3列・統一色） ─────────────────────
+  Widget _buildMenuGrid() {
+    final items = <(String, String, String)>[
+      ('🔬', '理科博士', '/characters'),
+      ('📊', 'レポート', '/weekly-report'),
+      ('🏆', 'まとめテスト', '/grade-test'),
+      ('🔮', 'よそうラボ', '/prediction-quiz/exp_magnet_001'),
+      ('🕵️', '失敗ラボ', '/troubleshoot/exp_001'),
+      ('⚔️', '親子バトル', '/prediction-battle'),
+      ('🏡', 'おうちラボ', '/home-lab'),
+      ('🌌', '今夜の空', '/tonight-sky'),
+      ('📚', 'コレクション', '/collection'),
+    ];
+    return Container(
+      margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: AppColors.borderGray),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'もっとあそぶ',
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+              color: AppColors.textDark,
+            ),
+          ),
+          const SizedBox(height: 10),
+          GridView.count(
+            crossAxisCount: 3,
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            mainAxisSpacing: 8,
+            crossAxisSpacing: 8,
+            childAspectRatio: 1.1,
+            children: [
+              for (final (emoji, label, route) in items)
+                GestureDetector(
+                  onTap: () => context.push(route),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: AppColors.scienceLight,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(emoji, style: const TextStyle(fontSize: 26)),
+                        const SizedBox(height: 4),
+                        Text(
+                          label,
+                          style: const TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.textDark,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+            ],
+          ),
         ],
       ),
     );
@@ -98,7 +240,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   // ── アプリバー ────────────────────────────────────────
   Widget _buildAppBar() {
-    final progressAsync = ref.watch(userProgressProvider);
     final trialAsync = ref.watch(trialProvider);
     final profileAsync = ref.watch(profileProvider);
     final activeProfile = profileAsync.value?.activeProfile;
@@ -223,8 +364,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       ),
                     ),
                   ),
+                  // トライアル残日数（プレミアム会員には表示しない）
+                  if (!isPremium) ...[
                   const SizedBox(width: 8),
-                  // プレミアム / トライアル状態
                   GestureDetector(
                     onTap: () => setState(() => _selectedIndex = 3),
                     child: Container(
@@ -233,13 +375,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         vertical: 5,
                       ),
                       decoration: BoxDecoration(
-                        color: isPremium
-                            ? Colors.amber.withOpacity(0.8)
-                            : Colors.white.withOpacity(0.2),
+                        color: Colors.white.withOpacity(0.2),
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Text(
-                        isPremium ? '👑 プレミアム' : '⏳ あと${trialRemaining}日',
+                        '⏳ あと$trialRemaining日',
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 11,
@@ -248,6 +388,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       ),
                     ),
                   ),
+                  ],
                   const SizedBox(width: 6),
                   // せってい（ダークモード切替・保護者ダッシュボードは設定画面に移動）
                   GestureDetector(
@@ -300,26 +441,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 ),
               ],
             ],
-          ),
-        ),
-        const Positioned(
-          right: 8,
-          top: 4,
-          child: IgnorePointer(
-            child: Opacity(
-              opacity: 0.10,
-              child: Text('⚛️', style: TextStyle(fontSize: 56)),
-            ),
-          ),
-        ),
-        const Positioned(
-          right: 76,
-          bottom: 6,
-          child: IgnorePointer(
-            child: Opacity(
-              opacity: 0.07,
-              child: Text('🔭', style: TextStyle(fontSize: 30)),
-            ),
           ),
         ),
       ],
@@ -448,602 +569,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     );
   }
 
-  // ── 図鑑セクション ────────────────────────────────────
-  Widget _buildEncyclopediaSection() {
-    // クリア済みステージ数を生き物のアンロック数として使用
-    final progressAsync = ref.watch(userProgressProvider);
-    final clearedCount = progressAsync.value?.clearedCount ?? 0;
-    // クリアステージ数に応じて生き物アンロック（最大_totalCreatures体）
-    final completedCreatures = clearedCount.clamp(0, _totalCreatures);
 
-    return Container(
-      margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              const Text('🌿', style: TextStyle(fontSize: 20)),
-              const SizedBox(width: 8),
-              const Text(
-                '生き物図鑑',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.textDark,
-                ),
-              ),
-              const Spacer(),
-              GestureDetector(
-                onTap: () => setState(() => _selectedIndex = 2),
-                child: const Text(
-                  'すべて見る →',
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: AppColors.sciencePrimary,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 10),
-          Row(
-            children: [
-              Text(
-                '$completedCreatures / $_totalCreatures 発見',
-                style: const TextStyle(fontSize: 12, color: AppColors.textGray),
-              ),
-              const SizedBox(width: 8),
-              Expanded(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(4),
-                  child: LinearProgressIndicator(
-                    value: completedCreatures / _totalCreatures,
-                    backgroundColor: AppColors.borderGray,
-                    valueColor: const AlwaysStoppedAnimation(AppColors.success),
-                    minHeight: 6,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          GridView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 4,
-              mainAxisSpacing: 8,
-              crossAxisSpacing: 8,
-              childAspectRatio: 0.85,
-            ),
-            itemCount: 8,
-            itemBuilder: (_, i) {
-              final unlocked = i < completedCreatures;
-              return _CreatureCell(
-                creatureData: creaturesData[i],
-                unlocked: unlocked,
-              );
-            },
-          ),
-        ],
-      ),
-    );
-  }
 
-  // ── ステージ一覧（全学年・学年フィルタ付き） ────────────
-  Widget _buildStageListSection() {
-    final progressAsync = ref.watch(userProgressProvider);
-    final clearedStages = progressAsync.value?.clearedStages ?? {};
-    final hasAccess = ref.watch(trialProvider).value?.hasAccess ?? true;
 
-    final filteredStages = stagesData
-        .where((s) => s['gradeLevel'] == _selectedGrade)
-        .toList();
-    // 無料ユーザー（トライアル終了・未購入）は後半のステージを非公開にする
-    final freeVisibleCount = (filteredStages.length / 2).ceil();
 
-    return Container(
-      margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // ── タイトル ──
-          const Row(
-            children: [
-              Text('📚', style: TextStyle(fontSize: 20)),
-              SizedBox(width: 8),
-              Text(
-                '学年を選んで学ぼう',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.textDark,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
 
-          // ── 学年フィルタチップ ──
-          Row(
-            children: [3, 4, 5, 6].map((grade) {
-              final selected = _selectedGrade == grade;
-              // その学年のクリア数
-              final gradeStages = stagesData
-                  .where((s) => s['gradeLevel'] == grade)
-                  .toList();
-              final cleared = gradeStages
-                  .where((s) => clearedStages.containsKey(s['id']))
-                  .length;
-              final isComplete = cleared == gradeStages.length;
 
-              return Expanded(
-                child: GestureDetector(
-                  onTap: () => setState(() => _selectedGrade = grade),
-                  child: AnimatedContainer(
-                    duration: const Duration(milliseconds: 200),
-                    margin: const EdgeInsets.only(right: 6),
-                    padding: const EdgeInsets.symmetric(vertical: 8),
-                    decoration: BoxDecoration(
-                      color: selected
-                          ? AppColors.sciencePrimary
-                          : AppColors.scienceLight,
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(
-                        color: selected
-                            ? AppColors.sciencePrimary
-                            : AppColors.borderGray,
-                      ),
-                    ),
-                    child: Column(
-                      children: [
-                        Text(
-                          '${grade}年',
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                            color: selected ? Colors.white : AppColors.textDark,
-                          ),
-                        ),
-                        Text(
-                          isComplete ? '✅' : '$cleared/${gradeStages.length}',
-                          style: TextStyle(
-                            fontSize: 10,
-                            color: selected
-                                ? Colors.white70
-                                : AppColors.textGray,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              );
-            }).toList(),
-          ),
-
-          const SizedBox(height: 14),
-
-          // ── ステージリスト ──
-          ...filteredStages.asMap().entries.map((entry) {
-            final index = entry.key;
-            final s = entry.value;
-            final stageId = s['id'] as String;
-            final bestScore = clearedStages[stageId];
-            final isCleared = bestScore != null;
-            final locked = !hasAccess && index >= freeVisibleCount;
-            return _StageListTile(
-              stageData: s,
-              isCleared: isCleared,
-              bestScore: bestScore,
-              locked: locked,
-              onTap: locked
-                  ? () => context.push('/premium')
-                  : () => context.go('/quiz/$stageId'),
-            );
-          }),
-        ],
-      ),
-    );
-  }
-
-  // ── コレクション帳・まとめテストセクション ─────────────────
-  Widget _buildCollectionAndTestSection() {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            '📚 学習メニュー',
-            style: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
-              color: AppColors.textDark,
-            ),
-          ),
-          const SizedBox(height: 8),
-          Row(
-            children: [
-              Expanded(
-                child: GestureDetector(
-                  onTap: () => context.push('/collection'),
-                  child: Container(
-                    padding: const EdgeInsets.all(14),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(14),
-                      border: Border.all(color: AppColors.borderGray),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.04),
-                          blurRadius: 6,
-                        ),
-                      ],
-                    ),
-                    child: const Column(
-                      children: [
-                        Text('📚', style: TextStyle(fontSize: 28)),
-                        SizedBox(height: 4),
-                        Text(
-                          'コレクション帳',
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: GestureDetector(
-                  onTap: () {
-                    // 学年選択ダイアログ
-                    showModalBottomSheet<void>(
-                      context: context,
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.vertical(
-                          top: Radius.circular(20),
-                        ),
-                      ),
-                      builder: (_) => Padding(
-                        padding: const EdgeInsets.all(20),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const Text(
-                              '学年を選んでください',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            const SizedBox(height: 16),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [3, 4, 5, 6]
-                                  .map(
-                                    (g) => GestureDetector(
-                                      onTap: () {
-                                        Navigator.pop(context);
-                                        context.push('/comprehensive-test/$g');
-                                      },
-                                      child: Container(
-                                        width: 64,
-                                        height: 64,
-                                        alignment: Alignment.center,
-                                        decoration: BoxDecoration(
-                                          gradient: LinearGradient(
-                                            colors: [
-                                              Colors.purple[400]!,
-                                              Colors.purple[300]!,
-                                            ],
-                                          ),
-                                          borderRadius: BorderRadius.circular(
-                                            16,
-                                          ),
-                                        ),
-                                        child: Text(
-                                          '$g年',
-                                          style: const TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  )
-                                  .toList(),
-                            ),
-                            const SizedBox(height: 8),
-                          ],
-                        ),
-                      ),
-                    );
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.all(14),
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [Colors.purple[400]!, Colors.purple[300]!],
-                      ),
-                      borderRadius: BorderRadius.circular(14),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.purple.withValues(alpha: 0.18),
-                          blurRadius: 6,
-                        ),
-                      ],
-                    ),
-                    child: const Column(
-                      children: [
-                        Text('📝', style: TextStyle(fontSize: 28)),
-                        SizedBox(height: 4),
-                        Text(
-                          'まとめテスト',
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  // ── デイリーチャレンジカード ─────────────────────────────
-  Widget _buildDailyChallengeCard() {
-    final dailyAsync = ref.watch(dailyChallengeProvider);
-    final daily = dailyAsync.value;
-    final completed = daily?.completed ?? false;
-
-    return GestureDetector(
-      onTap: completed ? null : () => context.push('/daily-challenge'),
-      child: Container(
-        margin: const EdgeInsets.fromLTRB(16, 12, 16, 0),
-        padding: const EdgeInsets.all(14),
-        decoration: BoxDecoration(
-          gradient: completed
-              ? LinearGradient(colors: [Colors.grey[300]!, Colors.grey[200]!])
-              : LinearGradient(
-                  colors: [Colors.amber[400]!, Colors.orange[300]!],
-                ),
-          borderRadius: BorderRadius.circular(16),
-          boxShadow: completed
-              ? []
-              : [
-                  BoxShadow(
-                    color: Colors.amber.withValues(alpha: 0.18),
-                    blurRadius: 10,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
-        ),
-        child: Row(
-          children: [
-            Text(completed ? '✅' : '⚡', style: const TextStyle(fontSize: 28)),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    completed ? 'デイリーチャレンジ 完了！' : '今日のデイリーチャレンジ',
-                    style: TextStyle(
-                      color: completed ? Colors.grey[600] : Colors.white,
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Text(
-                    completed ? 'また明日チャレンジしよう' : '3問クリアで 🪙 +30 コイン！',
-                    style: TextStyle(
-                      color: completed ? Colors.grey[500] : Colors.white70,
-                      fontSize: 12,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            if (!completed)
-              const Icon(Icons.chevron_right_rounded, color: Colors.white),
-          ],
-        ),
-      ),
-    );
-  }
-
-  // ── 週次レポートカード ────────────────────────────────────
-  Widget _buildWeeklyReportCard() {
-    return GestureDetector(
-      onTap: () => context.push('/weekly-report'),
-      child: Container(
-        margin: const EdgeInsets.fromLTRB(16, 8, 16, 0),
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Colors.purple[400]!, Colors.indigo[300]!],
-          ),
-          borderRadius: BorderRadius.circular(14),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.purple.withValues(alpha: 0.15),
-              blurRadius: 10,
-              offset: const Offset(0, 4),
-            ),
-          ],
-        ),
-        child: Row(
-          children: [
-            const Text('📊', style: TextStyle(fontSize: 26)),
-            const SizedBox(width: 12),
-            const Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    '今週のレポート',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Text(
-                    '学習グラフ・弱点チェック',
-                    style: TextStyle(color: Colors.white70, fontSize: 12),
-                  ),
-                ],
-              ),
-            ),
-            const Icon(Icons.chevron_right_rounded, color: Colors.white),
-          ],
-        ),
-      ),
-    );
-  }
-
-  // ── キャラクター図鑑カード ───────────────────────────────────
-  Widget _buildCharacterCard() {
-    final progressAsync = ref.watch(userProgressProvider);
-    final cleared = progressAsync.value?.clearedCount ?? 0;
-    return GestureDetector(
-      onTap: () => context.push('/characters'),
-      child: Container(
-        margin: const EdgeInsets.fromLTRB(16, 8, 16, 0),
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Colors.teal[400]!, Colors.cyan[300]!],
-          ),
-          borderRadius: BorderRadius.circular(14),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.teal.withValues(alpha: 0.18),
-              blurRadius: 10,
-              offset: const Offset(0, 4),
-            ),
-          ],
-        ),
-        child: Row(
-          children: [
-            const Text('🔬', style: TextStyle(fontSize: 26)),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    '理科博士コレクション',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Text(
-                    '$cleared ステージクリア・16体のキャラを集めよう',
-                    style: const TextStyle(color: Colors.white70, fontSize: 12),
-                  ),
-                ],
-              ),
-            ),
-            const Icon(Icons.chevron_right_rounded, color: Colors.white),
-          ],
-        ),
-      ),
-    );
-  }
-
-  // ── 学年末まとめテストカード ────────────────────────────────
-  Widget _buildGradeTestCard() {
-    return GestureDetector(
-      onTap: () => context.push('/grade-test'),
-      child: Container(
-        margin: const EdgeInsets.fromLTRB(16, 8, 16, 0),
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Colors.orange[400]!, Colors.deepOrange[300]!],
-          ),
-          borderRadius: BorderRadius.circular(14),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.orange.withValues(alpha: 0.18),
-              blurRadius: 10,
-              offset: const Offset(0, 4),
-            ),
-          ],
-        ),
-        child: Row(
-          children: [
-            const Text('🏆', style: TextStyle(fontSize: 26)),
-            const SizedBox(width: 12),
-            const Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    '学年末まとめテスト',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Text(
-                    '認定証をゲットしよう！',
-                    style: TextStyle(color: Colors.white70, fontSize: 12),
-                  ),
-                ],
-              ),
-            ),
-            const Icon(Icons.chevron_right_rounded, color: Colors.white),
-          ],
-        ),
-      ),
-    );
-  }
 
   // ── にがて問題カード ──────────────────────────────────────
   Widget _buildReviewCard() {
@@ -1087,26 +618,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     );
   }
 
-  // ── Coming soon タブ ─────────────────────────────────
-  Widget _buildComingSoonTab(String title, String message) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            title,
-            style: const TextStyle(fontSize: 36, color: AppColors.textGray),
-          ),
-          const SizedBox(height: 16),
-          Text(
-            message,
-            textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 15, color: AppColors.textGray),
-          ),
-        ],
-      ),
-    );
-  }
 
   // ── ボトムナビ ────────────────────────────────────────
   Widget _buildBottomNav() {
@@ -1173,249 +684,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     }
   }
 
-  // ── 今日のふしぎバッジ ────────────────────────────────────────
-  Widget _buildDailyMysteryBadge() {
-    return Consumer(
-      builder: (context, ref, child) {
-        final record = ref.watch(dailyMysteryNotifierProvider);
-        final isRevealed = record != null;
-        final isAnswered = record != null && record.answeredAt != null;
 
-        return GestureDetector(
-          onTap: () => context.push('/daily-mystery-omikuji'),
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
-            child: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    const Color(0xFF6366F1).withOpacity(0.95),
-                    const Color(0xFF4F46E5).withOpacity(0.85),
-                  ],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-                borderRadius: BorderRadius.circular(14),
-                boxShadow: [
-                  BoxShadow(
-                    color: const Color(0xFF6366F1).withOpacity(0.25),
-                    blurRadius: 8,
-                    offset: const Offset(0, 3),
-                  ),
-                ],
-              ),
-              padding: const EdgeInsets.all(16),
-              child: Row(
-                children: [
-                  // Emoji with status
-                  Container(
-                    width: 60,
-                    height: 60,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.white.withOpacity(0.15),
-                    ),
-                    child: Center(
-                      child: Text(
-                        isAnswered
-                            ? '✨'
-                            : isRevealed
-                            ? '📖'
-                            : '📿',
-                        style: const TextStyle(fontSize: 32),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 14),
-                  // Content
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          '今日のふしぎ',
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          isAnswered
-                              ? '✅ 完了！'
-                              : isRevealed
-                              ? '🔍 答えを見よう'
-                              : '未引',
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Colors.white.withOpacity(0.8),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  // Arrow
-                  const Icon(
-                    Icons.arrow_forward_rounded,
-                    color: Colors.white,
-                    size: 20,
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  // ── 革新機能セクション ────────────────────────────────────────
-  Widget _buildInnovationFeatures() {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 20, 16, 0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            '特別チャレンジ',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: AppColors.textDark,
-            ),
-          ),
-          const SizedBox(height: 12),
-          GridView.count(
-            crossAxisCount: 2,
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            crossAxisSpacing: 10,
-            mainAxisSpacing: 10,
-            childAspectRatio: 1.4,
-            children: [
-              _buildFeatureCard(
-                emoji: '🔬',
-                title: 'よそうラボ',
-                subtitle: '実験前に予想しよう！',
-                color: const Color(0xFF3498DB),
-                onTap: () => context.push('/prediction-quiz/exp_magnet_001'),
-              ),
-              _buildFeatureCard(
-                emoji: '🕵️',
-                title: '失敗ラボ',
-                subtitle: '失敗の原因を推理！',
-                color: const Color(0xFFF57F17),
-                onTap: () => context.push('/troubleshoot/exp_001'),
-              ),
-              _buildFeatureCard(
-                emoji: '⚔️',
-                title: '親子バトル',
-                subtitle: '親子で予想対決！',
-                color: const Color(0xFF6A1B9A),
-                onTap: () => context.push('/prediction-battle'),
-              ),
-              _buildFeatureCard(
-                emoji: '🏡',
-                title: 'おうちラボ',
-                subtitle: '週末リアル実験！',
-                color: const Color(0xFF2E7D32),
-                onTap: () => context.push('/home-lab'),
-              ),
-              _buildFeatureCard(
-                emoji: '🌌',
-                title: '今夜の空',
-                subtitle: '星・月を観察しよう',
-                color: const Color(0xFF0D1B4B),
-                onTap: () => context.push('/tonight-sky'),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildFeatureCard({
-    required String emoji,
-    required String title,
-    required String subtitle,
-    required Color color,
-    required VoidCallback onTap,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [color, color.withOpacity(0.75)],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-          borderRadius: BorderRadius.circular(14),
-          boxShadow: [
-            BoxShadow(
-              color: color.withOpacity(0.35),
-              blurRadius: 8,
-              offset: const Offset(0, 3),
-            ),
-          ],
-        ),
-        child: Stack(
-          clipBehavior: Clip.hardEdge,
-          children: [
-            Positioned(
-              right: -6,
-              bottom: -12,
-              child: Text(
-                emoji,
-                style: TextStyle(
-                  fontSize: 64,
-                  color: Colors.white.withOpacity(0.12),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(14),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    width: 38,
-                    height: 38,
-                    decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.22),
-                      shape: BoxShape.circle,
-                    ),
-                    child: Center(
-                      child: Text(emoji, style: const TextStyle(fontSize: 20)),
-                    ),
-                  ),
-                  const Spacer(),
-                  Text(
-                    title,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 2),
-                  Text(
-                    subtitle,
-                    style: TextStyle(
-                      color: Colors.white.withOpacity(0.85),
-                      fontSize: 11,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 }
 
 // ── 補助ウィジェット ──────────────────────────────────────
@@ -1445,218 +714,5 @@ class _Badge extends StatelessWidget {
   }
 }
 
-class _CreatureCell extends StatelessWidget {
-  final Map<String, dynamic> creatureData;
-  final bool unlocked;
-  const _CreatureCell({required this.creatureData, required this.unlocked});
 
-  static const _categoryEmoji = {
-    'insect': '🦋',
-    'bird': '🐦',
-    'mammal': '🐾',
-    'plant': '🌿',
-    'other': '🐌',
-  };
 
-  @override
-  Widget build(BuildContext context) {
-    final emoji = _categoryEmoji[creatureData['category']] ?? '🔬';
-    return Container(
-      decoration: BoxDecoration(
-        color: unlocked ? AppColors.scienceLight : const Color(0xFFEEEEEE),
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(
-          color: unlocked
-              ? AppColors.sciencePrimary.withOpacity(0.3)
-              : Colors.transparent,
-        ),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          unlocked
-              ? Text(emoji, style: const TextStyle(fontSize: 24))
-              : const Icon(Icons.lock, color: Colors.grey, size: 20),
-          const SizedBox(height: 2),
-          Text(
-            unlocked
-                ? (creatureData['name'] as String)
-                      .replaceAll(RegExp(r'[ぁ-ん]+'), '')
-                      .substring(
-                        0,
-                        (creatureData['name'] as String).length.clamp(0, 4),
-                      )
-                : '???',
-            style: TextStyle(
-              fontSize: 9,
-              color: unlocked ? AppColors.textDark : AppColors.textGray,
-            ),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            textAlign: TextAlign.center,
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _StageListTile extends StatelessWidget {
-  final Map<String, dynamic> stageData;
-  final VoidCallback onTap;
-  final bool isCleared;
-  final int? bestScore;
-  final bool locked;
-
-  const _StageListTile({
-    required this.stageData,
-    required this.onTap,
-    this.isCleared = false,
-    this.bestScore,
-    this.locked = false,
-  });
-
-  static const _categoryColor = {
-    'biology': Color(0xFF43A047),
-    'physics': Color(0xFF1E88E5),
-    'chemistry': Color(0xFF8E24AA),
-    'earth': Color(0xFF6D4C41),
-  };
-
-  static const _categoryEmoji = {
-    'biology': '🌱',
-    'physics': '⚡',
-    'chemistry': '🧪',
-    'earth': '🌍',
-  };
-
-  @override
-  Widget build(BuildContext context) {
-    final cat = stageData['category'] as String;
-    final color = locked ? AppColors.textGray : (_categoryColor[cat] ?? AppColors.sciencePrimary);
-    final emoji = _categoryEmoji[cat] ?? '🔬';
-
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        margin: const EdgeInsets.only(bottom: 8),
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-        decoration: BoxDecoration(
-          color: locked
-              ? const Color(0xFFF5F5F5)
-              : (isCleared ? const Color(0xFFF0FFF4) : Colors.white),
-          borderRadius: BorderRadius.circular(12),
-          border: Border(
-            left: BorderSide(color: color, width: 4),
-            top: BorderSide(
-              color: isCleared
-                  ? AppColors.success.withOpacity(0.3)
-                  : AppColors.borderGray,
-            ),
-            right: BorderSide(
-              color: isCleared
-                  ? AppColors.success.withOpacity(0.3)
-                  : AppColors.borderGray,
-            ),
-            bottom: BorderSide(
-              color: isCleared
-                  ? AppColors.success.withOpacity(0.3)
-                  : AppColors.borderGray,
-            ),
-          ),
-          boxShadow: locked
-              ? []
-              : [
-                  BoxShadow(
-                    color: color.withOpacity(0.08),
-                    blurRadius: 6,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
-        ),
-        child: Row(
-          children: [
-            Container(
-              width: 36,
-              height: 36,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                color: color.withOpacity(0.12),
-                shape: BoxShape.circle,
-              ),
-              child: Text(locked ? '🔒' : emoji,
-                  style: const TextStyle(fontSize: 18)),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: locked
-                    ? const [
-                        Text(
-                          'プレミアムで解放',
-                          style: TextStyle(
-                            fontSize: 13.5,
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.textGray,
-                          ),
-                        ),
-                        Text(
-                          'この先はプレミアム会員限定です',
-                          style: TextStyle(
-                            fontSize: 11,
-                            color: AppColors.textGray,
-                          ),
-                        ),
-                      ]
-                    : [
-                        FuriganaText(
-                          stageData['stageName'] as String,
-                          style: const TextStyle(
-                            fontSize: 13.5,
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.textDark,
-                          ),
-                        ),
-                        Text(
-                          stageData['description'] as String,
-                          style: const TextStyle(
-                            fontSize: 11,
-                            color: AppColors.textGray,
-                          ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ],
-              ),
-            ),
-            const SizedBox(width: 8),
-            if (locked)
-              const Icon(Icons.lock_outline, color: AppColors.textGray, size: 20)
-            else if (isCleared) ...[
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  const Icon(
-                    Icons.check_circle,
-                    color: AppColors.success,
-                    size: 18,
-                  ),
-                  Text(
-                    '$bestScore%',
-                    style: const TextStyle(
-                      fontSize: 10,
-                      color: AppColors.success,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-            ] else
-              Icon(Icons.chevron_right, color: color, size: 20),
-          ],
-        ),
-      ),
-    );
-  }
-}

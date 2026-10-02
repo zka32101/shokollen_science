@@ -4,17 +4,14 @@ import '../data/repositories/daily_mystery_repository.dart';
 import '../data/daily_mysteries_data.dart';
 import '../models/daily_mystery.dart';
 
-final sharedPreferencesProvider =
-    FutureProvider<SharedPreferences>((ref) async {
-  return await SharedPreferences.getInstance();
+/// main() で SharedPreferences.getInstance() 済みの値を overrideWithValue で注入する。
+/// 以前は FutureProvider だったため、読み込み完了前の初回ビルドで例外を投げていた。
+final sharedPreferencesProvider = Provider<SharedPreferences>((ref) {
+  throw UnimplementedError('sharedPreferencesProvider must be overridden in main()');
 });
 
 final dailyMysteryRepositoryProvider = Provider<DailyMysteryRepository>((ref) {
-  final prefs = ref.watch(sharedPreferencesProvider).maybeWhen(
-    data: (prefs) => prefs,
-    orElse: () => throw Exception('SharedPreferences not initialized'),
-  );
-  return DailyMysteryRepositoryImpl(prefs);
+  return DailyMysteryRepositoryImpl(ref.watch(sharedPreferencesProvider));
 });
 
 final todayMysteryProvider = FutureProvider<DailyMystery>((ref) async {
