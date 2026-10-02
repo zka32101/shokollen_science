@@ -1,13 +1,13 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../data/repositories/review_time_capsule_repository.dart';
 import '../models/review_schedule.dart';
+import 'daily_mystery_provider.dart' show sharedPreferencesProvider;
 
 /// Repository プロバイダ
 final reviewTimeCapsuleRepositoryProvider =
     Provider<ReviewTimeCapsuleRepository>((ref) {
-  throw UnimplementedError(
-    'Provide ReviewTimeCapsuleRepository in main.dart',
-  );
+  // main.dart で注入済みの SharedPreferences を使う（未注入で例外になっていた）
+  return ReviewTimeCapsuleRepositoryImpl(ref.watch(sharedPreferencesProvider));
 });
 
 /// すべてのタイムカプセル

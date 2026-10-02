@@ -177,7 +177,11 @@ class _QuizScreenState extends ConsumerState<QuizScreen>
               const SizedBox(width: 12),
               Expanded(
                 child: Text(
-                  quiz.stageName,
+                  // {漢字|よみ} 記法が生のまま出ないよう漢字部分だけにする
+                  quiz.stageName.replaceAllMapped(
+                    RegExp(r'\{([^|}]*)\|[^}]*\}'),
+                    (m) => m[1]!,
+                  ),
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 16,

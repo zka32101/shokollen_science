@@ -9,7 +9,10 @@ import 'app/router.dart';
 import 'app/theme.dart';
 import 'features/settings/providers/theme_provider.dart';
 import 'providers/character_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'services/firebase_service.dart';
+import 'features/progress/providers/daily_mystery_provider.dart'
+    show sharedPreferencesProvider;
 import 'features/progress/services/daily_mystery_notification_service.dart';
 
 void main() async {
@@ -58,12 +61,15 @@ void main() async {
       debugPrint('⚠ Notification error: $e');
     }
 
+    final prefs = await SharedPreferences.getInstance();
+
     developer.log('runApp() 開始 - MyApp を構築中',
         name: 'shokollen_science.app');
     runApp(
       ProviderScope(
         overrides: [
           characterStateProvider.overrideWith(CharacterNotifier.new),
+          sharedPreferencesProvider.overrideWithValue(prefs),
         ],
         child: const MyApp(),
       ),

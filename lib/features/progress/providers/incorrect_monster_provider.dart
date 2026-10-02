@@ -2,12 +2,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 import '../data/repositories/incorrect_monster_repository.dart';
 import '../models/incorrect_monster.dart';
+import 'daily_mystery_provider.dart' show sharedPreferencesProvider;
 
 /// Repository プロバイダ
 final incorrectMonsterRepositoryProvider = Provider<IncorrectMonsterRepository>((ref) {
-  // SharedPreferences の初期化は main.dart で実施済みと仮定
-  // 実際には依存関係注入で IncorrectMonsterRepositoryImpl を渡す
-  throw UnimplementedError('Provide IncorrectMonsterRepository in main.dart');
+  // main.dart で注入済みの SharedPreferences を使う（未注入で例外になりクイズ終了時に
+  // 間違えた問題が保存されていなかった）
+  return IncorrectMonsterRepositoryImpl(ref.watch(sharedPreferencesProvider));
 });
 
 /// モンスター一覧プロバイダ
