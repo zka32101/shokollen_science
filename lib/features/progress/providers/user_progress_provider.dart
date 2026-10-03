@@ -1,5 +1,8 @@
+import 'dart:async';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../../services/firestore_progress_service.dart';
 import 'package:shared_core/shared_core.dart'
     show coinProvider, characterStateProvider;
 import '../models/user_progress_model.dart';
@@ -88,7 +91,39 @@ class UserProgressNotifier extends AsyncNotifier<UserProgress> {
     ref.watch(profileProvider);
     final loaded = await _load();
     await _reconcileSharedCoins(loaded);
+    // クラウドとの同期は画面表示をブロックしないよう裏で行う
+    unawaited(_syncWithCloud(_profileId, loaded));
     return loaded;
+  }
+
+  String get _profileId =>
+      ref.read(profileProvider).value?.activeProfileId ?? 'default';
+
+  // ────────────────────────────────────────────────────────
+  /// Firestore の進捗とマージして双方を最新にする。
+  /// 取得に失敗したときは何もしない（空のクラウドを上書きしない）。
+  // ────────────────────────────────────────────────────────
+  Future<void> _syncWithCloud(String profileId, UserProgress local) async {
+    if (!FirestoreProgressService.isAvailable) return;
+    try {
+      final remote = await FirestoreProgressService.download(profileId);
+      // 取得中にプロフィールが切り替わっていたら破棄
+      if (_profileId != profileId) return;
+      final base = state.value ?? local;
+      if (remote == null) {
+        await FirestoreProgressService.upload(profileId, base);
+        return;
+      }
+      final merged = FirestoreProgressService.merge(base, remote);
+      if (merged.toJsonString() != base.toJsonString()) {
+        await _saveLocal(merged);
+        state = AsyncData(merged);
+        await _reconcileSharedCoins(merged);
+      }
+      await FirestoreProgressService.upload(profileId, merged);
+    } catch (e) {
+      debugPrint('[Firestore] 同期スキップ: $e');
+    }
   }
 
   // ────────────────────────────────────────────────────────
@@ -119,9 +154,15 @@ class UserProgressNotifier extends AsyncNotifier<UserProgress> {
     }
   }
 
-  Future<void> _save(UserProgress p) async {
+  Future<void> _saveLocal(UserProgress p) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(_prefsKey, p.toJsonString());
+  }
+
+  /// 端末に保存し、クラウドへも反映する（クラウド側の失敗は端末保存に影響させない）
+  Future<void> _save(UserProgress p) async {
+    await _saveLocal(p);
+    unawaited(FirestoreProgressService.upload(_profileId, p));
   }
 
   // ────────────────────────────────────────────────────────

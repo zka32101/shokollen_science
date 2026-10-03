@@ -4,46 +4,67 @@ import '../features/progress/models/user_progress_model.dart';
 import 'firebase_service.dart';
 
 /// Firestoreへの進捗データ同期
-/// users/{uid}/data/progress ドキュメントに保存
+///
+/// users/{uid}/data/progress ドキュメントの `profiles.<profileId>` に
+/// プロフィールごとの進捗を保存する（ルールは progress 1ドキュメントのみ許可
+/// のため、プロフィールごとにドキュメントを分けず1つにまとめている）。
 class FirestoreProgressService {
-  static final _db = FirebaseFirestore.instance;
-
   static String? get _uid => FirebaseService.userId;
 
+  static DocumentReference<Map<String, dynamic>>? get _doc {
+    final uid = _uid;
+    if (!FirebaseService.isAvailable || uid == null) return null;
+    return FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .collection('data')
+        .doc('progress');
+  }
+
   /// Firestoreへアップロード（ローカル進捗をクラウドに保存）
-  static Future<void> upload(UserProgress progress) async {
-    if (!FirebaseService.isAvailable || _uid == null) return;
+  static Future<void> upload(String profileId, UserProgress progress) async {
+    final doc = _doc;
+    if (doc == null) return;
     try {
-      await _db
-          .collection('users')
-          .doc(_uid)
-          .collection('data')
-          .doc('progress')
-          .set(progress.toJson(), SetOptions(merge: false));
-      debugPrint('[Firestore] 進捗アップロード完了');
+      // 該当プロフィールの項目だけを丸ごと置き換える（リセットも反映するため
+      // deep merge の set は使わない）。ドキュメント未作成なら set で作る。
+      try {
+        await doc.update({
+          FieldPath(['profiles', profileId]): progress.toJson(),
+          'updatedAt': FieldValue.serverTimestamp(),
+        });
+      } on FirebaseException catch (e) {
+        if (e.code != 'not-found') rethrow;
+        await doc.set({
+          'profiles': {profileId: progress.toJson()},
+          'updatedAt': FieldValue.serverTimestamp(),
+        });
+      }
+      debugPrint('[Firestore] 進捗アップロード完了 ($profileId)');
     } catch (e) {
       debugPrint('[Firestore] アップロード失敗: $e');
     }
   }
 
   /// Firestoreからダウンロード（クラウドの進捗を取得）
-  static Future<UserProgress?> download() async {
-    if (!FirebaseService.isAvailable || _uid == null) return null;
-    try {
-      final doc = await _db
-          .collection('users')
-          .doc(_uid)
-          .collection('data')
-          .doc('progress')
-          .get();
-      if (doc.exists && doc.data() != null) {
-        return UserProgress.fromJson(doc.data()!);
-      }
-    } catch (e) {
-      debugPrint('[Firestore] ダウンロード失敗: $e');
+  ///
+  /// クラウドに無ければ null。通信エラーなどは例外のまま投げる（呼び出し側が
+  /// 「未保存」と「取得失敗」を区別し、失敗時に空のクラウドを上書きしないため）。
+  static Future<UserProgress?> download(String profileId) async {
+    final doc = _doc;
+    if (doc == null) return null;
+    final snap = await doc.get();
+    final profiles = snap.data()?['profiles'];
+    if (profiles is Map && profiles[profileId] is Map) {
+      return UserProgress.fromJson(
+        Map<String, dynamic>.from(profiles[profileId] as Map),
+      );
     }
     return null;
   }
+
+  /// 同期が使えるか（Firebase 初期化済みで匿名ログイン済み）
+  static bool get isAvailable => _doc != null;
 
   /// ローカルとクラウドをマージ（スコアの高い方・バッジは和集合）
   static UserProgress merge(UserProgress local, UserProgress remote) {
