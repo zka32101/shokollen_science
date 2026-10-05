@@ -1,412 +1,406 @@
 import 'package:shared_core/shared_core.dart';
 
-/// 理科コレ キャラクター（16体）
+/// 理科コレ キャラクター（16体）。解放順は 生物→物質→エネルギー→地球・宇宙 を交互にしてバランスを取る。
 /// unlockAt: UserProgress.clearedCount（クリア済みステージ数）の閾値
+/// 画像: assets/characters/<id>.png / Lv.2表情 assets/character_levels/<id>_lv2_<1-3>.png
 const List<BaseCharacter> kRikaCharacters = [
-  // ── Tier 1（3年生テーマ） ─────────────────────────────────
   BaseCharacter(
-    id: 'komuji',
-    imageAsset: 'assets/characters/komuji.png',
-    name: 'コムシ',
-    emoji: '🐛',
+    id: 'happakko',
+    imageAsset: 'assets/characters/happakko.png',
+    name: 'ハッパっこ',
+    emoji: '🍃',
     tier: 1,
     unlockAt: 0,
-    subject: '昆虫・植物',
+    subject: '植物・光合成(3年〜6年)',
     backstory:
-        'コムシは昆虫の森にすむ科学の妖精。\n'
-        '「虫の体は頭・胸・腹の3つに分かれているよ！」が口ぐせ。\n'
-        '小さな虫や植物を観察するのが大好きで、\n'
-        'いつも虫メガネを持って野原を走り回っているんだって。',
+        'ハッパっこは日なたが大好きな葉っぱの子。\n'
+        '「葉っぱは日光を浴びて、でんぷんをつくるんだよ！」が口ぐせ。\n'
+        '光合成で酸素を出すのが自慢で、\n'
+        '朝いちばんに大きく背のびをするんだって。',
     stampPhrases: [
-      '昆虫すごい！',
-      '6本脚だよ',
-      'コムシと観察しよう',
-      '葉っぱの形が違う',
+      '光合成だよ！',
+      '日なたぼっこ',
+      '葉脈を見つけた',
+      'ハッパっこと育てよう',
+      '酸素をどうぞ',
+      'でんぷんできた',
+      '芽が出たよ',
       '理科大好き！',
-      'もっと探そう',
-      'まだ見てない虫がいる',
-      '一緒に探検しよう',
     ],
     appSubject: Subject.shokollen,
   ),
   BaseCharacter(
-    id: 'hanako',
-    imageAsset: 'assets/characters/hanako.png',
-    name: 'ハナコ',
-    emoji: '🌸',
+    id: 'mizubunshi',
+    imageAsset: 'assets/characters/mizubunshi.png',
+    name: 'ミズ水分子',
+    emoji: '💧',
     tier: 1,
     unlockAt: 3,
-    subject: '植物の育ち',
+    subject: '水のすがた・水溶液',
     backstory:
-        'ハナコは植物の精霊。種から芽が出る瞬間が一番好き。\n'
-        '「水と光と空気があれば、どんな種も芽を出せるよ！」\n'
-        'と教えてくれる。雨の日には特に元気になる不思議な子。\n'
-        '今日も誰かの植木鉢をこっそり覗いているよ。',
+        'ミズ水分子は形を自由に変えられる水の子。\n'
+        '「水は冷やすと氷、あたためると水蒸気になるよ！」\n'
+        'とっても気まぐれで、コップの中でもたまり水でも\n'
+        'どこへでもすいっと流れていくんだって。',
     stampPhrases: [
-      '芽が出た！',
-      '花が咲いたよ',
-      'ハナコと育てよう',
-      '水やりしてね',
-      '植物も生きてる',
-      'ありがとう！',
-      '実がなったよ',
-      '一緒に観察しよう',
+      'ぷるぷる！',
+      'H2Oだよ',
+      'ミズと実験',
+      '水に溶けたよ',
+      '流れていくよ',
+      'しずくがぽとり',
+      'すいすい進もう',
+      'もっと知りたい',
     ],
     appSubject: Subject.shokollen,
   ),
   BaseCharacter(
-    id: 'magne',
-    imageAsset: 'assets/characters/magne.png',
-    name: 'マグネ',
-    emoji: '🧲',
-    tier: 1,
-    unlockAt: 5,
-    subject: '磁石',
-    backstory:
-        'マグネは磁石の力を使う魔法使い。\n'
-        '「南極と北極は引き合うけど、同じ極は反発するんだよ！」\n'
-        'が好きなセリフ。鉄のものを見ると勝手に引き寄せてしまって、\n'
-        'よく鍋やハサミを引っ張ってしまうのが悩みなんだって。',
-    stampPhrases: [
-      'くっついた！',
-      '磁石パワー！',
-      'マグネと実験',
-      '鉄を見つけた',
-      'N極・S極',
-      '反発するよ',
-      'コンパスも磁石',
-      '理科楽しい',
-    ],
-    appSubject: Subject.shokollen,
-  ),
-  BaseCharacter(
-    id: 'densuke',
-    imageAsset: 'assets/characters/densuke.png',
-    name: 'デンスケ',
+    id: 'hikari',
+    imageAsset: 'assets/characters/hikari.png',
+    name: 'ヒカリ光',
     emoji: '💡',
     tier: 1,
-    unlockAt: 8,
-    subject: '電気の通り道',
+    unlockAt: 5,
+    subject: '光の性質',
     backstory:
-        'デンスケは電気の精霊。豆電球を頭に光らせて飛び回る。\n'
-        '「電気は一つながりの輪を作らないと流れないよ！」と得意げ。\n'
-        '暗い場所で光るので、友だちから懐中電灯がわりにされちゃう。\n'
-        'でも照らすのはちょっと恥ずかしいらしい。',
+        'ヒカリ光は光の速さで走り回る元気な子。\n'
+        '「光はまっすぐ進んで、鏡ではね返るよ！」が決めゼリフ。\n'
+        '虫めがねで光を集めるのが得意だけど、\n'
+        '日なたでやけどしそうなのが悩みなんだって。',
     stampPhrases: [
-      '電気が流れた！',
-      '豆電球光った',
-      'デンスケと回路',
-      '直列・並列',
-      '電池の向き大事',
-      '光った！',
-      'ショートしないで',
-      '理科実験楽しい',
+      'ピカッ！',
+      'まっすぐ進む',
+      '鏡で反射！',
+      '光を集めたよ',
+      '影ができた',
+      '虹を見つけた',
+      'ヒカリと実験',
+      'まぶしいね',
     ],
     appSubject: Subject.shokollen,
   ),
-
-  // ── Tier 2（4年生テーマ） ─────────────────────────────────
   BaseCharacter(
-    id: 'kazumaru',
-    imageAsset: 'assets/characters/kazumaru.png',
-    name: 'カゼマル',
-    emoji: '🌤️',
+    id: 'taiyou',
+    imageAsset: 'assets/characters/taiyou.png',
+    name: 'タイヨウ',
+    emoji: '☀️',
+    tier: 1,
+    unlockAt: 8,
+    subject: '太陽・星と月の動き',
+    backstory:
+        'タイヨウは空の高いところから見守る太陽の子。\n'
+        '「太陽は東からのぼって、南を通って西にしずむよ！」\n'
+        'いつも元気だけど、夜は地球の裏側でお休み中。\n'
+        '影の長さで時刻を教えてくれる名人なんだ。',
+    stampPhrases: [
+      'おはよう！',
+      '東からのぼるよ',
+      '影が動いたよ',
+      'あったかいね',
+      '南中したよ',
+      '日時計で遊ぼう',
+      'ぽかぽか',
+      'また明日！',
+    ],
+    appSubject: Subject.shokollen,
+  ),
+  BaseCharacter(
+    id: 'mushimushi',
+    imageAsset: 'assets/characters/mushimushi.png',
+    name: 'ムシムシ',
+    emoji: '🦋',
     tier: 2,
     unlockAt: 12,
-    subject: '天気・気象',
+    subject: '昆虫・動物のからだ',
     backstory:
-        'カゼマルは雲の上に住む気象博士の見習い。\n'
-        '「天気は西から東へ変わることが多いよ！」と毎朝空を見上げる。\n'
-        '雨が降ると悲しそうだけど、「雨は必要なんだ」と言い聞かせてる。\n'
-        '晴れの日は特に元気で、空高く飛んでいくよ。',
+        'ムシムシは野原を飛びまわるちょうちょの子。\n'
+        '「昆虫の体は頭・胸・腹、あしは6本だよ！」が口ぐせ。\n'
+        'たまご・よう虫・さなぎ・成虫の育ち方を\n'
+        '全部知っている生き物はかせなんだ。',
     stampPhrases: [
-      '晴れだよ！',
-      '積乱雲発見',
-      'カゼマルと天気観察',
-      '気温変化に注目',
-      '西から雨が来る',
-      '風向き覚えてね',
-      '天気図読めたよ',
-      '明日も晴れるかな',
+      '6本あしだよ',
+      'ひらひら飛ぶよ',
+      'さなぎになるよ',
+      'ムシムシと観察',
+      '花のみつ、おいしい',
+      '羽が生えた！',
+      'まだ見てない虫',
+      '探検しよう',
     ],
     appSubject: Subject.shokollen,
   ),
   BaseCharacter(
-    id: 'tsukimi',
-    imageAsset: 'assets/characters/tsukimi.png',
-    name: 'ツキミ',
-    emoji: '🌙',
+    id: 'koori',
+    imageAsset: 'assets/characters/koori.png',
+    name: 'コオリ',
+    emoji: '🧊',
     tier: 2,
     unlockAt: 16,
-    subject: '月・星・太陽',
+    subject: '水のすがた(固体)・温度',
     backstory:
-        'ツキミは月明かりの下で生まれた星の子。\n'
-        '「月は自分では光らない、太陽の光を反射しているんだよ！」\n'
-        'と夜空を見上げて説明してくれる。満月の夜が一番元気で、\n'
-        '星座の話を一晩中してくれる賑やかな子だよ。',
+        'コオリはひんやりクールな氷の子。\n'
+        '「水は0度でこおって、ふくらむんだよ！」と教えてくれる。\n'
+        'あたたかい部屋が少し苦手で、\n'
+        'とけないようにいつも冷凍庫に避難しているんだ。',
     stampPhrases: [
-      '満月だよ！',
-      '星が見えた',
-      'ツキミと天体観察',
-      '太陽系の話しよう',
-      '月が変わった',
-      '北斗七星発見',
-      '惑星の順番覚えた',
-      '宇宙って広い',
+      'ひんやり〜',
+      '0度でこおるよ',
+      'とけちゃう！',
+      '氷はういてる',
+      'ふくらむよ',
+      'ピキーン！',
+      'コオリと実験',
+      '冷たいね',
     ],
     appSubject: Subject.shokollen,
   ),
   BaseCharacter(
-    id: 'honetaro',
-    imageAsset: 'assets/characters/honetaro.png',
-    name: 'ホネタロウ',
-    emoji: '🦴',
+    id: 'onpa',
+    imageAsset: 'assets/characters/onpa.png',
+    name: 'オンパ音波',
+    emoji: '🔊',
     tier: 2,
     unlockAt: 20,
-    subject: '人体の運動',
+    subject: '音の性質',
     backstory:
-        'ホネタロウは体の中から飛び出してきた骨の博士。\n'
-        '「骨と筋肉が一緒に働くから体が動くんだよ！」が持論。\n'
-        'いつも姿勢よくピンと立っていて、「骨を大事に！」と呼びかける。\n'
-        '牛乳を飲むたびに「カルシウム補給！」と叫ぶクセがある。',
+        'オンパは音のふるえで元気になる音波の子。\n'
+        '「音は物がふるえて伝わるんだよ！」が合言葉。\n'
+        '糸電話や太鼓のふるえが大好きで、\n'
+        '空気のない宇宙では静かになってしまうんだって。',
     stampPhrases: [
-      '骨が大事！',
-      '筋肉を動かそう',
-      'ホネタロウと体の勉強',
-      '関節はここだよ',
-      'カルシウム補給',
-      '運動しよう',
-      '体のしくみって面白い',
-      '骨は何本あるかな',
+      'ブルブル！',
+      '音が伝わるよ',
+      '大きな音だ',
+      '高い音・低い音',
+      '糸電話しよう',
+      'ふるえてる',
+      'オンパと実験',
+      '耳をすまそう',
     ],
     appSubject: Subject.shokollen,
   ),
   BaseCharacter(
-    id: 'mizukichi',
-    imageAsset: 'assets/characters/mizukichi.png',
-    name: 'ミズキチ',
-    emoji: '💧',
+    id: 'tsukichan',
+    imageAsset: 'assets/characters/tsukichan.png',
+    name: 'ツキちゃん',
+    emoji: '🌙',
     tier: 2,
     unlockAt: 24,
-    subject: '空気と水の性質',
+    subject: '月・星の見え方',
     backstory:
-        'ミズキチは水辺に住む実験好きの精霊。\n'
-        '「空気も水も押すと体積が変わるけど、縮み方が違うんだよ！」\n'
-        'と注射器を持って走り回る。水鉄砲の達人でもある。\n'
-        '雨の日は大喜びで水たまりに飛び込む困った子。',
+        'ツキちゃんは夜空にすむ月の子。\n'
+        '「月の形は、日によって満ち欠けするんだよ！」\n'
+        '新月から満月まで約30日かけて変身するのが\n'
+        'ひそかな自慢なんだって。',
     stampPhrases: [
-      '水の実験！',
-      '空気は縮む',
-      'ミズキチと実験',
-      '注射器で確認',
-      '水圧すごい',
-      '泡が出た！',
-      '体積変化した',
-      '水って不思議',
+      '満月だよ',
+      '三日月になった',
+      '月がのぼる',
+      'ツキちゃんと観察',
+      '夜空きれい',
+      '形が変わるよ',
+      '星も見えるね',
+      'おやすみなさい',
     ],
     appSubject: Subject.shokollen,
   ),
-
-  // ── Tier 3（5年生テーマ） ─────────────────────────────────
   BaseCharacter(
-    id: 'tokero',
-    imageAsset: 'assets/characters/tokero.png',
-    name: 'トケロー',
-    emoji: '🧪',
+    id: 'mizukko',
+    imageAsset: 'assets/characters/mizukko.png',
+    name: 'ミズっこ魚',
+    emoji: '🐟',
     tier: 3,
     unlockAt: 28,
-    subject: '物の溶け方',
+    subject: '水の生き物・メダカ',
     backstory:
-        'トケローは実験室から生まれた溶解の専門家。\n'
-        '「食塩は水に溶けても消えてないよ！蒸発させると戻るんだ！」\n'
-        'が自慢の知識。いつも試験管とビーカーを持ち歩いて、\n'
-        '何でも溶かそうとしてしまう探究心旺盛な子。',
+        'ミズっこは川や池をすいすい泳ぐ魚の子。\n'
+        '「メダカのたまごは、だんだん魚のすがたになるよ！」\n'
+        'えらで呼吸して、ひれで上手に泳ぐのが得意。\n'
+        '水の中の生き物には何でも詳しいんだ。',
     stampPhrases: [
-      '溶けた！',
-      '結晶ができた',
-      'トケローと実験',
-      '食塩水の秘密',
-      '濃度を測ろう',
-      '蒸発してみた',
-      '飽和溶液発見',
-      '化学面白い',
+      'すいすい泳ぐ',
+      'えらで呼吸',
+      'たまごを見つけた',
+      'ミズっこと観察',
+      '水草の陰にいるよ',
+      'ひれを動かすよ',
+      'ぽちゃん！',
+      '池をのぞこう',
     ],
     appSubject: Subject.shokollen,
   ),
   BaseCharacter(
-    id: 'furiko',
-    imageAsset: 'assets/characters/furiko.png',
-    name: 'フリコ',
-    emoji: '⏰',
+    id: 'jouki',
+    imageAsset: 'assets/characters/jouki.png',
+    name: 'ジョウキ',
+    emoji: '♨️',
     tier: 3,
     unlockAt: 32,
-    subject: '振り子の動き',
+    subject: '蒸発と水蒸気・ものの温まり方',
     backstory:
-        'フリコは時計の国からやってきた振り子妖精。\n'
-        '「振り子の周期は、糸の長さで決まるんだよ！重さは関係ない！」\n'
-        'とリズミカルに教えてくれる。いつも一定のリズムで歩いていて、\n'
-        '「それがフリコのアイデンティティだ」と自慢している。',
+        'ジョウキは湯気の中からあらわれる水蒸気の子。\n'
+        '「水は熱するとあわを出して、水蒸気に変わるよ！」\n'
+        'ふっとうのとき、あっという間に空へ昇っていく。\n'
+        '冷やされるとまた水つぶにもどるんだ。',
     stampPhrases: [
-      '振り子実験！',
-      '周期が合った',
-      'フリコと時間測定',
-      '糸を長くしたよ',
-      'リズムが大事',
-      '等時性すごい',
-      'ガリレオと同じ発見',
-      '理科って面白い',
+      'ふっとう！',
+      'もくもく',
+      '蒸発したよ',
+      '水にもどった',
+      'あわが出たよ',
+      'ジョウキと実験',
+      'あったかいね',
+      '空へ昇ろう',
     ],
     appSubject: Subject.shokollen,
   ),
   BaseCharacter(
-    id: 'birika',
-    imageAsset: 'assets/characters/birika.png',
-    name: 'ビリカ',
+    id: 'denki',
+    imageAsset: 'assets/characters/denki.png',
+    name: 'デンキ電気',
     emoji: '⚡',
     tier: 3,
     unlockAt: 36,
-    subject: '電流と電磁石',
+    subject: '電気の通り道・回路',
     backstory:
-        'ビリカは電流を操る電磁石の達人。\n'
-        '「コイルに電流を流すと磁石になるよ！これが電磁石！」\n'
-        'と興奮して説明する。ビリッとした静電気が好きで、\n'
-        '冬になると特に元気になる不思議な子。',
+        'デンキはパチパチ光る元気な電気の子。\n'
+        '「電気はぐるっと輪になっていないと流れないよ！」\n'
+        '豆電球をつけるのが大好きで、\n'
+        '回路をつなぐのがとても上手なんだ。',
     stampPhrases: [
-      '電磁石完成！',
-      'コイルを巻こう',
-      'ビリカと電気実験',
-      '電流の向きに注意',
-      'N極が変わった',
-      'モーター動いた',
-      '電流強いほど強力',
-      '発電してみた',
+      'ビリビリ！',
+      '回路をつなごう',
+      '豆電球ついた',
+      '電池をつなぐよ',
+      '電気が流れた',
+      'スイッチオン',
+      'デンキと実験',
+      'ショートに注意',
     ],
     appSubject: Subject.shokollen,
   ),
   BaseCharacter(
-    id: 'tanekichi',
-    imageAsset: 'assets/characters/tanekichi.png',
-    name: 'タネキチ',
-    emoji: '🌱',
+    id: 'tenki',
+    imageAsset: 'assets/characters/tenki.png',
+    name: 'テンキ天気',
+    emoji: '⛅',
     tier: 3,
     unlockAt: 40,
-    subject: '植物の発芽・成長',
+    subject: '天気の変化・雲',
     backstory:
-        'タネキチは種の中に住む生命力あふれる精霊。\n'
-        '「種が芽を出すには水・空気・適切な温度が必要だよ！」と語る。\n'
-        '土の匂いが大好きで、春になると必ずどこかの畑に遊びに行く。\n'
-        '育てた植物が大きくなるのを見るのが一番の喜び。',
+        'テンキは空を見て天気を当てる天気の子。\n'
+        '「雲の量で、晴れとくもりが決まるんだよ！」\n'
+        '雲の動きから、あしたの天気を予想するのが得意。\n'
+        '台風の日は少しおとなしくなるんだって。',
     stampPhrases: [
-      '発芽した！',
-      '双葉が出た',
-      'タネキチと栽培',
-      'でんぷんを作ってる',
-      '光合成すごい',
-      '根が伸びてる',
-      '結実したよ！',
-      '生命の不思議',
+      '晴れたよ',
+      '雲が出てきた',
+      '雨がふるよ',
+      '天気予想しよう',
+      '虹が出た',
+      '風がふいた',
+      'テンキと観察',
+      'あしたは晴れかな',
     ],
     appSubject: Subject.shokollen,
   ),
-
-  // ── Tier 4（6年生・スペシャル） ──────────────────────────
   BaseCharacter(
-    id: 'chisoun',
-    imageAsset: 'assets/characters/chisoun.png',
-    name: 'チソウン',
-    emoji: '🗻',
+    id: 'hitohito',
+    imageAsset: 'assets/characters/hitohito.png',
+    name: 'ヒトヒト',
+    emoji: '🧍',
     tier: 4,
     unlockAt: 44,
-    subject: '地層・岩石',
+    subject: '人のからだ・骨と筋肉',
     backstory:
-        'チソウンは大地の記憶を読む地層博士。\n'
-        '「地層を見れば何万年もの歴史がわかるんだよ！」と感動する。\n'
-        '化石を見つけるのが得意で、どこへ行っても地面を眺めている。\n'
-        '大昔の生き物の話を始めると止まらないので有名。',
+        'ヒトヒトは体のしくみを教えてくれる人の子。\n'
+        '「心臓は血液を全身に送るポンプなんだよ！」\n'
+        '骨と筋肉でささえられて動くことや、\n'
+        '食べ物が消化されるしくみにとても詳しいんだ。',
     stampPhrases: [
-      '化石発見！',
-      '地層がきれい',
-      'チソウンと地質調査',
-      '堆積岩だよ',
-      '火成岩も発見',
-      '示準化石すごい',
-      '地球の歴史を見た',
-      '億年単位で考える',
+      'ドキドキ',
+      '心臓が動くよ',
+      '深呼吸しよう',
+      '骨と筋肉だよ',
+      'ヒトヒトと学ぼう',
+      'よくかんで食べよう',
+      '脈をはかろう',
+      '元気いっぱい',
     ],
     appSubject: Subject.shokollen,
   ),
   BaseCharacter(
-    id: 'moeru',
-    imageAsset: 'assets/characters/moeru.png',
-    name: 'モエール',
-    emoji: '🔥',
+    id: 'dorodoro',
+    imageAsset: 'assets/characters/dorodoro.png',
+    name: 'ドロドロ',
+    emoji: '🟤',
     tier: 4,
     unlockAt: 48,
-    subject: '物の燃え方',
+    subject: '土・地面のようす・水のしみこみ',
     backstory:
-        'モエールは炎の精霊。燃焼の三要素を体で表現できる。\n'
-        '「燃えるには燃料・酸素・温度の3つが必要なんだよ！」\n'
-        'と炎を揺らしながら説明する。消防士にも尊敬されている。\n'
-        '「火は正しく使えば友だち」が座右の銘。',
+        'ドロドロは土の中にすむどろんこの子。\n'
+        '「土の粒の大きさで、水のしみこみ方が変わるよ！」\n'
+        'すな・どろ・れきの違いを調べるのが大好きで、\n'
+        '雨上がりの校庭を見つけると走っていくんだ。',
     stampPhrases: [
-      '燃えた！',
-      '酸素が必要',
-      'モエールと燃焼実験',
-      '二酸化炭素が出た',
-      '消火は3要素を断つ',
-      'ろうそくの炎だ',
-      '完全燃焼成功',
-      '炎の色が変わる',
+      'どろんこ！',
+      '水がしみた',
+      'すなとどろ',
+      '土をほろう',
+      'つぶが大きいよ',
+      'ドロドロと実験',
+      '校庭に行こう',
+      '地面の下は？',
     ],
     appSubject: Subject.shokollen,
   ),
   BaseCharacter(
-    id: 'taborun',
-    imageAsset: 'assets/characters/taborun.png',
-    name: 'タベルン',
-    emoji: '🌿',
+    id: 'jishaku',
+    imageAsset: 'assets/characters/jishaku.png',
+    name: 'ジシャク磁石',
+    emoji: '🧲',
     tier: 4,
     unlockAt: 52,
-    subject: '生物と環境',
+    subject: '磁石の性質',
     backstory:
-        'タベルンは食物連鎖の繋がりを守る森の守護者。\n'
-        '「すべての生き物は繋がり合っているんだよ！」と力説する。\n'
-        '草から虫、鳥、タカまで友だちで、誰も傷つけてほしくない。\n'
-        '環境破壊のニュースを聞くたびに涙を流す優しい子。',
+        'ジシャクは鉄を引き寄せる磁石の子。\n'
+        '「N極とS極は引き合って、同じ極はしりぞけ合うよ！」\n'
+        '鉄のものを見つけると思わずくっついてしまい、\n'
+        'よくクリップを引っぱってしまうのが悩み。',
     stampPhrases: [
-      '食物連鎖！',
-      '生態系大事に',
-      'タベルンと自然観察',
-      '分解者も必要',
-      '水と空気の循環',
-      '環境を守ろう',
-      '生物多様性すごい',
-      'みんなで生きてる',
+      'くっついた！',
+      'N極とS極',
+      '反発するよ',
+      '鉄を見つけた',
+      '磁石パワー！',
+      '方位磁針も磁石',
+      'ジシャクと実験',
+      '引き合うよ',
     ],
     appSubject: Subject.shokollen,
   ),
   BaseCharacter(
-    id: 'hakase_master',
-    imageAsset: 'assets/characters/hakase_master.png',
-    name: '理科マスター',
-    emoji: '🔬',
+    id: 'kaseki',
+    imageAsset: 'assets/characters/kaseki.png',
+    name: 'カセキ化石',
+    emoji: '🦴',
     tier: 4,
     unlockAt: 56,
-    subject: '理科総合',
+    subject: '地層・化石・大地の変化',
     backstory:
-        '理科コレを完全制覇した者だけが出会える伝説の博士。\n'
-        '「観察・実験・考察、これが理科の三原則だよ！」と微笑む。\n'
-        'すべての理科の精霊たちから慕われており、\n'
-        '一緒に写真を撮ろうとすると「まだ研究中だよ」と照れる。',
+        'カセキは大昔のようすを知る化石の子。\n'
+        '「地層は、れきや砂やどろが積もってできたんだよ！」\n'
+        '貝や植物の化石から、\n'
+        '昔そこが海だったことを教えてくれる大地の語り部だ。',
     stampPhrases: [
-      '全ステージ制覇！',
-      '理科マスターと握手',
-      'ありがとう！',
-      'また実験しよう',
-      '好奇心を忘れずに',
-      '科学者になろう',
-      '不思議を探そう',
-      '理科は楽しい！',
+      '化石を発見！',
+      '地層だよ',
+      '大昔の海',
+      '層が重なる',
+      '火山と地震',
+      'カセキと発掘',
+      'れき・砂・どろ',
+      '大地は動く',
     ],
     appSubject: Subject.shokollen,
   ),

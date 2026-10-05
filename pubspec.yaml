@@ -132,6 +132,7 @@ flutter:
     - assets/images/monsters/
     - assets/images/avatars/
     - assets/characters/
+    - assets/character_levels/
     - assets/logos/
 
   # An image asset can refer to one or more resolution-specific "variants", see
