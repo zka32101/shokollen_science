@@ -134,6 +134,7 @@ flutter:
     - assets/characters/
     - assets/character_levels/
     - assets/logos/
+    - assets/branding/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
