@@ -11,6 +11,7 @@ import 'features/settings/providers/theme_provider.dart';
 import 'providers/character_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'services/firebase_service.dart';
+import 'widgets/startup_splash.dart';
 import 'features/progress/providers/daily_mystery_provider.dart'
     show sharedPreferencesProvider;
 import 'features/progress/services/daily_mystery_notification_service.dart';
@@ -29,6 +30,9 @@ void main() async {
     developer.log('WidgetsFlutterBinding.ensureInitialized() 開始',
         name: 'shokollen_science.init');
     WidgetsFlutterBinding.ensureInitialized();
+    // 初期化（Firebase・通知など）が終わるまで組織ロゴの起動画面を出す。
+    // 初期化後の本番 runApp がこれを置き換える。
+    runApp(const MaterialApp(debugShowCheckedModeBanner: false, home: StartupSplash()));
     developer.log('✓ WidgetsFlutterBinding initialized',
         name: 'shokollen_science.init');
     debugPrint('✓ WidgetsFlutterBinding initialized');
