@@ -76,7 +76,8 @@ class DailyMysteryNotificationService {
           presentSound: true,
         ),
       ),
-      androidAllowWhileIdle: true,
+      // 毎朝7時・毎晩18時の通知は数分ずれてもよいので、正確なアラーム権限を使わない
+      androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
       matchDateTimeComponents: DateTimeComponents.time,
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
@@ -120,7 +121,8 @@ class DailyMysteryNotificationService {
           presentSound: true,
         ),
       ),
-      androidAllowWhileIdle: true,
+      // 毎朝7時・毎晩18時の通知は数分ずれてもよいので、正確なアラーム権限を使わない
+      androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
       matchDateTimeComponents: DateTimeComponents.time,
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
