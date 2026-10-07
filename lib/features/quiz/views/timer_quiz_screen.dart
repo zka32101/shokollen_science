@@ -1,3 +1,4 @@
+import '../utils/shuffle_choices.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -31,7 +32,7 @@ class _TimerQuizScreenState extends ConsumerState<TimerQuizScreen> {
     final qs = sampleQuestionsData
         .where((q) => q['stageId'] == widget.stageId)
         .toList();
-    _questions = qs.take(10).toList();
+    _questions = qs.take(10).map((q) => withShuffledAnswers(q)).toList();
     _allSelected = List.filled(_questions.length, null);
     _startTimer();
   }

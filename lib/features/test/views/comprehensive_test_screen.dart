@@ -1,3 +1,4 @@
+import '../../quiz/utils/shuffle_choices.dart';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -45,7 +46,7 @@ class _ComprehensiveTestScreenState
     // シャッフルして最大15問
     final seed = DateTime.now().millisecondsSinceEpoch;
     all.shuffle(Random(seed));
-    return all.take(15).toList();
+    return all.take(15).map((q) => withShuffledAnswers(q)).toList();
   }
 
   @override
