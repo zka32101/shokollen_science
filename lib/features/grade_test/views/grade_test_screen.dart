@@ -1,3 +1,4 @@
+import '../../quiz/utils/shuffle_choices.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -26,7 +27,8 @@ class _GradeTestScreenState extends ConsumerState<GradeTestScreen> {
         .where((q) => (q['stageId'] as String).startsWith(prefix))
         .toList();
     gradeQs.shuffle();
-    final picked = gradeQs.take(20).toList();
+    final picked =
+        gradeQs.take(20).map((q) => withShuffledAnswers(q)).toList();
     setState(() {
       _questions = picked;
       _selected = List.filled(picked.length, null);

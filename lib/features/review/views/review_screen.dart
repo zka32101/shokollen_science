@@ -1,3 +1,4 @@
+import '../../quiz/utils/shuffle_choices.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -42,7 +43,8 @@ class _ReviewScreenState extends ConsumerState<ReviewScreen> {
       }
     }
     setState(() {
-      _reviewQuestions = questions.take(10).toList();
+      _reviewQuestions =
+          questions.take(10).map((q) => withShuffledAnswers(q)).toList();
       _selected = List.filled(_reviewQuestions.length, null);
     });
   }

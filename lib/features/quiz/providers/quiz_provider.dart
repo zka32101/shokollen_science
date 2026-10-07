@@ -1,3 +1,4 @@
+import '../utils/shuffle_choices.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/question_model.dart';
 import '../../../data/seeds/sample_questions.dart';
@@ -87,6 +88,7 @@ class QuizNotifier extends Notifier<QuizState> {
     final rawList = sampleQuestionsData
         .where((q) => q['stageId'] == stageId)
         .take(10)
+        .map((q) => withShuffledAnswers(q))
         .toList();
 
     final questions = rawList.map((q) {

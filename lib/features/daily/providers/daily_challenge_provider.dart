@@ -1,3 +1,4 @@
+import '../../quiz/utils/shuffle_choices.dart';
 import 'dart:math';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -52,7 +53,8 @@ class DailyChallengeNotifier extends AsyncNotifier<DailyChallengeState> {
     final rng = Random(seed);
     final all = List<Map<String, dynamic>>.from(sampleQuestionsData);
     all.shuffle(rng);
-    return all.take(3).toList();
+    // 選択肢の並びも日付シードで決める(同じ日は同じ並び)
+    return all.take(3).map((q) => withShuffledAnswers(q, rng)).toList();
   }
 
   Future<void> markCompleted() async {
