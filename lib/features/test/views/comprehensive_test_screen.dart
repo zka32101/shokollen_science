@@ -1,3 +1,4 @@
+import 'package:shokollen_science/shared/utils/ruby_text.dart';
 import '../../quiz/utils/shuffle_choices.dart';
 import 'dart:math';
 import 'package:flutter/material.dart';
@@ -162,7 +163,7 @@ class _ComprehensiveTestScreenState
   Widget _buildHeader(Map<String, dynamic> q) {
     final stageId = q['stageId'] as String;
     final stage = stagesData.firstWhere((s) => s['id'] == stageId, orElse: () => {});
-    final stageName = stage['stageName'] as String? ?? '';
+    final stageName = rubyToPlain(stage['stageName'] as String? ?? '');
 
     return Container(
       padding: const EdgeInsets.fromLTRB(16, 12, 16, 14),

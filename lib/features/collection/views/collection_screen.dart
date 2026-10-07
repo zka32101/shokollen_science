@@ -1,3 +1,4 @@
+import 'package:shokollen_science/shared/utils/ruby_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -150,7 +151,7 @@ class _CollectionScreenState extends ConsumerState<CollectionScreen>
                           style: TextStyle(fontSize: isCleared ? 24 : 20)),
                       const SizedBox(height: 4),
                       Text(
-                        stage['stageName'] as String,
+                        rubyToPlain(stage['stageName'] as String),
                         style: TextStyle(
                           fontSize: 9.5,
                           fontWeight: FontWeight.bold,

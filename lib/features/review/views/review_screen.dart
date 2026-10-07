@@ -1,3 +1,4 @@
+import 'package:shokollen_science/shared/utils/ruby_text.dart';
 import '../../quiz/utils/shuffle_choices.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -194,7 +195,7 @@ class _ReviewScreenState extends ConsumerState<ReviewScreen> {
 
   String _getStageName(String stageId) {
     final stage = stagesData.firstWhere((s) => s['id'] == stageId, orElse: () => {});
-    return stage['stageName'] as String? ?? stageId;
+    return rubyToPlain(stage['stageName'] as String? ?? stageId);
   }
 
   Widget _buildResult(BuildContext context) {
