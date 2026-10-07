@@ -71,6 +71,10 @@ dependencies:
   # ============== Shared Core ==============
   shared_core:
     path: H:\マイドライブ\apps\shared_core
+  cross_promo_kit:
+    git:
+      url: https://github.com/zka32101/cross_promo_kit.git
+      ref: v0.2.0
 
   # ============== Monetization ==============
   purchases_flutter: ^10.0.0
