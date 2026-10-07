@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../shared/constants/app_colors.dart';
+import 'package:shokollen_science/widgets/ukalab_emoji.dart';
 
 class OnboardingScreen extends ConsumerStatefulWidget {
   const OnboardingScreen({super.key});
@@ -171,7 +172,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                     color: Colors.white.withValues(alpha: 0.15),
                     shape: BoxShape.circle,
                   ),
-                  child: Center(child: Text(page.emoji, style: const TextStyle(fontSize: 72))),
+                  child: Center(child: UkalabEmoji(page.emoji, size: 72)),
                 ),
                 const SizedBox(height: 40),
                 Text(page.title,

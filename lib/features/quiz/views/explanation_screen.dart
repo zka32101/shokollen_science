@@ -5,6 +5,7 @@ import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 import '../../../shared/constants/app_colors.dart';
 import '../models/explanation_model.dart';
 import '../models/question_model.dart';
+import 'package:shokollen_science/widgets/ukalab_emoji.dart';
 
 /// 解説画面（リニューアル版）
 /// ・タブ廃止 → 縦スクロール 1画面
@@ -177,7 +178,7 @@ class _ExplanationScreenState extends State<ExplanationScreen>
         ),
         child: Row(
           children: [
-            Text(_bannerEmoji, style: const TextStyle(fontSize: 48)),
+            UkalabEmoji(_bannerEmoji, size: 48),
             const SizedBox(width: 16),
             Expanded(
               child: Column(
@@ -644,7 +645,7 @@ class _SectionHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Text(emoji, style: const TextStyle(fontSize: 20)),
+        UkalabEmoji(emoji, size: 20),
         const SizedBox(width: 8),
         Text(
           title,
@@ -761,7 +762,7 @@ class _KeyPointChip extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(keyPoint.emoji, style: const TextStyle(fontSize: 16)),
+          UkalabEmoji(keyPoint.emoji, size: 16),
           const SizedBox(width: 6),
           Text(
             keyPoint.text,

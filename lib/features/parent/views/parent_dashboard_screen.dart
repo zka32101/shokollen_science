@@ -7,6 +7,7 @@ import '../../profile/providers/profile_provider.dart';
 import '../../../data/seeds/stages.dart';
 import '../providers/praise_provider.dart';
 import '../../../shared/widgets/avatar_image.dart';
+import 'package:shokollen_science/widgets/ukalab_emoji.dart';
 
 class ParentDashboardScreen extends ConsumerStatefulWidget {
   const ParentDashboardScreen({super.key});
@@ -226,7 +227,7 @@ class _ParentDashboardScreenState extends ConsumerState<ParentDashboardScreen> {
         ),
         child: Column(
           children: [
-            Text(emoji, style: const TextStyle(fontSize: 22)),
+            UkalabEmoji(emoji, size: 22),
             const SizedBox(height: 4),
             Text(value, style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: color)),
             Text(label, style: const TextStyle(fontSize: 10, color: AppColors.textGray)),

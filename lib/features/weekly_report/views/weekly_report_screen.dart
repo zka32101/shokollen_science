@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import '../../../shared/constants/app_colors.dart';
 import '../../../features/progress/providers/user_progress_provider.dart';
 import '../../../data/seeds/stages.dart';
+import 'package:shokollen_science/widgets/ukalab_emoji.dart';
 
 class WeeklyReportScreen extends ConsumerWidget {
   const WeeklyReportScreen({super.key});
@@ -367,7 +368,7 @@ class _SummaryCard extends StatelessWidget {
       ),
       child: Column(
         children: [
-          Text(icon, style: const TextStyle(fontSize: 22)),
+          UkalabEmoji(icon, size: 22),
           const SizedBox(height: 4),
           Text(
             value,

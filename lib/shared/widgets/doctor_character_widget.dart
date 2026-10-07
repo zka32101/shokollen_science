@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../features/progress/providers/user_progress_provider.dart';
+import 'package:shokollen_science/widgets/ukalab_emoji.dart';
 
 /// ホーム画面に表示する博士キャラ（ポイントに応じてレベルアップ）
 class DoctorCharacterWidget extends ConsumerWidget {
@@ -57,7 +58,7 @@ class DoctorCharacterWidget extends ConsumerWidget {
               shape: BoxShape.circle,
               border: Border.all(color: const Color(0xFF5C9BD4), width: 2),
             ),
-            child: Center(child: Text(level.emoji, style: const TextStyle(fontSize: 32))),
+            child: Center(child: UkalabEmoji(level.emoji, size: 32)),
           ),
           const SizedBox(width: 12),
           Expanded(

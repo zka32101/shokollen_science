@@ -23,6 +23,7 @@ import '../../../shared/widgets/furigana_text.dart';
 import '../../progress/providers/daily_mystery_provider.dart';
 import '../../../providers/selected_background_provider.dart';
 import '../../../data/background_shop_items.dart';
+import 'package:shokollen_science/widgets/ukalab_emoji.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -135,7 +136,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         ),
         child: Row(
           children: [
-            Text(emoji, style: const TextStyle(fontSize: 24)),
+            UkalabEmoji(emoji, size: 24),
             const SizedBox(width: 8),
             Expanded(
               child: Column(
@@ -217,7 +218,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(emoji, style: const TextStyle(fontSize: 26)),
+                        UkalabEmoji(emoji, size: 26),
                         const SizedBox(height: 4),
                         Text(
                           label,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../data/sky_events_data.dart';
+import 'package:shokollen_science/widgets/ukalab_emoji.dart';
 
 // ④ 今夜の空: 月相 + 天体イベントカレンダー
 class TonightSkyScreen extends StatelessWidget {
@@ -148,7 +149,7 @@ class TonightSkyScreen extends StatelessWidget {
           children: [
             Row(
               children: [
-                Text(event.emoji, style: const TextStyle(fontSize: 32)),
+                UkalabEmoji(event.emoji, size: 32),
                 const SizedBox(width: 10),
                 Expanded(
                   child: Column(
@@ -263,7 +264,7 @@ class TonightSkyScreen extends StatelessWidget {
         ),
         child: Row(
           children: [
-            Text(event.emoji, style: const TextStyle(fontSize: 24)),
+            UkalabEmoji(event.emoji, size: 24),
             const SizedBox(width: 12),
             Expanded(
               child: Column(
@@ -405,7 +406,7 @@ class TonightSkyScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 8),
-                Text(top.emoji, style: const TextStyle(fontSize: 18)),
+                UkalabEmoji(top.emoji, size: 18),
                 const SizedBox(width: 8),
                 Expanded(
                   child: Text(

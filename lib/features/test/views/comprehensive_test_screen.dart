@@ -7,6 +7,7 @@ import '../../../shared/widgets/furigana_text.dart';
 import '../../../data/seeds/sample_questions.dart';
 import '../../../data/seeds/stages.dart';
 import '../../progress/providers/user_progress_provider.dart';
+import 'package:shokollen_science/widgets/ukalab_emoji.dart';
 
 class ComprehensiveTestScreen extends ConsumerStatefulWidget {
   final int grade;
@@ -234,7 +235,7 @@ class _ComprehensiveTestScreenState
                 ),
                 child: Column(
                   children: [
-                    Text(emoji, style: const TextStyle(fontSize: 64)),
+                    UkalabEmoji(emoji, size: 64),
                     const SizedBox(height: 12),
                     Text('${widget.grade}年生 まとめテスト',
                         style: const TextStyle(color: Colors.white70, fontSize: 14)),
