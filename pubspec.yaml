@@ -71,6 +71,10 @@ dependencies:
   # ============== Shared Core ==============
   shared_core:
     path: H:\マイドライブ\apps\shared_core
+  cross_promo_kit:
+    git:
+      url: https://github.com/zka32101/cross_promo_kit.git
+      ref: v0.2.0
 
   # ============== Monetization ==============
   purchases_flutter: ^10.0.0
@@ -95,6 +99,14 @@ flutter_launcher_icons:
   min_sdk_android: 21
   adaptive_icon_background: "#50ABEB"
   adaptive_icon_foreground: "assets/icon/app_icon.jpg"
+
+# shared_core(H:側)が cross_promo_kit を path:../cross_promo_kit で参照するため、
+# git 依存と競合しないよう同じ git ref に固定する。
+dependency_overrides:
+  cross_promo_kit:
+    git:
+      url: https://github.com/zka32101/cross_promo_kit.git
+      ref: v0.2.0
 
 dev_dependencies:
   flutter_test:

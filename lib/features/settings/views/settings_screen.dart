@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:cross_promo_kit/cross_promo_kit.dart' show CrossPromoSection;
 import 'package:shared_core/shared_core.dart'
-    show coinProvider, inventoryProvider;
+    show coinProvider, inventoryProvider, ParentalGateService;
 import '../../../shared/constants/app_colors.dart';
 import '../../profile/providers/profile_provider.dart';
 import '../../progress/providers/user_progress_provider.dart';
@@ -114,6 +115,11 @@ class SettingsScreen extends ConsumerWidget {
               Uri.parse('https://sites.google.com/view/yourwishapps'),
               mode: LaunchMode.externalApplication,
             ),
+          ),
+          CrossPromoSection(
+            currentAppId: 'com.yourwish.shougakukore.rika',
+            currentCategory: '小学コレ',
+            beforeOpenStore: (context) => ParentalGateService.requireParentalGate(context),
           ),
           const Divider(),
           Padding(

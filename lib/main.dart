@@ -1,6 +1,7 @@
 import 'dart:developer' as developer;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:cross_promo_kit/cross_promo_kit.dart' show CrossPromoService;
 import 'package:shared_core/shared_core.dart'
     hide progressProvider, LearningProgress, ProgressNotifier, FirebaseService, AppTheme;
 import 'package:timezone/data/latest.dart' as tz;
@@ -43,6 +44,11 @@ void main() async {
     developer.log('✓ Firebase initialized',
         name: 'shokollen_science.firebase');
     debugPrint('✓ Firebase initialized');
+
+    // クロスプロモーション（他アプリ紹介）。失敗しても起動は止めない
+    try {
+      await CrossPromoService.init();
+    } catch (_) {}
 
     developer.log('Timezone 初期化開始',
         name: 'shokollen_science.init');
