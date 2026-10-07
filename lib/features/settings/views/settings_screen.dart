@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:cross_promo_kit/cross_promo_kit.dart' show CrossPromoSection;
 import 'package:shared_core/shared_core.dart'
-    show coinProvider, inventoryProvider, requireParentalGate;
+    show coinProvider, inventoryProvider, ParentalGateService;
 import '../../../shared/constants/app_colors.dart';
 import '../../profile/providers/profile_provider.dart';
 import '../../progress/providers/user_progress_provider.dart';
@@ -119,7 +119,7 @@ class SettingsScreen extends ConsumerWidget {
           CrossPromoSection(
             currentAppId: 'com.yourwish.shougakukore.rika',
             currentCategory: '小学コレ',
-            beforeOpenStore: (context) => requireParentalGate(context),
+            beforeOpenStore: (context) => ParentalGateService.requireParentalGate(context),
           ),
           const Divider(),
           Padding(
