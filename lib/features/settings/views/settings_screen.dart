@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:cross_promo_kit/cross_promo_kit.dart' show CrossPromoSection;
 import 'package:shared_core/shared_core.dart'
     show coinProvider, inventoryProvider, ParentalGateService;
@@ -105,16 +104,6 @@ class SettingsScreen extends ConsumerWidget {
             title: const Text('バッジコレクション'),
             trailing: const Icon(Icons.arrow_forward_ios, size: 14),
             onTap: () => context.push('/collection'),
-          ),
-          ListTile(
-            leading: const Text('📱', style: TextStyle(fontSize: 20)),
-            title: const Text('他のアプリを見る'),
-            subtitle: const Text('小学コレ！シリーズの他の教科アプリを紹介します'),
-            trailing: const Icon(Icons.arrow_forward_ios, size: 14),
-            onTap: () => launchUrl(
-              Uri.parse('https://sites.google.com/view/yourwishapps'),
-              mode: LaunchMode.externalApplication,
-            ),
           ),
           CrossPromoSection(
             currentAppId: 'com.yourwish.shougakukore.rika',
