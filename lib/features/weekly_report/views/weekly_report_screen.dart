@@ -1,3 +1,4 @@
+import 'package:shokollen_science/shared/utils/ruby_text.dart';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -420,7 +421,7 @@ class _WeakUnitTile extends StatelessWidget {
       (s) => s['id'] == stageId,
       orElse: () => {},
     );
-    return (found['stageName'] as String?) ?? stageId;
+    return rubyToPlain((found['stageName'] as String?) ?? stageId);
   }
 
   @override

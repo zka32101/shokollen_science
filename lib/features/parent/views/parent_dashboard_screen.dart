@@ -1,3 +1,4 @@
+import 'package:shokollen_science/shared/utils/ruby_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -112,7 +113,7 @@ class _ParentDashboardScreenState extends ConsumerState<ParentDashboardScreen> {
 
   Widget _praiseStageCard(BuildContext context, Map<String, String> stage) {
     final stageId = stage['stageId'] ?? '';
-    final stageName = stage['stageName'] ?? stageId;
+    final stageName = rubyToPlain(stage['stageName'] ?? stageId);
     return GestureDetector(
       onTap: () => context.push(
         '/praise-send/$stageId',

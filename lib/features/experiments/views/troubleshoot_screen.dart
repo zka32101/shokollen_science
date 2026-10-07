@@ -80,13 +80,16 @@ class _TroubleshootScreenState extends State<TroubleshootScreen> {
             ),
           ),
         ),
-        ClipRRect(
-          borderRadius: BorderRadius.circular(4),
-          child: LinearProgressIndicator(
-            value: (_index + 1) / _questions.length,
-            backgroundColor: Colors.orange.shade100,
-            valueColor: const AlwaysStoppedAnimation(Color(0xFFF57F17)),
-            minHeight: 6,
+        SizedBox(
+          width: 96,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(4),
+            child: LinearProgressIndicator(
+              value: (_index + 1) / _questions.length,
+              backgroundColor: Colors.orange.shade100,
+              valueColor: const AlwaysStoppedAnimation(Color(0xFFF57F17)),
+              minHeight: 6,
+            ),
           ),
         ),
       ],

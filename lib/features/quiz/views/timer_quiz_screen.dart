@@ -1,3 +1,4 @@
+import 'package:shokollen_science/shared/utils/ruby_text.dart';
 import '../utils/shuffle_choices.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
@@ -123,7 +124,7 @@ class _TimerQuizScreenState extends ConsumerState<TimerQuizScreen> {
       (s) => s['id'] == widget.stageId,
       orElse: () => {'stageName': 'タイマークイズ'},
     );
-    return stage['stageName'] as String? ?? 'タイマークイズ';
+    return rubyToPlain(stage['stageName'] as String? ?? 'タイマークイズ');
   }
 
   @override
