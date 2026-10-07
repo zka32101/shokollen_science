@@ -6,6 +6,7 @@ import '../models/badge_model.dart';
 import '../models/user_progress_model.dart';
 import '../providers/user_progress_provider.dart';
 import 'package:shokollen_science/widgets/ukalab_emoji.dart';
+import 'package:shokollen_science/widgets/badge_emblem.dart';
 
 /// 学習記録タブ（ボトムナビ4番目）
 class ProgressScreen extends ConsumerWidget {
@@ -221,7 +222,7 @@ class ProgressScreen extends ConsumerWidget {
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            UkalabEmoji(badge.emoji, size: 48),
+            BadgeEmblem(badgeId: badge.id, fallbackEmoji: badge.emoji, size: 56),
             const SizedBox(height: 8),
             Text(
               badge.name,
@@ -420,7 +421,7 @@ class _BadgeTile extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           earned
-              ? UkalabEmoji(badge.emoji, size: 24)
+              ? BadgeEmblem(badgeId: badge.id, fallbackEmoji: badge.emoji, size: 30)
               : const Icon(Icons.lock_outline,
                   color: Colors.grey, size: 20),
           const SizedBox(height: 3),
