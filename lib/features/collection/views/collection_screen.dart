@@ -7,6 +7,7 @@ import '../../../data/seeds/stages.dart';
 import '../../../data/seeds/experiment_data.dart';
 import '../../progress/providers/user_progress_provider.dart';
 import '../../progress/models/badge_model.dart';
+import 'package:shokollen_science/widgets/badge_emblem.dart';
 
 class CollectionScreen extends ConsumerStatefulWidget {
   const CollectionScreen({super.key});
@@ -279,8 +280,10 @@ class _CollectionScreenState extends ConsumerState<CollectionScreen>
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(isEarned ? badge.emoji : '🔒',
-                  style: TextStyle(fontSize: isEarned ? 32 : 24)),
+              if (isEarned)
+                BadgeEmblem(badgeId: badge.id, fallbackEmoji: badge.emoji, size: 40)
+              else
+                const Text('🔒', style: TextStyle(fontSize: 24)),
               const SizedBox(height: 4),
               Text(badge.name,
                   style: TextStyle(
