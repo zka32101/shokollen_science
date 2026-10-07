@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../data/home_lab_data.dart';
 import '../providers/home_lab_provider.dart';
+import 'package:shokollen_science/widgets/ukalab_emoji.dart';
 
 // ③ おうちラボ: 週末リアル実験ミッション
 class HomeLabScreen extends ConsumerStatefulWidget {
@@ -120,7 +121,7 @@ class _HomeLabScreenState extends ConsumerState<HomeLabScreen> {
         children: [
           Row(
             children: [
-              Text(mission.emoji, style: const TextStyle(fontSize: 36)),
+              UkalabEmoji(mission.emoji, size: 36),
               const SizedBox(width: 12),
               Expanded(
                 child: Column(
@@ -428,8 +429,7 @@ class _HomeLabScreenState extends ConsumerState<HomeLabScreen> {
           if (mission == null) return const SizedBox.shrink();
           return ListTile(
             contentPadding: EdgeInsets.zero,
-            leading: Text(mission.emoji,
-                style: const TextStyle(fontSize: 24)),
+            leading: UkalabEmoji(mission.emoji, size: 24),
             title: Text(mission.title,
                 style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
             subtitle: Text(r.result,

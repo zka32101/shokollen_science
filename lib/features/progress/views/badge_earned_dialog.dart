@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/badge_model.dart';
+import 'package:shokollen_science/widgets/ukalab_emoji.dart';
 
 /// バッジ獲得時に表示するアニメーションダイアログ
 class BadgeEarnedDialog extends StatefulWidget {
@@ -83,10 +84,7 @@ class _BadgeEarnedDialogState extends State<BadgeEarnedDialog>
                         color: _current.color.withOpacity(0.45), width: 3),
                   ),
                   child: Center(
-                    child: Text(
-                      _current.emoji,
-                      style: const TextStyle(fontSize: 44),
-                    ),
+                    child: UkalabEmoji(_current.emoji, size: 44),
                   ),
                 ),
 

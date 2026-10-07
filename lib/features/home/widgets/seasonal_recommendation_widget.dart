@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shokollen_science/widgets/ukalab_emoji.dart';
 
 class SeasonalRecommendationWidget extends StatelessWidget {
   final Function(String stageId) onTap;
@@ -36,7 +37,7 @@ class SeasonalRecommendationWidget extends StatelessWidget {
         ),
         child: Row(
           children: [
-            Text(rec.emoji, style: const TextStyle(fontSize: 36)),
+            UkalabEmoji(rec.emoji, size: 36),
             const SizedBox(width: 14),
             Expanded(
               child: Column(

@@ -5,6 +5,7 @@ import '../providers/incorrect_monster_provider.dart';
 import 'monster_detail_screen.dart';
 import 'widgets/monster_dialogs.dart';
 import 'widgets/monster_image.dart';
+import 'package:shokollen_science/widgets/ukalab_emoji.dart';
 
 /// まちがい図鑑スクリーン
 /// 間違えた問題をモンスター化した図鑑を表示
@@ -140,7 +141,7 @@ class _StatItem extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(emoji, style: TextStyle(fontSize: 24)),
+        UkalabEmoji(emoji, size: 24),
         SizedBox(height: 4),
         Text(
           label,

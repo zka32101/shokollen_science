@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../shared/constants/app_colors.dart';
 import '../../../data/seeds/creatures.dart';
 import '../../progress/providers/user_progress_provider.dart';
+import 'package:shokollen_science/widgets/ukalab_emoji.dart';
 
 /// 生き物図鑑タブ
 class EncyclopediaScreen extends ConsumerStatefulWidget {
@@ -263,8 +264,7 @@ class _CreatureCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             if (unlocked)
-              Text(categoryEmoji,
-                  style: const TextStyle(fontSize: 36))
+              UkalabEmoji(categoryEmoji, size: 36)
             else
               const Icon(Icons.lock_outline,
                   color: Colors.grey, size: 28),
@@ -368,8 +368,7 @@ class _CreatureDetailSheet extends StatelessWidget {
                           ),
                         ),
                         child: Center(
-                          child: Text(emoji,
-                              style: const TextStyle(fontSize: 38)),
+                          child: UkalabEmoji(emoji, size: 38),
                         ),
                       ),
                       const SizedBox(width: 16),
@@ -582,7 +581,7 @@ class _InfoRow extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(icon, style: const TextStyle(fontSize: 16)),
+          UkalabEmoji(icon, size: 16),
           const SizedBox(width: 8),
           Text(
             '$label: ',

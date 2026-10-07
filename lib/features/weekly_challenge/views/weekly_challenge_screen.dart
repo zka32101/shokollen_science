@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/weekly_challenge_provider.dart';
+import 'package:shokollen_science/widgets/ukalab_emoji.dart';
 
 class WeeklyChallengeScreen extends ConsumerWidget {
   const WeeklyChallengeScreen({super.key});
@@ -159,7 +160,7 @@ class _MissionCard extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Text(mission.emoji, style: const TextStyle(fontSize: 28)),
+          UkalabEmoji(mission.emoji, size: 28),
           const SizedBox(width: 12),
           Expanded(
             child: Column(

@@ -4,6 +4,7 @@ import 'package:purchases_flutter/purchases_flutter.dart';
 import '../../../shared/constants/app_colors.dart';
 import '../../trial/providers/trial_provider.dart';
 import '../services/science_purchase_service.dart';
+import 'package:shokollen_science/widgets/ukalab_emoji.dart';
 
 /// プレミアムプラン紹介・購入画面（RevenueCat 連携）
 class PremiumScreen extends ConsumerStatefulWidget {
@@ -98,7 +99,7 @@ class _PremiumScreenState extends ConsumerState<PremiumScreen> {
                 padding: const EdgeInsets.symmetric(vertical: 6),
                 child: Row(
                   children: [
-                    Text(f.icon, style: const TextStyle(fontSize: 22)),
+                    UkalabEmoji(f.icon, size: 22),
                     const SizedBox(width: 12),
                     Expanded(
                       child: Text(

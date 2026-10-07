@@ -8,6 +8,7 @@ import '../../../data/seeds/stages.dart';
 import '../../../data/seeds/learn_content_data.dart';
 import '../../progress/providers/user_progress_provider.dart';
 import '../../mission/providers/mission_provider.dart';
+import 'package:shokollen_science/widgets/ukalab_emoji.dart';
 
 /// まなぶモード - ステージの学習ページ
 class LearnScreen extends ConsumerWidget {
@@ -215,7 +216,7 @@ class LearnScreen extends ConsumerWidget {
       bottom: 20,
       child: Opacity(
         opacity: 0.12,
-        child: Text(catEmoji, style: const TextStyle(fontSize: 80)),
+        child: UkalabEmoji(catEmoji, size: 80),
       ),
     ),
     ],);
@@ -441,7 +442,7 @@ class _SectionCardState extends State<_SectionCard>
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // 絵文字
-                      Text(emoji, style: const TextStyle(fontSize: 24)),
+                      UkalabEmoji(emoji, size: 24),
                       const SizedBox(width: 10),
                       Expanded(
                         child: Column(
@@ -571,7 +572,7 @@ class _SectionCardState extends State<_SectionCard>
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(emoji, style: const TextStyle(fontSize: 24)),
+                      UkalabEmoji(emoji, size: 24),
                       const SizedBox(width: 10),
                       Expanded(
                         child: Column(

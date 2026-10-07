@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/analytics_model.dart';
+import 'package:shokollen_science/widgets/ukalab_emoji.dart';
 
 const Color kPrimaryColor = Color(0xFF2E7D32);
 const Color kSecondaryColor = Color(0xFF1976D2);
@@ -144,10 +145,7 @@ class _StatsTile extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
-            icon,
-            style: const TextStyle(fontSize: 24),
-          ),
+          UkalabEmoji(icon, size: 24),
           const SizedBox(height: 4),
           Text(
             title,

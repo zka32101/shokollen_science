@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/prediction_provider.dart';
 import '../widgets/prediction_result_widget.dart';
+import 'package:shokollen_science/widgets/ukalab_emoji.dart';
 
 // ① よそうラボ: 実験の前に「何が起きるか」を予想するスクリーン
 class PredictionQuizScreen extends ConsumerStatefulWidget {
@@ -97,7 +98,7 @@ class _PredictionQuizScreenState extends ConsumerState<PredictionQuizScreen> {
       ),
       child: Column(
         children: [
-          Text(q.emoji, style: const TextStyle(fontSize: 48)),
+          UkalabEmoji(q.emoji, size: 48),
           const SizedBox(height: 12),
           Text(
             q.question,

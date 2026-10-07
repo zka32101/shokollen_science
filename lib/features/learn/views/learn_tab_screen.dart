@@ -6,6 +6,7 @@ import '../../../shared/widgets/furigana_text.dart';
 import '../../../data/seeds/stages.dart';
 import '../../../data/seeds/experiment_data.dart';
 import '../../progress/providers/user_progress_provider.dart';
+import 'package:shokollen_science/widgets/ukalab_emoji.dart';
 
 /// まなぶタブ - 全学年ステージ一覧
 class LearnTabScreen extends ConsumerStatefulWidget {
@@ -320,8 +321,7 @@ class _LearnStageTile extends StatelessWidget {
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Center(
-                  child: Text(emoji,
-                      style: const TextStyle(fontSize: 22))),
+                  child: UkalabEmoji(emoji, size: 22)),
             ),
             const SizedBox(width: 12),
             Expanded(
