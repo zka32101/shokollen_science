@@ -9,6 +9,7 @@ import '../../profile/providers/profile_provider.dart';
 import '../../progress/providers/user_progress_provider.dart';
 import '../../profile/models/profile_model.dart';
 import '../../../shared/widgets/avatar_image.dart';
+import '../../shop/decor/decor_scope.dart';
 import '../../../providers/selected_background_provider.dart';
 import '../../../data/background_shop_items.dart';
 
@@ -182,7 +183,7 @@ class _BackgroundSelector extends ConsumerWidget {
       return const Padding(
         padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Text(
-          'ショップで背景を購入すると、ここから選べるようになります',
+          '背景やフレームは、ショップの「きせかえ」で買って、そこでつけかえできます',
           style: TextStyle(fontSize: 12, color: AppColors.textGray),
         ),
       );
@@ -221,13 +222,23 @@ class _SectionHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 20, 16, 4),
-      child: Text(
-        title,
-        style: const TextStyle(
-          color: AppColors.sciencePrimary,
-          fontWeight: FontWeight.bold,
-          fontSize: 13,
-          letterSpacing: 0.5,
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
+          decoration: BoxDecoration(
+            color: DecorScope.chipBg(context),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Text(
+            title,
+            style: const TextStyle(
+              color: AppColors.sciencePrimary,
+              fontWeight: FontWeight.bold,
+              fontSize: 13,
+              letterSpacing: 0.5,
+            ),
+          ),
         ),
       ),
     );

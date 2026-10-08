@@ -365,7 +365,8 @@ class _StatTile extends StatelessWidget {
         padding:
             const EdgeInsets.symmetric(vertical: 14, horizontal: 8),
         decoration: BoxDecoration(
-          color: color.withOpacity(0.08),
+          // 半透明だと背景の絵が透けてにごるので、白地の上に同じ色を重ねて不透明にする
+          color: Color.alphaBlend(color.withOpacity(0.08), Colors.white),
           borderRadius: BorderRadius.circular(12),
           border: Border.all(color: color.withOpacity(0.22)),
         ),
