@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../features/shop/decor/decor_scope.dart';
 
 /// プロフィールアバター画像を丸く表示する共通ウィジェット
 class AvatarImage extends StatelessWidget {
@@ -17,7 +18,9 @@ class AvatarImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ClipOval(
+    return DecorFrame(
+      size: size,
+      child: ClipOval(
       child: Container(
         width: size,
         height: size,
@@ -36,6 +39,7 @@ class AvatarImage extends StatelessWidget {
           fit: BoxFit.cover,
         ),
       ),
+    ),
     );
   }
 }

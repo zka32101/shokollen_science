@@ -8,6 +8,7 @@ import '../../../shared/widgets/furigana_text.dart';
 import '../../../data/seeds/sample_questions.dart';
 import '../../../data/seeds/stages.dart';
 import '../../progress/providers/user_progress_provider.dart';
+import 'package:shokollen_science/features/shop/decor/decor_scope.dart';
 
 class ReviewScreen extends ConsumerStatefulWidget {
   const ReviewScreen({super.key});
@@ -90,7 +91,7 @@ class _ReviewScreenState extends ConsumerState<ReviewScreen> {
     final answered = _selected[_currentIndex] != null;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF7F9FC),
+      backgroundColor: DecorScope.pageBg(context, const Color(0xFFF7F9FC)),
       appBar: AppBar(
         title: Text('にがて問題 ${_currentIndex + 1}/${_reviewQuestions.length}'),
         backgroundColor: Colors.red[600],
@@ -205,7 +206,7 @@ class _ReviewScreenState extends ConsumerState<ReviewScreen> {
     }).length;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF7F9FC),
+      backgroundColor: DecorScope.pageBg(context, const Color(0xFFF7F9FC)),
       body: SafeArea(
         child: Center(
           child: Padding(

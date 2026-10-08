@@ -7,6 +7,7 @@ import 'package:shared_core/shared_core.dart'
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 import 'app/router.dart';
+import 'features/shop/decor/decor_scope.dart';
 import 'app/theme.dart';
 import 'features/settings/providers/theme_provider.dart';
 import 'providers/character_provider.dart';
@@ -140,6 +141,7 @@ class MyApp extends ConsumerWidget {
       darkTheme: AppTheme.darkTheme,
       themeMode: themeMode,
       routerConfig: AppRouter.router,
+      builder: (context, child) => DecorBackdrop(child: child ?? const SizedBox.shrink()),
       debugShowCheckedModeBanner: false,
     );
   }

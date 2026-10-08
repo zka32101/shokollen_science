@@ -5,6 +5,7 @@ import '../../../shared/constants/app_colors.dart';
 import '../../../data/seeds/experiment_data.dart';
 import '../../progress/providers/user_progress_provider.dart';
 import '../../progress/views/badge_earned_dialog.dart';
+import 'package:shokollen_science/features/shop/decor/decor_scope.dart';
 
 class ExperimentDetailScreen extends ConsumerStatefulWidget {
   final String experimentId;
@@ -61,7 +62,7 @@ class _ExperimentDetailScreenState
             false;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF7F9FC),
+      backgroundColor: DecorScope.pageBg(context, const Color(0xFFF7F9FC)),
       body: CustomScrollView(
         physics: const BouncingScrollPhysics(),
         slivers: [

@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../../shared/constants/app_colors.dart';
 import '../../../shared/widgets/furigana_text.dart';
 import '../../progress/providers/user_progress_provider.dart';
+import 'package:shokollen_science/features/shop/decor/decor_scope.dart';
 
 class TimerQuizResultScreen extends StatefulWidget {
   final String stageId;
@@ -76,7 +77,7 @@ class _TimerQuizResultScreenState extends State<TimerQuizResultScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF7F9FC),
+      backgroundColor: DecorScope.pageBg(context, const Color(0xFFF7F9FC)),
       body: SafeArea(
         child: Column(
           children: [

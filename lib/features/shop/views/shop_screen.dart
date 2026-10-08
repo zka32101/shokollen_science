@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:shared_core/shared_core.dart';
 import '../../../data/rika_characters.dart';
+import '../decor/decor_items.dart';
+import '../decor/decor_screen.dart';
 
 // ── 理科コレ 交換所アイテム ──────────────────────────────────────────────────
-const _rikaExchangeItems = [
+final _rikaExchangeItems = <AppShopItem>[
   // 2026-09: 帽子・BGMカテゴリは装着・再生の仕組みが未実装で
   // 買っても何も起きなかったため削除。
   // 2026-09: 学習サポート（ヒント）は使い道が実装されていないため削除。
@@ -59,11 +61,11 @@ const _rikaExchangeItems = [
       description: 'プロフィールのアバターに使える', category: 'アバター', coinCost: 70,
       kind: ShopItemKind.avatar,
       assetPath: 'packages/shared_core/lib/assets/avatars/avatar_namakemono.jpg'),
+  ...decorExchangeItems(),
 ];
 
 // ── 理科コレ 期間限定アイテム ──────────────────────────────────────────────
 // 2026-09: 背景・フレームの販売を廃止したため季節限定アイテムも無効化。
-const _rikaSeasonalItems = <String, List<AppShopItem>>{};
 
 /// 理科コレ コインショップ。
 /// 表示ロジックはすべて [CoinShopPage] に委譲する。
@@ -72,10 +74,25 @@ class ShopScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CoinShopPage(
-      characters: kRikaCharacters,
-      exchangeItems: _rikaExchangeItems,
-      seasonalItems: _rikaSeasonalItems,
+    return Stack(
+      children: [
+        CoinShopPage(
+          characters: kRikaCharacters,
+          exchangeItems: _rikaExchangeItems,
+          seasonalItems: decorSeasonalItems(),
+        ),
+        // 買った背景・フレーム・エフェクトをえらんでつける画面へ
+        Positioned(
+          right: 16,
+          bottom: 16,
+          child: FloatingActionButton.extended(
+            heroTag: 'decor_fab',
+            onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => const DecorScreen())),
+            icon: const Icon(Icons.palette_outlined),
+            label: const Text('きせかえ'),
+          ),
+        ),
+      ],
     );
   }
 }

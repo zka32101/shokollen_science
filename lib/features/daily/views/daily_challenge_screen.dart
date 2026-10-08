@@ -5,6 +5,7 @@ import '../../../shared/constants/app_colors.dart';
 import '../../../shared/widgets/furigana_text.dart';
 import '../../../features/progress/providers/user_progress_provider.dart';
 import '../providers/daily_challenge_provider.dart';
+import 'package:shokollen_science/features/shop/decor/decor_scope.dart';
 
 class DailyChallengeScreen extends ConsumerStatefulWidget {
   const DailyChallengeScreen({super.key});
@@ -43,7 +44,7 @@ class _DailyChallengeScreenState extends ConsumerState<DailyChallengeScreen> {
     final answered = _selected[_currentIndex] != null;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF7F9FC),
+      backgroundColor: DecorScope.pageBg(context, const Color(0xFFF7F9FC)),
       body: SafeArea(
         child: Column(
           children: [
@@ -192,7 +193,7 @@ class _DailyChallengeScreenState extends ConsumerState<DailyChallengeScreen> {
 
     final total = daily.questions.length;
     return Scaffold(
-      backgroundColor: const Color(0xFFF7F9FC),
+      backgroundColor: DecorScope.pageBg(context, const Color(0xFFF7F9FC)),
       body: SafeArea(
         child: Center(
           child: Padding(
