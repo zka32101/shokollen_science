@@ -10,11 +10,5 @@ class StartupSplash extends StatelessWidget {
   const StartupSplash({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return const BrandedSplash(
-      title: '小学コレ！理科',
-      subtitle: 'たのしく　まなぼう！',
-      gradient: [Color(0xFF3498DB), Color(0xFF2874A6)],
-    );
-  }
+  Widget build(BuildContext context) => const BrandedSplash();
 }
