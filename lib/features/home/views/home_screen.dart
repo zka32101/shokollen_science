@@ -322,7 +322,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             imagePath:
                                 activeProfile?.avatarImagePath ??
                                 ProfileModel.avatarChoices[0],
-                            size: 20,
+                            size: 28, // きせかえフレームが出る最小サイズ(DecorFrame)
                           ),
                           const SizedBox(width: 4),
                           Text(
