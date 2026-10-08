@@ -74,22 +74,28 @@ class ShopScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
+    // 交換所リストの最下段が「きせかえ」ボタンに隠れないよう、リストの下にボタン用の帯を確保する
+    return Column(
       children: [
-        CoinShopPage(
-          characters: kRikaCharacters,
-          exchangeItems: _rikaExchangeItems,
-          seasonalItems: decorSeasonalItems(),
+        Expanded(
+          child: CoinShopPage(
+            characters: kRikaCharacters,
+            exchangeItems: _rikaExchangeItems,
+            seasonalItems: decorSeasonalItems(),
+          ),
         ),
         // 買った背景・フレーム・エフェクトをえらんでつける画面へ
-        Positioned(
-          right: 16,
-          bottom: 16,
-          child: FloatingActionButton.extended(
-            heroTag: 'decor_fab',
-            onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => const DecorScreen())),
-            icon: const Icon(Icons.palette_outlined),
-            label: const Text('きせかえ'),
+        Padding(
+          key: const ValueKey('decor_fab_bar'),
+          padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+          child: Align(
+            alignment: Alignment.centerRight,
+            child: FloatingActionButton.extended(
+              heroTag: 'decor_fab',
+              onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => const DecorScreen())),
+              icon: const Icon(Icons.palette_outlined),
+              label: const Text('きせかえ'),
+            ),
           ),
         ),
       ],

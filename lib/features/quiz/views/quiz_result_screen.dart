@@ -669,7 +669,8 @@ class _StatCard extends StatelessWidget {
         padding:
             const EdgeInsets.symmetric(vertical: 14, horizontal: 8),
         decoration: BoxDecoration(
-          color: color.withOpacity(0.08),
+          // 背景の絵が透けないよう、うす色を白い地の上に重ねる
+          color: Color.alphaBlend(color.withOpacity(0.08), Colors.white),
           borderRadius: BorderRadius.circular(12),
           border: Border.all(color: color.withOpacity(0.25)),
         ),
