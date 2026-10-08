@@ -95,10 +95,10 @@ dependencies:
 flutter_launcher_icons:
   android: true
   ios: true
-  image_path: "assets/icon/app_icon.jpg"
+  image_path: "assets/icon/icon_rika.png"
   min_sdk_android: 21
-  adaptive_icon_background: "#50ABEB"
-  adaptive_icon_foreground: "assets/icon/app_icon.jpg"
+  adaptive_icon_background: "assets/icon/adaptive_bg_rika.png"
+  adaptive_icon_foreground: "assets/icon/adaptive_fg_rika.png"
 
 # shared_core(H:側)が cross_promo_kit を path:../cross_promo_kit で参照するため、
 # git 依存と競合しないよう同じ git ref に固定する。
