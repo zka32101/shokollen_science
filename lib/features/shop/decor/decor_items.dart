@@ -83,6 +83,11 @@ const List<DecorItem> kDecorItems = [
   // ── エフェクト（季節） ──
   DecorItem(id: 'effect_waves', name: '波エフェクト', description: '画面の下にさざ波が広がる', kind: DecorKind.effect, coinCost: 250, season: 'summer'),
   DecorItem(id: 'effect_snow', name: '雪エフェクト', description: '画面に雪の結晶がふる', kind: DecorKind.effect, coinCost: 200, season: 'winter'),
+  DecorItem(id: 'effect_sakura', name: 'さくらふぶき', description: '画面に桜の花びらがまう', kind: DecorKind.effect, coinCost: 200, season: 'spring'),
+  DecorItem(id: 'effect_fireworks', name: 'はなび', description: '画面に花火がひらく', kind: DecorKind.effect, coinCost: 250, season: 'summer'),
+  DecorItem(id: 'effect_leaves', name: 'もみじのまい', description: '画面に紅葉の葉がまう', kind: DecorKind.effect, coinCost: 200, season: 'autumn'),
+  // ── エフェクト（常設） ──
+  DecorItem(id: 'effect_twinkle', name: 'きらきらほし', description: '画面のふちに星がきらきら', kind: DecorKind.effect, coinCost: 250),
 ];
 
 DecorItem? decorItemById(String? id) {
