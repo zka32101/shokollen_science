@@ -9,6 +9,7 @@ import '../../../shared/widgets/furigana_text.dart';
 import '../../../data/seeds/sample_questions.dart';
 import '../../../data/seeds/stages.dart';
 import '../../progress/providers/user_progress_provider.dart';
+import 'package:shokollen_science/features/shop/decor/decor_scope.dart';
 
 class TimerQuizScreen extends ConsumerStatefulWidget {
   final String stageId;
@@ -142,7 +143,7 @@ class _TimerQuizScreenState extends ConsumerState<TimerQuizScreen> {
     final timerColor = _timerColor();
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF7F9FC),
+      backgroundColor: DecorScope.pageBg(context, const Color(0xFFF7F9FC)),
       body: SafeArea(
         child: Column(
           children: [

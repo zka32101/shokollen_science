@@ -7,6 +7,7 @@ import '../models/explanation_model.dart';
 import '../models/question_model.dart';
 import 'package:shokollen_science/widgets/ukalab_emoji.dart';
 
+import 'package:shokollen_science/features/shop/decor/decor_scope.dart';
 /// 解説画面（リニューアル版）
 /// ・タブ廃止 → 縦スクロール 1画面
 /// ・YouTube 動画インライン再生
@@ -93,7 +94,7 @@ class _ExplanationScreenState extends State<ExplanationScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF7F9FC),
+      backgroundColor: DecorScope.pageBg(context, const Color(0xFFF7F9FC)),
       appBar: AppBar(
         backgroundColor: _bannerAccent,
         foregroundColor: Colors.white,

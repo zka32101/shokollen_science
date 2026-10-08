@@ -10,6 +10,7 @@ import '../../progress/providers/user_progress_provider.dart';
 import '../../mission/providers/mission_provider.dart';
 import 'package:shokollen_science/widgets/ukalab_emoji.dart';
 
+import 'package:shokollen_science/features/shop/decor/decor_scope.dart';
 /// まなぶモード - ステージの学習ページ
 class LearnScreen extends ConsumerWidget {
   final String stageId;
@@ -31,7 +32,7 @@ class LearnScreen extends ConsumerWidget {
     });
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF7F9FC),
+      backgroundColor: DecorScope.pageBg(context, const Color(0xFFF7F9FC)),
       body: SafeArea(
         child: Column(
           children: [

@@ -3,6 +3,7 @@ import 'package:shared_core/shared_core.dart'
     hide progressProvider, LearningProgress, ProgressNotifier;
 import '../../../data/rika_characters.dart';
 import '../../../shared/constants/app_colors.dart';
+import 'package:shokollen_science/features/shop/decor/decor_scope.dart';
 
 /// キャラクター画像ギャラリー。
 ///
@@ -17,7 +18,7 @@ class CharacterGalleryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF7F9FC),
+      backgroundColor: DecorScope.pageBg(context, const Color(0xFFF7F9FC)),
       appBar: AppBar(
         title: const Text('キャラクターギャラリー'),
         backgroundColor: AppColors.sciencePrimary,

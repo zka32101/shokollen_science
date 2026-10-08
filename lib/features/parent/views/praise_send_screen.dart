@@ -5,6 +5,7 @@ import 'package:share_plus/share_plus.dart';
 import '../../../shared/constants/app_colors.dart';
 import '../../../shared/widgets/furigana_text.dart';
 import '../providers/praise_provider.dart';
+import 'package:shokollen_science/features/shop/decor/decor_scope.dart';
 
 const _presetMessages = [
   'すごいね！よくがんばったね！🎉',
@@ -87,7 +88,7 @@ class _PraiseSendScreenState extends ConsumerState<PraiseSendScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF7F9FC),
+      backgroundColor: DecorScope.pageBg(context, const Color(0xFFF7F9FC)),
       appBar: AppBar(
         title: const Text('ほめメッセージを送る'),
         backgroundColor: const Color(0xFFE91E8C),

@@ -10,6 +10,7 @@ import '../character_level_assets.dart';
 import '../providers/character_level_assets_provider.dart';
 import '../widgets/sparkle_overlay.dart';
 import 'character_gallery_screen.dart';
+import 'package:shokollen_science/features/shop/decor/decor_scope.dart';
 
 /// 理科コレ キャラクター図鑑（レベルアップ対応）。
 /// レベル(1〜5, 5=MAX)の保存・コイン消費は shared_core の
@@ -42,7 +43,7 @@ class _CharacterScreenState extends ConsumerState<CharacterScreen> {
         CharacterLevelAssets.empty;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF7F9FC),
+      backgroundColor: DecorScope.pageBg(context, const Color(0xFFF7F9FC)),
       body: Column(
         children: [
           Padding(

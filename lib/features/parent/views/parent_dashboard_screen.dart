@@ -9,6 +9,7 @@ import '../../../data/seeds/stages.dart';
 import '../providers/praise_provider.dart';
 import '../../../shared/widgets/avatar_image.dart';
 import 'package:shokollen_science/widgets/ukalab_emoji.dart';
+import 'package:shokollen_science/features/shop/decor/decor_scope.dart';
 
 class ParentDashboardScreen extends ConsumerStatefulWidget {
   const ParentDashboardScreen({super.key});
@@ -29,7 +30,7 @@ class _ParentDashboardScreenState extends ConsumerState<ParentDashboardScreen> {
     final profileAsync = ref.watch(profileProvider);
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF7F9FC),
+      backgroundColor: DecorScope.pageBg(context, const Color(0xFFF7F9FC)),
       body: CustomScrollView(
         slivers: [
           SliverAppBar(

@@ -8,6 +8,7 @@ import '../../../data/seeds/experiment_data.dart';
 import '../../progress/providers/user_progress_provider.dart';
 import '../../progress/models/badge_model.dart';
 import 'package:shokollen_science/widgets/badge_emblem.dart';
+import 'package:shokollen_science/features/shop/decor/decor_scope.dart';
 
 class CollectionScreen extends ConsumerStatefulWidget {
   const CollectionScreen({super.key});
@@ -36,7 +37,7 @@ class _CollectionScreenState extends ConsumerState<CollectionScreen>
     final progress = ref.watch(userProgressProvider).value;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF7F9FC),
+      backgroundColor: DecorScope.pageBg(context, const Color(0xFFF7F9FC)),
       body: Column(
         children: [
           // ヘッダー

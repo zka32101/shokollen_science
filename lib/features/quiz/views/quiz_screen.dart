@@ -6,6 +6,7 @@ import '../../../shared/widgets/furigana_text.dart';
 import '../../../services/tts_service.dart';
 import '../providers/quiz_provider.dart';
 import '../../progress/providers/user_progress_provider.dart';
+import 'package:shokollen_science/features/shop/decor/decor_scope.dart';
 
 class QuizScreen extends ConsumerStatefulWidget {
   final String stageId;
@@ -81,7 +82,7 @@ class _QuizScreenState extends ConsumerState<QuizScreen>
     final selectedIdx = quiz.selectedAnswers[quiz.currentIndex];
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF7F9FC),
+      backgroundColor: DecorScope.pageBg(context, const Color(0xFFF7F9FC)),
       body: SafeArea(
         child: Column(
           children: [

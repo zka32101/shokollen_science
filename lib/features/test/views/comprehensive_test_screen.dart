@@ -10,6 +10,7 @@ import '../../../data/seeds/sample_questions.dart';
 import '../../../data/seeds/stages.dart';
 import '../../progress/providers/user_progress_provider.dart';
 import 'package:shokollen_science/widgets/ukalab_emoji.dart';
+import 'package:shokollen_science/features/shop/decor/decor_scope.dart';
 
 class ComprehensiveTestScreen extends ConsumerStatefulWidget {
   final int grade;
@@ -60,7 +61,7 @@ class _ComprehensiveTestScreenState
     final correct = q['correctAnswerIndex'] as int;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF7F9FC),
+      backgroundColor: DecorScope.pageBg(context, const Color(0xFFF7F9FC)),
       body: SafeArea(
         child: Column(
           children: [
@@ -221,7 +222,7 @@ class _ComprehensiveTestScreenState
     final rankColor = pct >= 90 ? Colors.orange : pct >= 70 ? AppColors.sciencePrimary : AppColors.success;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF7F9FC),
+      backgroundColor: DecorScope.pageBg(context, const Color(0xFFF7F9FC)),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),

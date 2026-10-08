@@ -14,6 +14,7 @@ import '../../progress/views/widgets/monster_dialogs.dart';
 import '../../progress/providers/review_time_capsule_provider.dart';
 import 'package:shokollen_science/widgets/ukalab_emoji.dart';
 
+import 'package:shokollen_science/features/shop/decor/decor_scope.dart';
 class QuizResultScreen extends ConsumerStatefulWidget {
   const QuizResultScreen({super.key});
 
@@ -212,7 +213,7 @@ class _QuizResultScreenState extends ConsumerState<QuizResultScreen> {
     final isPerfect = quiz.correctCount == quiz.totalQuestions;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF7F9FC),
+      backgroundColor: DecorScope.pageBg(context, const Color(0xFFF7F9FC)),
       body: SafeArea(
         child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),

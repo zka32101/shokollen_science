@@ -25,6 +25,7 @@ import '../../../providers/selected_background_provider.dart';
 import '../../../data/background_shop_items.dart';
 import 'package:shokollen_science/widgets/ukalab_emoji.dart';
 
+import 'package:shokollen_science/features/shop/decor/decor_scope.dart';
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
@@ -41,7 +42,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF7F9FC),
+      backgroundColor: DecorScope.pageBg(context, const Color(0xFFF7F9FC)),
       body: SafeArea(
         child: IndexedStack(
           index: _selectedIndex,
