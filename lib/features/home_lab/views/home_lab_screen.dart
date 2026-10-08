@@ -4,6 +4,7 @@ import '../data/home_lab_data.dart';
 import '../providers/home_lab_provider.dart';
 import 'package:shokollen_science/widgets/ukalab_emoji.dart';
 
+import 'package:shokollen_science/features/shop/decor/decor_scope.dart';
 // ③ おうちラボ: 週末リアル実験ミッション
 class HomeLabScreen extends ConsumerStatefulWidget {
   const HomeLabScreen({super.key});
@@ -29,7 +30,7 @@ class _HomeLabScreenState extends ConsumerState<HomeLabScreen> {
     final alreadyReported = labState.hasReportedThisWeek(mission.id);
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF1F8E9),
+      backgroundColor: DecorScope.pageBg(context, const Color(0xFFF1F8E9)),
       appBar: AppBar(
         title: const Text('おうちラボ 🏡'),
         backgroundColor: const Color(0xFF2E7D32),

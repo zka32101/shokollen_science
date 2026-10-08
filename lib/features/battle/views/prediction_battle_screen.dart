@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../data/prediction_battle_data.dart';
+import 'package:shokollen_science/features/shop/decor/decor_scope.dart';
 
 // ⑨ 親子バトル化: 同じ実験の結果を親子で予想し合い、当てた方が勝ち
 class PredictionBattleScreen extends StatefulWidget {
@@ -53,7 +54,7 @@ class _PredictionBattleScreenState extends State<PredictionBattleScreen> {
     final selected = isChild ? _childPrediction : _parentPrediction;
 
     return Scaffold(
-      backgroundColor: isChild ? const Color(0xFFE3F2FD) : const Color(0xFFFFF3E0),
+      backgroundColor: DecorScope.pageBg(context, isChild ? const Color(0xFFE3F2FD) : const Color(0xFFFFF3E0)),
       appBar: AppBar(
         title: Text('ラウンド ${_currentRound + 1} / $_totalRounds'),
         backgroundColor:
@@ -214,7 +215,7 @@ class _PredictionBattleScreenState extends State<PredictionBattleScreen> {
     final round = _rounds[_currentRound];
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F5F5),
+      backgroundColor: DecorScope.pageBg(context, const Color(0xFFF5F5F5)),
       appBar: AppBar(
         title: Text('ラウンド ${_currentRound + 1} 結果'),
         backgroundColor: const Color(0xFF6A1B9A),
@@ -370,7 +371,7 @@ class _PredictionBattleScreenState extends State<PredictionBattleScreen> {
   Widget _buildResult() {
     final result = _battleResult;
     return Scaffold(
-      backgroundColor: const Color(0xFFF9F9F9),
+      backgroundColor: DecorScope.pageBg(context, const Color(0xFFF9F9F9)),
       appBar: AppBar(
         title: const Text('バトル結果 🏆'),
         backgroundColor: const Color(0xFF6A1B9A),

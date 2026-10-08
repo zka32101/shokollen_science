@@ -4,6 +4,7 @@ import '../providers/prediction_provider.dart';
 import '../widgets/prediction_result_widget.dart';
 import 'package:shokollen_science/widgets/ukalab_emoji.dart';
 
+import 'package:shokollen_science/features/shop/decor/decor_scope.dart';
 // ① よそうラボ: 実験の前に「何が起きるか」を予想するスクリーン
 class PredictionQuizScreen extends ConsumerStatefulWidget {
   final String experimentId;
@@ -32,7 +33,7 @@ class _PredictionQuizScreenState extends ConsumerState<PredictionQuizScreen> {
 
     final q = _questions[_questionIndex];
     return Scaffold(
-      backgroundColor: const Color(0xFFF0F7FF),
+      backgroundColor: DecorScope.pageBg(context, const Color(0xFFF0F7FF)),
       appBar: AppBar(
         title: const Text('よそうラボ 🔬'),
         backgroundColor: const Color(0xFF3498DB),
@@ -239,7 +240,7 @@ class _PredictionQuizScreenState extends ConsumerState<PredictionQuizScreen> {
   Widget _buildFinished() {
     final rate = _questions.isEmpty ? 0.0 : _score / _questions.length * 100;
     return Scaffold(
-      backgroundColor: const Color(0xFFF0F7FF),
+      backgroundColor: DecorScope.pageBg(context, const Color(0xFFF0F7FF)),
       appBar: AppBar(
         title: const Text('よそうラボ 結果'),
         backgroundColor: const Color(0xFF3498DB),

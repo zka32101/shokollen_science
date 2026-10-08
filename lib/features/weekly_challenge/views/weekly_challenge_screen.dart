@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/weekly_challenge_provider.dart';
 import 'package:shokollen_science/widgets/ukalab_emoji.dart';
 
+import 'package:shokollen_science/features/shop/decor/decor_scope.dart';
 class WeeklyChallengeScreen extends ConsumerWidget {
   const WeeklyChallengeScreen({super.key});
 
@@ -11,7 +12,7 @@ class WeeklyChallengeScreen extends ConsumerWidget {
     final state = ref.watch(weeklyChallengeProvider);
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F8FF),
+      backgroundColor: DecorScope.pageBg(context, const Color(0xFFF5F8FF)),
       appBar: AppBar(
         title: const Text('今週のチャレンジ 🎯',
             style: TextStyle(fontWeight: FontWeight.bold)),

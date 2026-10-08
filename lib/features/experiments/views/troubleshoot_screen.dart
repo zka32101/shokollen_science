@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../data/troubleshoot_data.dart';
+import 'package:shokollen_science/features/shop/decor/decor_scope.dart';
 
 // ⑥ 失敗ラボ推理: 実験の失敗原因を推理するクイズ画面
 class TroubleshootScreen extends StatefulWidget {
@@ -43,7 +44,7 @@ class _TroubleshootScreenState extends State<TroubleshootScreen> {
     }
     final q = _currentQ!;
     return Scaffold(
-      backgroundColor: const Color(0xFFFFF8E1),
+      backgroundColor: DecorScope.pageBg(context, const Color(0xFFFFF8E1)),
       appBar: AppBar(
         title: const Text('失敗ラボ 🕵️'),
         backgroundColor: const Color(0xFFF57F17),
@@ -283,7 +284,7 @@ class _TroubleshootScreenState extends State<TroubleshootScreen> {
     final total = _questions.length;
     final rate = total == 0 ? 0 : (_correct * 100) ~/ total;
     return Scaffold(
-      backgroundColor: const Color(0xFFFFF8E1),
+      backgroundColor: DecorScope.pageBg(context, const Color(0xFFFFF8E1)),
       appBar: AppBar(
         title: const Text('失敗ラボ 結果'),
         backgroundColor: const Color(0xFFF57F17),
