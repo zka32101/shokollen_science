@@ -5,6 +5,7 @@ import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 import '../../../shared/constants/app_colors.dart';
 import '../models/explanation_model.dart';
 import '../models/question_model.dart';
+import 'package:shokollen_science/data/quiz_stage_images.dart';
 import 'package:shokollen_science/widgets/ukalab_emoji.dart';
 
 import 'package:shokollen_science/features/shop/decor/decor_scope.dart';
@@ -90,6 +91,25 @@ class _ExplanationScreenState extends State<ExplanationScreen>
   String get _bannerEmoji => widget.isCorrect ? '🎉' : '😢';
   String get _bannerMessage => widget.isCorrect ? 'せいかい！' : 'ざんねん…';
 
+  Widget _buildStageImage() {
+    final path = quizStageImage(widget.question.stageId);
+    if (path == null) return const SizedBox.shrink();
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(16),
+        child: AspectRatio(
+          aspectRatio: 16 / 9,
+          child: Image.asset(
+            path,
+            fit: BoxFit.cover,
+            errorBuilder: (_, __, ___) => const SizedBox.shrink(),
+          ),
+        ),
+      ),
+    );
+  }
+
   // ─── メイン build ──────────────────────────────────────
   @override
   Widget build(BuildContext context) {
@@ -110,6 +130,7 @@ class _ExplanationScreenState extends State<ExplanationScreen>
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            _buildStageImage(),
             _buildResultBanner(),
             _buildAnswerReview(),
             _buildBasicExplanation(),
