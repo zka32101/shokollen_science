@@ -73,6 +73,17 @@ class _ExperimentDetailScreenState
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(14),
+                    child: Image.asset(
+                      'assets/illustrations/experiments/${widget.experimentId}.jpg',
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                      height: 200,
+                      errorBuilder: (_, __, ___) => const SizedBox.shrink(),
+                    ),
+                  ),
+                  const SizedBox(height: 12),
                   _buildInfoRow(data),
                   const SizedBox(height: 16),
                   _buildMaterialsCard(data),

@@ -147,6 +147,10 @@ flutter:
     - assets/icon/
     - assets/illustrations/
     - assets/illustrations/stage_3/
+    - assets/illustrations/stage_4/
+    - assets/illustrations/stage_5/
+    - assets/illustrations/stage_6/
+    - assets/illustrations/experiments/
     - assets/images/monsters/
     - assets/images/avatars/
     - assets/characters/
