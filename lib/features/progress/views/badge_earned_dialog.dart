@@ -58,7 +58,7 @@ class _BadgeEarnedDialogState extends State<BadgeEarnedDialog>
           scale: _scale,
           child: Container(
             margin: const EdgeInsets.symmetric(horizontal: 20),
-            padding: const EdgeInsets.all(28),
+            padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(28),
@@ -70,21 +70,51 @@ class _BadgeEarnedDialogState extends State<BadgeEarnedDialog>
                 ),
               ],
             ),
-            child: Column(
+            child: SingleChildScrollView(
+             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                // ── バッジアイコン ──
-                Container(
-                  width: 88,
-                  height: 88,
-                  decoration: BoxDecoration(
-                    color: _current.color.withOpacity(0.12),
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                        color: _current.color.withOpacity(0.45), width: 3),
+                // ── 達成演出（光彩・メダル・リボン） ──
+                SizedBox(
+                  height: 190,
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Image.asset('assets/celebrate/celebrate_starburst.webp',
+                          width: 250, fit: BoxFit.contain),
+                      Image.asset('assets/celebrate/celebrate_medal.webp',
+                          width: 130, fit: BoxFit.contain),
+                      BadgeEmblem(
+                          badgeId: _current.id,
+                          fallbackEmoji: _current.emoji,
+                          size: 44),
+                    ],
                   ),
-                  child: Center(
-                    child: BadgeEmblem(badgeId: _current.id, fallbackEmoji: _current.emoji, size: 52),
+                ),
+                SizedBox(
+                  width: 260,
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Image.asset(
+                          'assets/celebrate/celebrate_ribbon_banner.webp',
+                          width: 260,
+                          fit: BoxFit.contain),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 48),
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Text(
+                            'おめでとう！',
+                            style: TextStyle(
+                              fontSize: 26,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF461905),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
 
@@ -168,6 +198,7 @@ class _BadgeEarnedDialogState extends State<BadgeEarnedDialog>
                   ),
                 ),
               ],
+            ),
             ),
           ),
         ),
