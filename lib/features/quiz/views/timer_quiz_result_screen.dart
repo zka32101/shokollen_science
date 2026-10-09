@@ -1,3 +1,4 @@
+import '../../progress/views/badge_earned_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -48,7 +49,7 @@ class _TimerQuizResultScreenState extends State<TimerQuizResultScreen> {
   Future<void> _saveProgress() async {
     // Access provider via ProviderScope
     final container = ProviderScope.containerOf(context);
-    await container
+    final result = await container
         .read(userProgressProvider.notifier)
         .completeStage(
           widget.stageId,
@@ -56,6 +57,16 @@ class _TimerQuizResultScreenState extends State<TimerQuizResultScreen> {
           widget.correct,
           widget.total,
         );
+    if (result.badges.isNotEmpty && mounted) {
+      await Future.delayed(const Duration(milliseconds: 400));
+      if (mounted) {
+        await showDialog<void>(
+          context: context,
+          barrierDismissible: false,
+          builder: (_) => BadgeEarnedDialog(badges: result.badges),
+        );
+      }
+    }
   }
 
   String _resultEmoji() {
