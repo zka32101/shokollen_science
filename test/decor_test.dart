@@ -33,7 +33,7 @@ void main() {
       expect(File(i.asset).existsSync(), true, reason: i.asset);
       expect(File(i.thumb).existsSync(), true, reason: i.thumb);
     }
-    expect(kDecorItems.length, 23);
+    expect(kDecorItems.length, 29);
   });
 
   test('常設と季節に分かれる(季節は4つ、空の季節がない)', () {
@@ -109,6 +109,8 @@ void main() {
     await tester.pumpWidget(UncontrolledProviderScope(container: empty, child: const MaterialApp(home: DecorScreen())));
     await tester.pump();
     expect(find.textContaining('まだきせかえをもっていないよ'), findsOneWidget);
+    expect(find.byKey(const ValueKey('decor_empty_illust')), findsOneWidget);
+    expect(File('assets/illustrations/empty_closet.webp').existsSync(), true);
   });
 
   testWidgets('DecorBackdrop: 背景つきなら絵と膜を敷き、なければ子だけ', (tester) async {

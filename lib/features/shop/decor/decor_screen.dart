@@ -50,10 +50,21 @@ class _Empty extends StatelessWidget {
     return const Center(
       child: Padding(
         padding: EdgeInsets.all(32),
-        child: Text(
-          'まだきせかえをもっていないよ。\nショップでコインとこうかんして、背景やフレームをゲットしよう！',
-          textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 14, height: 1.6),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Image(
+              key: ValueKey('decor_empty_illust'),
+              image: AssetImage('assets/illustrations/empty_closet.webp'),
+              width: 160,
+            ),
+            SizedBox(height: 12),
+            Text(
+              'まだきせかえをもっていないよ。\nショップでコインとこうかんして、背景やフレームをゲットしよう！',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 14, height: 1.6),
+            ),
+          ],
         ),
       ),
     );
