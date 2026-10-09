@@ -264,7 +264,20 @@ class _CreatureCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             if (unlocked)
-              UkalabEmoji(categoryEmoji, size: 36)
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 6),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Image.asset(
+                    'assets/illustrations/creatures/${data['id']}.jpg',
+                    height: 46,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                    errorBuilder: (_, __, ___) =>
+                        UkalabEmoji(categoryEmoji, size: 36),
+                  ),
+                ),
+              )
             else
               const Icon(Icons.lock_outline,
                   color: Colors.grey, size: 28),
@@ -353,6 +366,19 @@ class _CreatureDetailSheet extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // ── 画像 ──
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 16),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(16),
+                      child: Image.asset(
+                        'assets/illustrations/creatures/${data['id']}.jpg',
+                        width: double.infinity,
+                        fit: BoxFit.cover,
+                        errorBuilder: (_, __, ___) => const SizedBox.shrink(),
+                      ),
+                    ),
+                  ),
                   // ── ヘッダー ──
                   Row(
                     children: [
