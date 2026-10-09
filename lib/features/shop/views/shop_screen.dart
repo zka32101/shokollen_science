@@ -3,6 +3,7 @@ import 'package:shared_core/shared_core.dart';
 import '../../../data/rika_characters.dart';
 import '../decor/decor_items.dart';
 import '../decor/decor_screen.dart';
+import '../decor/title_items.dart';
 
 // ── 理科コレ 交換所アイテム ──────────────────────────────────────────────────
 final _rikaExchangeItems = <AppShopItem>[
@@ -62,6 +63,8 @@ final _rikaExchangeItems = <AppShopItem>[
       kind: ShopItemKind.avatar,
       assetPath: 'packages/shared_core/lib/assets/avatars/avatar_namakemono.jpg'),
   ...decorExchangeItems(),
+  // 称号(購入型。達成型は条件を満たすと自動で解放される)
+  ...titleExchangeItems(),
 ];
 
 // ── 理科コレ 期間限定アイテム ──────────────────────────────────────────────

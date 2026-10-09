@@ -10,11 +10,13 @@ import 'package:shokollen_science/features/shop/decor/decor_items.dart';
 import 'package:shokollen_science/features/shop/decor/decor_provider.dart';
 import 'package:shokollen_science/features/shop/decor/decor_screen.dart';
 import 'package:shokollen_science/features/shop/decor/decor_scope.dart';
+import 'package:shokollen_science/features/shop/decor/title_items.dart';
+import 'package:shokollen_science/features/shop/decor/title_provider.dart';
 
 Future<ProviderContainer> _container({Map<String, Object> prefs = const {}, Set<String> owned = const {}}) async {
   SharedPreferences.setMockInitialValues(prefs);
   final p = await SharedPreferences.getInstance();
-  final c = ProviderContainer(overrides: [sharedPreferencesProvider.overrideWithValue(p)]);
+  final c = ProviderContainer(overrides: [sharedPreferencesProvider.overrideWithValue(p), titleProgressProvider.overrideWithValue(const TitleProgress())]);
   addTearDown(c.dispose);
   // 所持品を入れる(inventoryProvider は SharedPreferences('shared_inventory') を読む)
   c.read(inventoryProvider);
