@@ -71,6 +71,8 @@ const List<DecorItem> kDecorItems = [
   DecorItem(id: 'bg_fireworks', name: '花火の背景', description: '夏まつりの花火の背景', kind: DecorKind.background, coinCost: 300, season: 'summer'),
   DecorItem(id: 'bg_leaves', name: '紅葉の背景', description: '赤や黄色の葉っぱの秋の背景', kind: DecorKind.background, coinCost: 300, season: 'autumn'),
   DecorItem(id: 'bg_snow', name: '雪の背景', description: '雪がふる冬の村の背景', kind: DecorKind.background, coinCost: 300, season: 'winter'),
+  DecorItem(id: 'bg_christmas', name: 'クリスマスのよる', description: 'ツリーが光るクリスマスの夜の背景', kind: DecorKind.background, coinCost: 300, season: 'winter'),
+  DecorItem(id: 'bg_newyear', name: 'はつひので', description: '初日の出のお正月の背景', kind: DecorKind.background, coinCost: 300, season: 'winter'),
   // ── フレーム（常設） ──
   DecorItem(id: 'frame_rainbow', name: '虹色フレーム', description: 'アイコンに虹色のふち', kind: DecorKind.frame, coinCost: 250),
   DecorItem(id: 'frame_ribbon', name: 'リボンフレーム', description: 'かわいいリボンのふち', kind: DecorKind.frame, coinCost: 250),
@@ -81,13 +83,17 @@ const List<DecorItem> kDecorItems = [
   DecorItem(id: 'frame_entrance', name: '入学式フレーム', description: '桜とランドセルのふち', kind: DecorKind.frame, coinCost: 200, season: 'spring'),
   DecorItem(id: 'frame_book', name: '読書フレーム', description: '本と紅葉のふち', kind: DecorKind.frame, coinCost: 200, season: 'autumn'),
   DecorItem(id: 'frame_newyear', name: 'お正月フレーム', description: '松と梅のお正月のふち', kind: DecorKind.frame, coinCost: 200, season: 'winter'),
+  DecorItem(id: 'frame_christmas', name: 'クリスマスのフレーム', description: 'リースとオーナメントのふち', kind: DecorKind.frame, coinCost: 200, season: 'winter'),
   // ── エフェクト（季節） ──
   DecorItem(id: 'effect_waves', name: '波エフェクト', description: '画面の下にさざ波が広がる', kind: DecorKind.effect, coinCost: 250, season: 'summer'),
   DecorItem(id: 'effect_snow', name: '雪エフェクト', description: '画面に雪の結晶がふる', kind: DecorKind.effect, coinCost: 200, season: 'winter'),
   DecorItem(id: 'effect_sakura', name: 'さくらふぶき', description: '画面に桜の花びらがまう', kind: DecorKind.effect, coinCost: 200, season: 'spring'),
   DecorItem(id: 'effect_fireworks', name: 'はなび', description: '画面に花火がひらく', kind: DecorKind.effect, coinCost: 250, season: 'summer'),
   DecorItem(id: 'effect_leaves', name: 'もみじのまい', description: '画面に紅葉の葉がまう', kind: DecorKind.effect, coinCost: 200, season: 'autumn'),
+  DecorItem(id: 'effect_christmas', name: 'クリスマスのかざり', description: '画面にクリスマスのかざりがちらばる', kind: DecorKind.effect, coinCost: 200, season: 'winter'),
+  DecorItem(id: 'effect_newyear', name: 'おしょうがつのかざり', description: '画面にお正月のかざりがちらばる', kind: DecorKind.effect, coinCost: 200, season: 'winter'),
   // ── エフェクト（常設） ──
+  DecorItem(id: 'effect_rika', name: 'りかのエフェクト', description: 'フラスコやげんしがちらばるよ', kind: DecorKind.effect, coinCost: 200),
   DecorItem(id: 'effect_twinkle', name: 'きらきらほし', description: '画面のふちに星がきらきら', kind: DecorKind.effect, coinCost: 250),
 ];
 
