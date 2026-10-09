@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../data/sky_events_data.dart';
-import 'package:shokollen_science/widgets/ukalab_emoji.dart';
+import 'package:shokollen_science/widgets/weather_icon.dart';
 
 // ④ 今夜の空: 月相 + 天体イベントカレンダー
 class TonightSkyScreen extends StatelessWidget {
@@ -66,10 +66,7 @@ class TonightSkyScreen extends StatelessWidget {
         children: [
           Column(
             children: [
-              Text(
-                phaseName.split(' ').first,
-                style: const TextStyle(fontSize: 56),
-              ),
+              WeatherIcon(phaseName.split(' ').first, size: 64),
               Text(
                 '月齢 ${(phase * 29.5).toStringAsFixed(1)}',
                 style: TextStyle(
@@ -149,7 +146,7 @@ class TonightSkyScreen extends StatelessWidget {
           children: [
             Row(
               children: [
-                UkalabEmoji(event.emoji, size: 32),
+                WeatherIcon(event.emoji, size: 32),
                 const SizedBox(width: 10),
                 Expanded(
                   child: Column(
@@ -264,7 +261,7 @@ class TonightSkyScreen extends StatelessWidget {
         ),
         child: Row(
           children: [
-            UkalabEmoji(event.emoji, size: 24),
+            WeatherIcon(event.emoji, size: 24),
             const SizedBox(width: 12),
             Expanded(
               child: Column(
@@ -406,7 +403,7 @@ class TonightSkyScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 8),
-                UkalabEmoji(top.emoji, size: 18),
+                WeatherIcon(top.emoji, size: 18),
                 const SizedBox(width: 8),
                 Expanded(
                   child: Text(
