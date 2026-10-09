@@ -24,6 +24,8 @@ import '../../progress/providers/daily_mystery_provider.dart';
 import '../../../providers/selected_background_provider.dart';
 import '../../../data/background_shop_items.dart';
 import 'package:shokollen_science/widgets/ukalab_emoji.dart';
+import 'package:shokollen_science/widgets/title_plate.dart';
+import '../../shop/decor/title_provider.dart';
 
 import 'package:shokollen_science/features/shop/decor/decor_scope.dart';
 class HomeScreen extends ConsumerStatefulWidget {
@@ -249,6 +251,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     // コイン残高の表示元を統一する（独自 progress.coins との二重管理を解消）。
     final coins = ref.watch(coinProvider).totalCoins;
     final isPremium = trialAsync.value?.isPremium ?? false;
+    final activeTitle = ref.watch(activeTitleProvider);
     final trialRemaining = trialAsync.value?.trialDaysRemaining ?? 14;
 
     // 購入済みの背景がショップで選択されていれば、その配色をヘッダーに反映する。
@@ -410,6 +413,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   ),
                 ],
               ),
+              // 選んだ称号(名前の下)。未選択なら何も出さない
+              if (activeTitle != null) ...[
+                const SizedBox(height: 4),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: TitlePlate(key: const ValueKey('home_title_plate'), name: activeTitle.name),
+                ),
+              ],
               // トライアル期限切れバナー
               if (!isPremium && trialRemaining <= 0) ...[
                 const SizedBox(height: 8),

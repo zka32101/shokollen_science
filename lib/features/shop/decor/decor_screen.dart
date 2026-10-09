@@ -5,6 +5,8 @@ import '../../../shared/constants/app_colors.dart';
 import 'decor_items.dart';
 import 'decor_provider.dart';
 import 'decor_scope.dart';
+import 'title_items.dart';
+import 'title_provider.dart';
 
 /// 買ったきせかえ（背景・フレーム・エフェクト）をえらんでつける画面。
 class DecorScreen extends ConsumerWidget {
@@ -23,11 +25,10 @@ class DecorScreen extends ConsumerWidget {
         backgroundColor: AppColors.sciencePrimary,
         foregroundColor: Colors.white,
       ),
-      body: mine.isEmpty
-          ? const _Empty()
-          : ListView(
+      body: ListView(
               padding: const EdgeInsets.all(16),
               children: [
+                if (mine.isEmpty) const _Empty(),
                 for (final kind in DecorKind.values) ...[
                   _Section(
                     kind: kind,
@@ -36,8 +37,56 @@ class DecorScreen extends ConsumerWidget {
                   ),
                   const SizedBox(height: 16),
                 ],
+                const _TitleSection(),
               ],
             ),
+    );
+  }
+}
+
+/// しょうごう(購入型は所持品、達成型は進捗で解放。未解放は鍵つきで条件を表示)。
+class _TitleSection extends ConsumerWidget {
+  const _TitleSection();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final owned = ref.watch(inventoryProvider);
+    final progress = ref.watch(titleProgressProvider);
+    final selected = ref.watch(activeTitleProvider)?.id;
+    final notifier = ref.read(selectedTitleProvider.notifier);
+    return Column(
+      key: const ValueKey('title_section'),
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text('しょうごう', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
+        const SizedBox(height: 8),
+        Wrap(
+          spacing: 10,
+          runSpacing: 10,
+          children: [
+            _Tile(
+              label: 'なし',
+              selected: selected == null,
+              onTap: () => notifier.select(null),
+              child: const Icon(Icons.block, color: Colors.grey),
+            ),
+            for (final t in kTitleItems)
+              Builder(builder: (_) {
+                final ok = isTitleUnlocked(t, owned: owned, progress: progress);
+                return _Tile(
+                  label: ok ? t.name : '${t.name}\n${t.conditionText}',
+                  selected: selected == t.id,
+                  onTap: ok ? () => notifier.select(t.id) : () {},
+                  child: Center(
+                    child: ok
+                        ? const Text('🏅', style: TextStyle(fontSize: 26))
+                        : const Icon(Icons.lock, color: Colors.grey),
+                  ),
+                );
+              }),
+          ],
+        ),
+      ],
     );
   }
 }
@@ -151,7 +200,7 @@ class _Tile extends StatelessWidget {
               const SizedBox(height: 4),
               Text(
                 selected ? '✓ $label' : label,
-                maxLines: 2,
+                maxLines: 3,
                 textAlign: TextAlign.center,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(fontSize: 11, fontWeight: selected ? FontWeight.bold : FontWeight.normal),
