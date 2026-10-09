@@ -428,6 +428,7 @@ class _SectionCardState extends State<_SectionCard>
                         fit: BoxFit.cover,
                         width: double.infinity,
                         height: 200,
+                        errorBuilder: (_, __, ___) => const SizedBox.shrink(),
                       ),
                     ),
                   ),
@@ -706,6 +707,7 @@ class _SectionCardState extends State<_SectionCard>
                 fit: BoxFit.cover,
                 width: double.infinity,
                 height: 160,
+                errorBuilder: (_, __, ___) => const SizedBox.shrink(),
               ),
             ),
             if (caption != null)
