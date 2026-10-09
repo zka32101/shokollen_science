@@ -120,6 +120,19 @@ class _HomeLabScreenState extends ConsumerState<HomeLabScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(14),
+            child: AspectRatio(
+              aspectRatio: 16 / 9,
+              child: Image.asset(
+                'assets/illustrations/home_lab/${mission.id}.jpg',
+                fit: BoxFit.cover,
+                width: double.infinity,
+                errorBuilder: (_, __, ___) => const SizedBox.shrink(),
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
           Row(
             children: [
               UkalabEmoji(mission.emoji, size: 36),
