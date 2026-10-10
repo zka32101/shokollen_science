@@ -6,6 +6,7 @@ import '../../../data/seeds/stages.dart';
 import '../models/badge_model.dart';
 import '../models/user_progress_model.dart';
 import '../providers/user_progress_provider.dart';
+import '../study_dates.dart';
 import 'package:shokollen_science/widgets/ukalab_emoji.dart';
 import 'package:shokollen_science/widgets/badge_emblem.dart';
 
@@ -27,7 +28,7 @@ class ProgressScreen extends ConsumerWidget {
         physics: const BouncingScrollPhysics(),
         child: Column(
           children: [
-            _buildHeader(progress),
+            _buildHeader(context, ref, progress),
             _buildStatsRow(progress),
             _buildBadgeSection(context, progress),
             _buildStageProgressSection(progress),
@@ -41,7 +42,7 @@ class ProgressScreen extends ConsumerWidget {
   }
 
   // ── ヘッダー ──────────────────────────────────────────────
-  Widget _buildHeader(UserProgress p) {
+  Widget _buildHeader(BuildContext context, WidgetRef ref, UserProgress p) {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.fromLTRB(20, 20, 20, 28),
@@ -78,7 +79,9 @@ class ProgressScreen extends ConsumerWidget {
           ),
           const SizedBox(height: 8),
           // ストリーク
-          Container(
+          GestureDetector(
+            onTap: () => openStreakCalendar(context, ref),
+            child: Container(
             padding:
                 const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
             decoration: BoxDecoration(
@@ -111,6 +114,7 @@ class ProgressScreen extends ConsumerWidget {
                 ),
               ],
             ),
+          ),
           ),
         ],
       ),

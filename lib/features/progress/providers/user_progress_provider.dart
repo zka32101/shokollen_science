@@ -9,6 +9,7 @@ import '../models/user_progress_model.dart';
 import '../models/badge_model.dart';
 import '../../profile/providers/profile_provider.dart';
 import '../../mission/providers/mission_provider.dart';
+import '../study_dates.dart';
 
 // 学年別ステージID一覧
 const _grade3StageIds = [
@@ -236,6 +237,8 @@ class UserProgressNotifier extends AsyncNotifier<UserProgress> {
     );
 
     await _save(finalProgress);
+    await recordStudyDate(
+        _profileId, today, current.streakDays, current.lastPlayedDate);
     state = AsyncData(finalProgress);
     if (coinsEarned > 0) {
       await ref.read(coinProvider.notifier).addCoins(coinsEarned);
@@ -284,6 +287,8 @@ class UserProgressNotifier extends AsyncNotifier<UserProgress> {
     );
 
     await _save(finalProgress);
+    await recordStudyDate(
+        _profileId, today, current.streakDays, current.lastPlayedDate);
     state = AsyncData(finalProgress);
     if (coinsEarned > 0) {
       await ref.read(coinProvider.notifier).addCoins(coinsEarned);
