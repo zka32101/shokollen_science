@@ -1,3 +1,4 @@
+import 'package:shokollen_science/reward_assets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../shared/constants/app_colors.dart';
@@ -84,15 +85,31 @@ class ProgressScreen extends ConsumerWidget {
               color: Colors.white.withOpacity(0.2),
               borderRadius: BorderRadius.circular(20),
             ),
-            child: Text(
-              p.streakDays > 0
-                  ? '🔥 ${p.streakDays}日連続学習中！'
-                  : '今日から学習を始めよう！',
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-              ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (streakFlameAsset(p.streakDays) != null) ...[
+                  Image.asset(
+                    streakFlameAsset(p.streakDays)!,
+                    height: 24,
+                    errorBuilder: (_, __, ___) =>
+                        const Text('🔥', style: TextStyle(fontSize: 16)),
+                  ),
+                  const SizedBox(width: 6),
+                ],
+                Flexible(
+                  child: Text(
+                    p.streakDays > 0
+                        ? '${p.streakDays}日連続学習中！'
+                        : '今日から学習を始めよう！',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ],

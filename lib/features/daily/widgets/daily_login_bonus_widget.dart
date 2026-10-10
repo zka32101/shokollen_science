@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
+import 'package:shokollen_science/reward_assets.dart';
 import '../../../shared/constants/app_colors.dart';
 import '../../../shared/widgets/furigana_text.dart';
 import '../../progress/providers/user_progress_provider.dart';
@@ -227,7 +228,13 @@ class _ClaimBonusDialogState extends ConsumerState<_ClaimBonusDialog>
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Text('🔥', style: TextStyle(fontSize: 20)),
+                      Image.asset(
+                        streakFlameAsset(widget.bonus.consecutiveDays) ??
+                            'assets/reward/flame_lv1_small.webp',
+                        height: 24,
+                        errorBuilder: (_, __, ___) =>
+                            const Text('🔥', style: TextStyle(fontSize: 20)),
+                      ),
                       const SizedBox(width: 8),
                       FuriganaText(
                         '${widget.bonus.consecutiveDays}日連続！',
@@ -252,6 +259,12 @@ class _ClaimBonusDialogState extends ConsumerState<_ClaimBonusDialog>
                     ),
                     child: Column(
                       children: [
+                        if (streakCrownAsset(widget.bonus.consecutiveDays) != null)
+                          Image.asset(
+                            streakCrownAsset(widget.bonus.consecutiveDays)!,
+                            height: 56,
+                            errorBuilder: (_, __, ___) => const SizedBox.shrink(),
+                          ),
                         const Text(
                           '🌟 マイルストーン達成！',
                           style: TextStyle(
