@@ -195,6 +195,12 @@ final learnContentData = <String, List<Map<String, dynamic>>>{
           'text': '{花びら|はなびら}は{花|はな}を{目立|めだ}たせ、{虫|むし}を{呼|よ}びます。'
         },
         {
+          'type': 'image',
+          'imagePath': 'assets/illustrations/stage_3/stage_3_002_flower.jpg',
+          'caption': '{花|はな}のつくり：がく・{花|はな}びら・おしべ・めしべ',
+          'level': 'basic'
+        },
+        {
           'type': 'text',
           'level': 'basic',
           'text': '{おしべ}は{花粉|かふん}をつくるぶぶん、{めしべ}は{実|み}や{種|たね}をつくるぶぶんです。'
@@ -230,6 +236,12 @@ final learnContentData = <String, List<Map<String, dynamic>>>{
           'type': 'text',
           'level': 'basic',
           'text': '1. {卵|たまご}：チョウはキャベツの{葉|は}などに{産卵|さんらん}します。'
+        },
+        {
+          'type': 'image',
+          'imagePath': 'assets/illustrations/stage_3/stage_3_003_butterfly_life.jpg',
+          'caption': 'チョウの{育|そだ}ち：たまご→{幼虫|ようちゅう}→さなぎ→{成虫|せいちゅう}',
+          'level': 'basic'
         },
         {
           'type': 'text',
@@ -435,6 +447,12 @@ final learnContentData = <String, List<Map<String, dynamic>>>{
           'type': 'text',
           'level': 'basic',
           'text': '{磁石|じしゃく}は「{鉄|てつ}」を{引|ひ}きつけます。'
+        },
+        {
+          'type': 'image',
+          'imagePath': 'assets/illustrations/stage_3/stage_3_005_magnet_items.jpg',
+          'caption': '{磁石|じしゃく}につくもの（{鉄|てつ}）とつかないもの',
+          'level': 'basic'
         },
         {
           'type': 'text',
@@ -705,6 +723,12 @@ final learnContentData = <String, List<Map<String, dynamic>>>{
           'text': '{太陽|たいよう}が{東|ひがし}にあるとき、{影|かげ}は{西|にし}にできます。'
         },
         {
+          'type': 'image',
+          'imagePath': 'assets/illustrations/stage_3/stage_3_007_shadow.jpg',
+          'caption': '{影|かげ}は{光|ひかり}と{反対|はんたい}がわにできる',
+          'level': 'basic'
+        },
+        {
           'type': 'text',
           'level': 'basic',
           'text': '{太陽|たいよう}が{南|みなみ}にあるとき（{昼|ひる}）、{影|かげ}は{北|きた}に{短|みじか}くできます。'
@@ -962,6 +986,12 @@ final learnContentData = <String, List<Map<String, dynamic>>>{
           'text': '{豆電球|まめでんきゅう}と{乾電池|かんでんち}を1{本|ぽん}どうしの{導線|どうせん}でつなぐだけでは{明|あ}かりはつきません。'
         },
         {
+          'type': 'image',
+          'imagePath': 'assets/illustrations/stage_3/stage_3_010_bulb.jpg',
+          'caption': '{豆電球|まめでんきゅう}に{明|あ}かりがつくつなぎ{方|かた}',
+          'level': 'basic'
+        },
+        {
           'type': 'text',
           'level': 'basic',
           'text': '{乾電池|かんでんち}の＋（プラス）{極|きょく}から{豆電球|まめでんきゅう}を{通|とお}って、－（マイナス）{極|きょく}まで、{輪|わ}のようにひとつづきの{道|みち}をつくると{明|あ}かりがつきます。'
@@ -1204,6 +1234,12 @@ final learnContentData = <String, List<Map<String, dynamic>>>{
           'type': 'text',
           'level': 'basic',
           'text': 'バッタは{土|つち}の{中|なか}にたまごをうみます。'
+        },
+        {
+          'type': 'image',
+          'imagePath': 'assets/illustrations/stage_3/stage_3_012_grasshopper.jpg',
+          'caption': 'バッタの{育|そだ}ち：たまご→{幼虫|ようちゅう}→{成虫|せいちゅう}（さなぎにならない）',
+          'level': 'basic'
         },
         {
           'type': 'text',
@@ -1699,6 +1735,12 @@ final learnContentData = <String, List<Map<String, dynamic>>>{
           'type': 'text',
           'level': 'basic',
           'text': '{金属|きんぞく}・{水|みず}・{空気|くうき}はあたためると「{膨張|ぼうちょう}」（{体積|たいせき}が{大|おお}きくなる）します。'
+        },
+        {
+          'type': 'image',
+          'imagePath': 'assets/illustrations/stage_4/stage_4_005_expansion.jpg',
+          'caption': '{物|もの}はあたためると{体積|たいせき}が{大|おお}きくなる',
+          'level': 'basic'
         },
         {
           'type': 'text',
@@ -2441,6 +2483,12 @@ final learnContentData = <String, List<Map<String, dynamic>>>{
           'text': '{昆虫|こんちゅう}や{風|かぜ}が{花粉|かふん}を{運|はこ}び、{めしべ|めしべ}の{柱頭|ちゅうとう}に{付着|ふちゃく}します。'
         },
         {
+          'type': 'image',
+          'imagePath': 'assets/illustrations/stage_5/stage_5_001_pollination.jpg',
+          'caption': '{受粉|じゅふん}：{花粉|かふん}がめしべの{先|さき}につく',
+          'level': 'basic'
+        },
+        {
           'type': 'text',
           'level': 'basic',
           'text': '{受粉|じゅふん}の{後|あと}、{花粉管|かふんかん}が{伸|の}びて{受精|じゅせい}が{起|お}こります。'
@@ -2596,6 +2644,12 @@ final learnContentData = <String, List<Map<String, dynamic>>>{
           'type': 'text',
           'level': 'basic',
           'text': 'メダカの{雌|めす}は{水草|みずくさ}に{卵|たまご}を{産|う}みつけます。'
+        },
+        {
+          'type': 'image',
+          'imagePath': 'assets/illustrations/stage_5/stage_5_003_medaka_tank.jpg',
+          'caption': 'メダカの{水槽|すいそう}と{育|そだ}ち{方|かた}',
+          'level': 'basic'
         },
         {
           'type': 'text',
@@ -2823,6 +2877,12 @@ final learnContentData = <String, List<Map<String, dynamic>>>{
           'type': 'text',
           'level': 'basic',
           'text': '{滝|たき}：{硬|かた}い{地層|ちそう}が{削|けず}られにくく、{段差|だんさ}ができます。'
+        },
+        {
+          'type': 'image',
+          'imagePath': 'assets/illustrations/stage_5/stage_5_005_meander.jpg',
+          'caption': '{川|かわ}の{蛇行|だこう}：{外側|そとがわ}はけずられ、{内側|うちがわ}に{土|つち}がたまる',
+          'level': 'basic'
         },
         {
           'type': 'text',

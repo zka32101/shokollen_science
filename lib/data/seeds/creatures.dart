@@ -218,4 +218,43 @@ final creaturesData = [
     'diet': '植物、落ち葉',
     'funFact': 'カタツムリの殻の渦巻きは、すべて右巻きです（ほぼすべての種で）。',
   },
+  {
+    'id': 'creature_017',
+    'name': 'メダカ',
+    'scientificName': 'Oryzias latipes',
+    'category': 'other',
+    'description': '小川や田んぼにすむ小さな魚（魚類）です。日本にむかしからいる魚です。',
+    'relatedStageIds': ['stage_5_003', 'stage_4_001'], // メダカの育ち、季節と生き物
+    'difficultyLevel': 2,
+    'habitat': '小川、池、田んぼ',
+    'characteristics': '体長3〜4cmほどの小さな魚で、目が頭の上のほうにある',
+    'diet': 'ミジンコ、プランクトン、小さな虫',
+    'funFact': 'メダカのめすは、うまれたたまごを数時間おなかにつけてから、水草にくっつけます。',
+  },
+  {
+    'id': 'creature_018',
+    'name': 'ニホンアマガエル',
+    'scientificName': 'Hyla japonica',
+    'category': 'other',
+    'description': '緑色の小さなカエル（両生類）です。雨の前によく鳴きます。',
+    'relatedStageIds': ['stage_4_001', 'stage_3_001'], // 季節と生き物
+    'difficultyLevel': 1,
+    'habitat': '田んぼ、草むら、林',
+    'characteristics': '指に吸盤がある、まわりの色に合わせて体の色がかわる',
+    'diet': 'ハエ、クモ、小さな昆虫',
+    'funFact': 'おたまじゃくしから成長し、水の中から陸にあがってくらすようになります。',
+  },
+  {
+    'id': 'creature_019',
+    'name': 'ミミズ',
+    'scientificName': 'Lumbricus',
+    'category': 'other',
+    'description': '土の中にすむ、細長い体の生き物（環形動物）です。足も目もありません。',
+    'relatedStageIds': ['stage_3_001', 'stage_4_001'], // 昆虫と植物、季節と生き物
+    'difficultyLevel': 1,
+    'habitat': '湿った土の中、落ち葉の下',
+    'characteristics': '体はたくさんの輪のような節でできている、足も目もない',
+    'diet': '落ち葉、くさった植物、土の中の栄養',
+    'funFact': 'ミミズは土を食べてふんをするので、土をふかふかにして植物の役に立ちます。',
+  },
 ];
