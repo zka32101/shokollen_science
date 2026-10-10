@@ -13,6 +13,7 @@ import '../../progress/providers/incorrect_monster_provider.dart';
 import '../../progress/views/widgets/monster_dialogs.dart';
 import '../../progress/providers/review_time_capsule_provider.dart';
 import 'package:shokollen_science/widgets/ukalab_emoji.dart';
+import 'package:shokollen_science/reward_assets.dart';
 
 import 'package:shokollen_science/features/shop/decor/decor_scope.dart';
 class QuizResultScreen extends ConsumerStatefulWidget {
@@ -271,6 +272,15 @@ class _QuizResultScreenState extends ConsumerState<QuizResultScreen> {
       child: Column(
         children: [
           UkalabEmoji(gradeEmoji, size: 64),
+          if (quiz.correctCount > 0) ...[
+            const SizedBox(height: 8),
+            Image.asset(
+              rewardStickerAsset(quiz.correctCount, quiz.totalQuestions),
+              width: 72,
+              height: 72,
+              errorBuilder: (_, __, ___) => const SizedBox.shrink(),
+            ),
+          ],
           const SizedBox(height: 12),
           Text(
             isPerfect ? '全問正解！ すごい！' : 'クイズ終了！',

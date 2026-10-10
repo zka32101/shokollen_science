@@ -140,6 +140,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/icons_common/
+    - assets/reward/
     - assets/icons/weather/
     - assets/shop/
     - assets/shop/thumb/
