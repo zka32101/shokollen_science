@@ -27,6 +27,7 @@ class QuizResultScreen extends ConsumerStatefulWidget {
 class _QuizResultScreenState extends ConsumerState<QuizResultScreen> {
   bool _saved = false;
   int _coinsEarned = 0;
+  List<String> _bonusStickers = const [];
 
   @override
   void initState() {
@@ -129,6 +130,18 @@ class _QuizResultScreenState extends ConsumerState<QuizResultScreen> {
       }
     }
 
+    // おまけシール判定用に更新前のベストスコアを取得（クリア済みのみ記録される）
+    final prevBest =
+        ref.read(userProgressProvider).value?.clearedStages[quiz.stageId];
+    final score = quiz.totalQuestions == 0
+        ? 0
+        : ((quiz.correctCount / quiz.totalQuestions) * 100).round();
+    final bonus = bonusStickerAssets(
+      firstAttempt: prevBest == null && quiz.correctCount > 0,
+      personalBest: prevBest != null && score > prevBest,
+      firstPerfect: score == 100 && (prevBest == null || prevBest < 100),
+    );
+
     final result = await ref
         .read(userProgressProvider.notifier)
         .completeStage(
@@ -140,7 +153,10 @@ class _QuizResultScreenState extends ConsumerState<QuizResultScreen> {
         );
 
     if (mounted) {
-      setState(() => _coinsEarned = result.coinsEarned);
+      setState(() {
+        _coinsEarned = result.coinsEarned;
+        _bonusStickers = bonus;
+      });
     }
 
     // 全問正解: 親ほめ待ちリストに登録
@@ -274,11 +290,25 @@ class _QuizResultScreenState extends ConsumerState<QuizResultScreen> {
           UkalabEmoji(gradeEmoji, size: 64),
           if (quiz.correctCount > 0) ...[
             const SizedBox(height: 8),
-            Image.asset(
-              rewardStickerAsset(quiz.correctCount, quiz.totalQuestions),
-              width: 72,
-              height: 72,
-              errorBuilder: (_, __, ___) => const SizedBox.shrink(),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Image.asset(
+                  rewardStickerAsset(quiz.correctCount, quiz.totalQuestions),
+                  width: 72,
+                  height: 72,
+                  errorBuilder: (_, __, ___) => const SizedBox.shrink(),
+                ),
+                for (final a in _bonusStickers) ...[
+                  const SizedBox(width: 8),
+                  Image.asset(
+                    a,
+                    height: 48,
+                    errorBuilder: (_, __, ___) => const SizedBox.shrink(),
+                  ),
+                ],
+              ],
             ),
           ],
           const SizedBox(height: 12),

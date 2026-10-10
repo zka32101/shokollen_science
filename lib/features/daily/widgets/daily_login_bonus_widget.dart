@@ -5,6 +5,7 @@ import 'package:shokollen_science/reward_assets.dart';
 import '../../../shared/constants/app_colors.dart';
 import '../../../shared/widgets/furigana_text.dart';
 import '../../progress/providers/user_progress_provider.dart';
+import '../../progress/study_dates.dart';
 import '../providers/daily_login_bonus_provider.dart';
 
 class DailyLoginBonusWidget extends ConsumerWidget {
@@ -219,7 +220,9 @@ class _ClaimBonusDialogState extends ConsumerState<_ClaimBonusDialog>
                 ),
                 const SizedBox(height: 16),
                 // ストリーク表示
-                Container(
+                GestureDetector(
+                  onTap: () => openStreakCalendar(context, ref),
+                  child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   decoration: BoxDecoration(
                     color: const Color(0xFFFFF3E0),
@@ -246,6 +249,7 @@ class _ClaimBonusDialogState extends ConsumerState<_ClaimBonusDialog>
                       ),
                     ],
                   ),
+                ),
                 ),
                 const SizedBox(height: 16),
                 // マイルストーン表示
@@ -319,14 +323,16 @@ class _ClaimBonusDialogState extends ConsumerState<_ClaimBonusDialog>
   }
 }
 
-class _BuildClaimedToday extends StatelessWidget {
+class _BuildClaimedToday extends ConsumerWidget {
   final DailyBonusState bonus;
 
   const _BuildClaimedToday({required this.bonus});
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
+  Widget build(BuildContext context, WidgetRef ref) {
+    return GestureDetector(
+      onTap: () => openStreakCalendar(context, ref),
+      child: Container(
       margin: const EdgeInsets.fromLTRB(16, 12, 16, 0),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
@@ -362,6 +368,7 @@ class _BuildClaimedToday extends StatelessWidget {
           ),
         ],
       ),
+    ),
     );
   }
 }
