@@ -197,7 +197,7 @@ final learnContentData = <String, List<Map<String, dynamic>>>{
         {
           'type': 'image',
           'imagePath': 'assets/illustrations/stage_3/stage_3_002_flower.jpg',
-          'caption': '{花|はな}のつくり：がく・{花|はな}びら・おしべ・めしべ',
+          'caption': '{花|はな}を{縦|たて}に{半分|はんぶん}に{切|き}った{花|はな}のつくり：がく・{花|はな}びら・おしべ・めしべ',
           'level': 'basic'
         },
         {
@@ -725,7 +725,7 @@ final learnContentData = <String, List<Map<String, dynamic>>>{
         {
           'type': 'image',
           'imagePath': 'assets/illustrations/stage_3/stage_3_007_shadow.jpg',
-          'caption': '{影|かげ}は{光|ひかり}と{反対|はんたい}がわにできる',
+          'caption': '{朝|あさ}・{昼|ひる}・{夕方|ゆうがた}で{太陽|たいよう}の{向|む}きがかわると、{影|かげ}の{向|む}きも{反対|はんたい}にかわる',
           'level': 'basic'
         },
         {
