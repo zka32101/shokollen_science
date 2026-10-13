@@ -22,6 +22,9 @@ class CharacterLevelAssets {
     }
   }
 
+  /// アセット一覧に含まれるか（レベル別メイン画像の存在確認用）
+  bool contains(String path) => _assets.contains(path);
+
   static String _dir(String id) => 'assets/character_levels/$id';
 
   List<String> _existing(Iterable<String> paths) =>

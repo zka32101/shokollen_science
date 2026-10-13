@@ -108,13 +108,17 @@ class _CharacterScreenState extends ConsumerState<CharacterScreen> {
   }
 }
 
-/// 表示用メイン画像: MAXでMAX画像があればそれ、無ければベース画像。
+/// 表示用メイン画像: レベルに応じて変わる（Lv1=ベース / Lv2〜4=表情1〜3 / Lv5=表情3）。
+/// MAXで専用のMAX画像（<id>_lvmax.png）があればそれを優先する。
 String mainImageFor(
     BaseCharacter c, CharacterState st, CharacterLevelAssets a) {
   if (st.isMaxLevel) {
     final m = a.maxImage(c.id);
     if (m != null) return m;
   }
+  final lv = st.level.clamp(1, 5);
+  final p = c.imageAssetForLevel(lv);
+  if (p != null && (lv == 1 || a.contains(p))) return p;
   return c.imageAsset!;
 }
 

@@ -2,11 +2,12 @@ import 'package:shared_core/shared_core.dart';
 
 /// 理科コレ キャラクター（16体）。解放順は 生物→物質→エネルギー→地球・宇宙 を交互にしてバランスを取る。
 /// unlockAt: UserProgress.clearedCount（クリア済みステージ数）の閾値
-/// 画像: assets/characters/<id>.png / Lv.2表情 assets/character_levels/<id>_lv2_<1-3>.png
+/// 画像: レベル別メイン画像 assets/character_levels/<id>_lv<1-5>_a.png（imageAssetForLevel が _lvN_ を差し替える）
+/// Lv1=ベース / Lv2〜4=表情1〜3 / Lv5=表情3。表情の一覧用は <id>_lv2_<1-3>.png
 const List<BaseCharacter> kRikaCharacters = [
   BaseCharacter(
     id: 'happakko',
-    imageAsset: 'assets/characters/happakko.png',
+    imageAsset: 'assets/character_levels/happakko_lv1_a.png',
     name: 'ハッパっこ',
     emoji: '🍃',
     tier: 1,
@@ -31,7 +32,7 @@ const List<BaseCharacter> kRikaCharacters = [
   ),
   BaseCharacter(
     id: 'mizubunshi',
-    imageAsset: 'assets/characters/mizubunshi.png',
+    imageAsset: 'assets/character_levels/mizubunshi_lv1_a.png',
     name: 'ミズ水分子',
     emoji: '💧',
     tier: 1,
@@ -56,7 +57,7 @@ const List<BaseCharacter> kRikaCharacters = [
   ),
   BaseCharacter(
     id: 'hikari',
-    imageAsset: 'assets/characters/hikari.png',
+    imageAsset: 'assets/character_levels/hikari_lv1_a.png',
     name: 'ヒカリ光',
     emoji: '💡',
     tier: 1,
@@ -81,7 +82,7 @@ const List<BaseCharacter> kRikaCharacters = [
   ),
   BaseCharacter(
     id: 'taiyou',
-    imageAsset: 'assets/characters/taiyou.png',
+    imageAsset: 'assets/character_levels/taiyou_lv1_a.png',
     name: 'タイヨウ',
     emoji: '☀️',
     tier: 1,
@@ -106,7 +107,7 @@ const List<BaseCharacter> kRikaCharacters = [
   ),
   BaseCharacter(
     id: 'mushimushi',
-    imageAsset: 'assets/characters/mushimushi.png',
+    imageAsset: 'assets/character_levels/mushimushi_lv1_a.png',
     name: 'ムシムシ',
     emoji: '🦋',
     tier: 2,
@@ -131,7 +132,7 @@ const List<BaseCharacter> kRikaCharacters = [
   ),
   BaseCharacter(
     id: 'koori',
-    imageAsset: 'assets/characters/koori.png',
+    imageAsset: 'assets/character_levels/koori_lv1_a.png',
     name: 'コオリ',
     emoji: '🧊',
     tier: 2,
@@ -156,7 +157,7 @@ const List<BaseCharacter> kRikaCharacters = [
   ),
   BaseCharacter(
     id: 'onpa',
-    imageAsset: 'assets/characters/onpa.png',
+    imageAsset: 'assets/character_levels/onpa_lv1_a.png',
     name: 'オンパ音波',
     emoji: '🔊',
     tier: 2,
@@ -181,7 +182,7 @@ const List<BaseCharacter> kRikaCharacters = [
   ),
   BaseCharacter(
     id: 'tsukichan',
-    imageAsset: 'assets/characters/tsukichan.png',
+    imageAsset: 'assets/character_levels/tsukichan_lv1_a.png',
     name: 'ツキちゃん',
     emoji: '🌙',
     tier: 2,
@@ -206,7 +207,7 @@ const List<BaseCharacter> kRikaCharacters = [
   ),
   BaseCharacter(
     id: 'mizukko',
-    imageAsset: 'assets/characters/mizukko.png',
+    imageAsset: 'assets/character_levels/mizukko_lv1_a.png',
     name: 'ミズっこ魚',
     emoji: '🐟',
     tier: 3,
@@ -231,7 +232,7 @@ const List<BaseCharacter> kRikaCharacters = [
   ),
   BaseCharacter(
     id: 'jouki',
-    imageAsset: 'assets/characters/jouki.png',
+    imageAsset: 'assets/character_levels/jouki_lv1_a.png',
     name: 'ジョウキ',
     emoji: '♨️',
     tier: 3,
@@ -256,7 +257,7 @@ const List<BaseCharacter> kRikaCharacters = [
   ),
   BaseCharacter(
     id: 'denki',
-    imageAsset: 'assets/characters/denki.png',
+    imageAsset: 'assets/character_levels/denki_lv1_a.png',
     name: 'デンキ電気',
     emoji: '⚡',
     tier: 3,
@@ -281,7 +282,7 @@ const List<BaseCharacter> kRikaCharacters = [
   ),
   BaseCharacter(
     id: 'tenki',
-    imageAsset: 'assets/characters/tenki.png',
+    imageAsset: 'assets/character_levels/tenki_lv1_a.png',
     name: 'テンキ天気',
     emoji: '⛅',
     tier: 3,
@@ -306,7 +307,7 @@ const List<BaseCharacter> kRikaCharacters = [
   ),
   BaseCharacter(
     id: 'hitohito',
-    imageAsset: 'assets/characters/hitohito.png',
+    imageAsset: 'assets/character_levels/hitohito_lv1_a.png',
     name: 'ヒトヒト',
     emoji: '🧍',
     tier: 4,
@@ -331,7 +332,7 @@ const List<BaseCharacter> kRikaCharacters = [
   ),
   BaseCharacter(
     id: 'dorodoro',
-    imageAsset: 'assets/characters/dorodoro.png',
+    imageAsset: 'assets/character_levels/dorodoro_lv1_a.png',
     name: 'ドロドロ',
     emoji: '🟤',
     tier: 4,
@@ -356,7 +357,7 @@ const List<BaseCharacter> kRikaCharacters = [
   ),
   BaseCharacter(
     id: 'jishaku',
-    imageAsset: 'assets/characters/jishaku.png',
+    imageAsset: 'assets/character_levels/jishaku_lv1_a.png',
     name: 'ジシャク磁石',
     emoji: '🧲',
     tier: 4,
@@ -381,7 +382,7 @@ const List<BaseCharacter> kRikaCharacters = [
   ),
   BaseCharacter(
     id: 'kaseki',
-    imageAsset: 'assets/characters/kaseki.png',
+    imageAsset: 'assets/character_levels/kaseki_lv1_a.png',
     name: 'カセキ化石',
     emoji: '🦴',
     tier: 4,
