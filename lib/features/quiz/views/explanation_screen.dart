@@ -92,7 +92,8 @@ class _ExplanationScreenState extends State<ExplanationScreen>
   String get _bannerMessage => widget.isCorrect ? 'せいかい！' : 'ざんねん…';
 
   Widget _buildStageImage() {
-    final path = quizStageImage(widget.question.stageId);
+    final path = quizQuestionOrStageImage(
+        widget.question.stageId, widget.question.questionNumber);
     if (path == null) return const SizedBox.shrink();
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
