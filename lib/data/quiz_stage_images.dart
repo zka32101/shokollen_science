@@ -50,3 +50,41 @@ const Map<String, String> _quizStageImages = {
 };
 
 String? quizStageImage(String stageId) => _quizStageImages[stageId];
+
+/// '<stageId>_q<questionNumber>'(questionNumber は1始まり) -> 問題単位の解説画像。
+const Map<String, String> quizQuestionImages = {
+  'stage_3_001_q1': 'assets/illustrations/quiz_q/stage_3_001_q1.webp',
+  'stage_3_003_q9': 'assets/illustrations/quiz_q/stage_3_003_q9.webp',
+  'stage_3_005_q9': 'assets/illustrations/quiz_q/stage_3_005_q9.webp',
+  'stage_3_007_q7': 'assets/illustrations/quiz_q/stage_3_007_q7.webp',
+  'stage_3_009_q4': 'assets/illustrations/quiz_q/stage_3_009_q4.webp',
+  'stage_3_009_q13': 'assets/illustrations/quiz_q/stage_3_009_q13.webp',
+  'stage_3_010_q1': 'assets/illustrations/quiz_q/stage_3_010_q1.webp',
+  'stage_4_003_q9': 'assets/illustrations/quiz_q/stage_4_003_q9.webp',
+  'stage_4_004_q4': 'assets/illustrations/quiz_q/stage_4_004_q4.webp',
+  'stage_4_005_q3': 'assets/illustrations/quiz_q/stage_4_005_q3.webp',
+  'stage_4_005_q7': 'assets/illustrations/quiz_q/stage_4_005_q7.webp',
+  'stage_4_006_q2': 'assets/illustrations/quiz_q/stage_4_006_q2.webp',
+  'stage_4_007_q2': 'assets/illustrations/quiz_q/stage_4_007_q2.webp',
+  'stage_4_008_q1': 'assets/illustrations/quiz_q/stage_4_008_q1.webp',
+  'stage_4_009_q4': 'assets/illustrations/quiz_q/stage_4_009_q4.webp',
+  'stage_5_003_q8': 'assets/illustrations/quiz_q/stage_5_003_q8.webp',
+  'stage_5_005_q1': 'assets/illustrations/quiz_q/stage_5_005_q1.webp',
+  'stage_5_007_q4': 'assets/illustrations/quiz_q/stage_5_007_q4.webp',
+  'stage_6_001_q1': 'assets/illustrations/quiz_q/stage_6_001_q1.webp',
+  'stage_6_002_q2': 'assets/illustrations/quiz_q/stage_6_002_q2.webp',
+  'stage_6_003_q4': 'assets/illustrations/quiz_q/stage_6_003_q4.webp',
+  'stage_6_004_q3': 'assets/illustrations/quiz_q/stage_6_004_q3.webp',
+  'stage_6_007_q2': 'assets/illustrations/quiz_q/stage_6_007_q2.webp',
+  'stage_6_008_q3': 'assets/illustrations/quiz_q/stage_6_008_q3.webp',
+  'stage_6_009_q1': 'assets/illustrations/quiz_q/stage_6_009_q1.webp',
+  'stage_6_011_q1': 'assets/illustrations/quiz_q/stage_6_011_q1.webp',
+};
+
+String quizQuestionImageKey(String stageId, int questionNumber) =>
+    '${stageId}_q$questionNumber';
+
+/// 問題単位の画像を優先し、無ければ従来のステージ画像を返す。
+String? quizQuestionOrStageImage(String stageId, int questionNumber) =>
+    quizQuestionImages[quizQuestionImageKey(stageId, questionNumber)] ??
+    quizStageImage(stageId);
