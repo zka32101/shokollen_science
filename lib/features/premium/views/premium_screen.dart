@@ -4,6 +4,7 @@ import 'package:purchases_flutter/purchases_flutter.dart';
 import '../../../shared/constants/app_colors.dart';
 import '../../trial/providers/trial_provider.dart';
 import '../services/science_purchase_service.dart';
+import 'package:shokollen_science/widgets/parental_gate.dart';
 import 'package:shokollen_science/widgets/ukalab_emoji.dart';
 
 /// プレミアムプラン紹介・購入画面（RevenueCat 連携）
@@ -164,6 +165,9 @@ class _PremiumScreenState extends ConsumerState<PremiumScreen> {
   }
 
   Future<void> _purchase({required bool monthly}) async {
+    // 課金の前に、保護者(大人)であることを確認する。
+    final passedGate = await requireParentalGate(context);
+    if (!passedGate || !mounted) return;
     setState(() => _isProcessing = true);
     final result = monthly
         ? await SciencePurchaseService.instance.purchaseMonthly()
