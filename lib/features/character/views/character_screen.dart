@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // shared_core の progressProvider と名前衝突しないよう hide
 import 'package:shared_core/shared_core.dart'
-    hide progressProvider, LearningProgress, ProgressNotifier;
+    hide progressProvider, LearningProgress, ProgressNotifier, AppColors;
 import '../../../data/rika_characters.dart';
 import '../../../shared/constants/app_colors.dart';
 import '../../progress/providers/user_progress_provider.dart';

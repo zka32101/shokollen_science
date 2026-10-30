@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_core/shared_core.dart'
-    hide progressProvider, LearningProgress, ProgressNotifier;
+    hide progressProvider, LearningProgress, ProgressNotifier, AppColors;
 import '../../../data/rika_characters.dart';
 import '../../../shared/constants/app_colors.dart';
 import 'package:shokollen_science/features/shop/decor/decor_scope.dart';

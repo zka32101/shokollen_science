@@ -7,6 +7,8 @@ import 'package:shared_core/shared_core.dart'
 import 'package:shokollen_science/widgets/parental_gate.dart';
 import '../../../shared/constants/app_colors.dart';
 import '../../profile/providers/profile_provider.dart';
+import '../widgets/reminder_switch.dart';
+import '../widgets/study_window_tile.dart';
 import '../../progress/providers/user_progress_provider.dart';
 import '../../profile/models/profile_model.dart';
 import '../../../shared/widgets/avatar_image.dart';
@@ -99,6 +101,8 @@ class SettingsScreen extends ConsumerWidget {
             trailing: const Icon(Icons.arrow_forward_ios, size: 14),
             onTap: () => context.push('/parent-dashboard'),
           ),
+          const ReminderSwitchTile(),
+          const StudyWindowTile(),
           const Divider(),
           _SectionHeader(title: 'アプリについて'),
           ListTile(

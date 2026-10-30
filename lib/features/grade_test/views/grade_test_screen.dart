@@ -1,6 +1,7 @@
 import '../../quiz/utils/shuffle_choices.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shokollen_science/services/retention_hooks.dart';
 import 'package:go_router/go_router.dart';
 import '../../../shared/constants/app_colors.dart';
 import '../../../shared/widgets/furigana_text.dart';
@@ -48,6 +49,8 @@ class _GradeTestScreenState extends ConsumerState<GradeTestScreen> {
     setState(() {
       _selected[_currentIndex] = answerIndex;
     });
+    recordQuestionAnswer(ref.read, _questions[_currentIndex], answerIndex,
+        context: context);
   }
 
   void _onNext() {

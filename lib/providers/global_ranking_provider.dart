@@ -1,5 +1,20 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shared_core/models/global_ranking_model.dart';
+
+/// 理科コレ内の仮ランキング行（shared_core の GlobalRanking は main に無いためアプリ側で定義）。
+class GlobalRanking {
+  const GlobalRanking({
+    required this.rank,
+    required this.userId,
+    required this.userName,
+    required this.score,
+    required this.badges,
+  });
+  final int rank;
+  final String userId;
+  final String userName;
+  final int score;
+  final int badges;
+}
 
 final globalRankingProvider = FutureProvider<List<GlobalRanking>>((ref) async {
   return [
