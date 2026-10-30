@@ -17,6 +17,7 @@ import '../../../shared/widgets/mission_card_widget.dart';
 import '../../daily/widgets/daily_login_bonus_widget.dart';
 import '../../parent/widgets/praise_received_widget.dart';
 import '../../weekly_challenge/widgets/weekly_challenge_widget.dart';
+import '../widgets/retention_section.dart';
 import '../../profile/models/profile_model.dart';
 import '../../../shared/widgets/avatar_image.dart';
 import '../../../shared/widgets/furigana_text.dart';
@@ -77,6 +78,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           _buildTodayThemeCard(),
           _buildDailyRow(),
           const WeeklyChallengeWidget(),
+          const RetentionSection(),
           const MissionCardWidget(),
           _buildReviewCard(),
           _buildMenuGrid(),

@@ -28,7 +28,7 @@ const List<BaseCharacter> kRikaCharacters = [
       '芽が出たよ',
       '理科大好き！',
     ],
-    appSubject: Subject.shokollen,
+    appSubject: Subject.rika,
   ),
   BaseCharacter(
     id: 'mizubunshi',
@@ -53,7 +53,7 @@ const List<BaseCharacter> kRikaCharacters = [
       'すいすい進もう',
       'もっと知りたい',
     ],
-    appSubject: Subject.shokollen,
+    appSubject: Subject.rika,
   ),
   BaseCharacter(
     id: 'hikari',
@@ -78,7 +78,7 @@ const List<BaseCharacter> kRikaCharacters = [
       'ヒカリと実験',
       'まぶしいね',
     ],
-    appSubject: Subject.shokollen,
+    appSubject: Subject.rika,
   ),
   BaseCharacter(
     id: 'taiyou',
@@ -103,7 +103,7 @@ const List<BaseCharacter> kRikaCharacters = [
       'ぽかぽか',
       'また明日！',
     ],
-    appSubject: Subject.shokollen,
+    appSubject: Subject.rika,
   ),
   BaseCharacter(
     id: 'mushimushi',
@@ -128,7 +128,7 @@ const List<BaseCharacter> kRikaCharacters = [
       'まだ見てない虫',
       '探検しよう',
     ],
-    appSubject: Subject.shokollen,
+    appSubject: Subject.rika,
   ),
   BaseCharacter(
     id: 'koori',
@@ -153,7 +153,7 @@ const List<BaseCharacter> kRikaCharacters = [
       'コオリと実験',
       '冷たいね',
     ],
-    appSubject: Subject.shokollen,
+    appSubject: Subject.rika,
   ),
   BaseCharacter(
     id: 'onpa',
@@ -178,7 +178,7 @@ const List<BaseCharacter> kRikaCharacters = [
       'オンパと実験',
       '耳をすまそう',
     ],
-    appSubject: Subject.shokollen,
+    appSubject: Subject.rika,
   ),
   BaseCharacter(
     id: 'tsukichan',
@@ -203,7 +203,7 @@ const List<BaseCharacter> kRikaCharacters = [
       '星も見えるね',
       'おやすみなさい',
     ],
-    appSubject: Subject.shokollen,
+    appSubject: Subject.rika,
   ),
   BaseCharacter(
     id: 'mizukko',
@@ -228,7 +228,7 @@ const List<BaseCharacter> kRikaCharacters = [
       'ぽちゃん！',
       '池をのぞこう',
     ],
-    appSubject: Subject.shokollen,
+    appSubject: Subject.rika,
   ),
   BaseCharacter(
     id: 'jouki',
@@ -253,7 +253,7 @@ const List<BaseCharacter> kRikaCharacters = [
       'あったかいね',
       '空へ昇ろう',
     ],
-    appSubject: Subject.shokollen,
+    appSubject: Subject.rika,
   ),
   BaseCharacter(
     id: 'denki',
@@ -278,7 +278,7 @@ const List<BaseCharacter> kRikaCharacters = [
       'デンキと実験',
       'ショートに注意',
     ],
-    appSubject: Subject.shokollen,
+    appSubject: Subject.rika,
   ),
   BaseCharacter(
     id: 'tenki',
@@ -303,7 +303,7 @@ const List<BaseCharacter> kRikaCharacters = [
       'テンキと観察',
       'あしたは晴れかな',
     ],
-    appSubject: Subject.shokollen,
+    appSubject: Subject.rika,
   ),
   BaseCharacter(
     id: 'hitohito',
@@ -328,7 +328,7 @@ const List<BaseCharacter> kRikaCharacters = [
       '脈をはかろう',
       '元気いっぱい',
     ],
-    appSubject: Subject.shokollen,
+    appSubject: Subject.rika,
   ),
   BaseCharacter(
     id: 'dorodoro',
@@ -353,7 +353,7 @@ const List<BaseCharacter> kRikaCharacters = [
       '校庭に行こう',
       '地面の下は？',
     ],
-    appSubject: Subject.shokollen,
+    appSubject: Subject.rika,
   ),
   BaseCharacter(
     id: 'jishaku',
@@ -378,7 +378,7 @@ const List<BaseCharacter> kRikaCharacters = [
       'ジシャクと実験',
       '引き合うよ',
     ],
-    appSubject: Subject.shokollen,
+    appSubject: Subject.rika,
   ),
   BaseCharacter(
     id: 'kaseki',
@@ -403,6 +403,6 @@ const List<BaseCharacter> kRikaCharacters = [
       'れき・砂・どろ',
       '大地は動く',
     ],
-    appSubject: Subject.shokollen,
+    appSubject: Subject.rika,
   ),
 ];

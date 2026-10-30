@@ -2,6 +2,7 @@ import 'package:shokollen_science/shared/utils/ruby_text.dart';
 import '../../quiz/utils/shuffle_choices.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shokollen_science/services/retention_hooks.dart';
 import 'package:go_router/go_router.dart';
 import '../../../shared/constants/app_colors.dart';
 import '../../../shared/widgets/furigana_text.dart';
@@ -141,7 +142,10 @@ class _ReviewScreenState extends ConsumerState<ReviewScreen> {
                 else if (i == _selected[_currentIndex]) { bg = const Color(0xFFFCE4EC); border = AppColors.error; }
               }
               return GestureDetector(
-                onTap: answered ? null : () => setState(() => _selected[_currentIndex] = i),
+                onTap: answered ? null : () {
+                  setState(() => _selected[_currentIndex] = i);
+                  recordQuestionAnswer(ref.read, q, i, context: context);
+                },
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 200),
                   margin: const EdgeInsets.only(bottom: 10),

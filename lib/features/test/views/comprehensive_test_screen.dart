@@ -3,6 +3,7 @@ import '../../quiz/utils/shuffle_choices.dart';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shokollen_science/services/retention_hooks.dart';
 import 'package:go_router/go_router.dart';
 import '../../../shared/constants/app_colors.dart';
 import '../../../shared/widgets/furigana_text.dart';
@@ -97,6 +98,7 @@ class _ComprehensiveTestScreenState
                         onTap: _answered ? null : () => setState(() {
                           _selected[_currentIndex] = i;
                           _answered = true;
+                          recordQuestionAnswer(ref.read, q, i, context: context);
                         }),
                         child: AnimatedContainer(
                           duration: const Duration(milliseconds: 200),

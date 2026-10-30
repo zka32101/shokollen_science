@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cross_promo_kit/cross_promo_kit.dart' show CrossPromoService;
 import 'package:shared_core/shared_core.dart'
-    hide progressProvider, LearningProgress, ProgressNotifier, FirebaseService, AppTheme;
+    hide progressProvider, LearningProgress, ProgressNotifier, FirebaseService;
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 import 'app/router.dart';
@@ -13,6 +13,7 @@ import 'features/settings/providers/theme_provider.dart';
 import 'providers/character_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'services/firebase_service.dart';
+import 'services/retention_hooks.dart';
 import 'widgets/startup_splash.dart';
 import 'features/progress/providers/daily_mystery_provider.dart'
     show sharedPreferencesProvider;
@@ -76,12 +77,17 @@ void main() async {
 
     developer.log('runApp() 開始 - MyApp を構築中',
         name: 'shokollen_science.app');
+    final container = ProviderContainer(
+      overrides: [
+        characterStateProvider.overrideWith(CharacterNotifier.new),
+        sharedPreferencesProvider.overrideWithValue(prefs),
+      ],
+    );
+    // 定着率施策（初回7日間・復習キュー・通知計画等）の保存データを読み込む
+    await initRetention(container);
     runApp(
-      ProviderScope(
-        overrides: [
-          characterStateProvider.overrideWith(CharacterNotifier.new),
-          sharedPreferencesProvider.overrideWithValue(prefs),
-        ],
+      UncontrolledProviderScope(
+        container: container,
         child: const MyApp(),
       ),
     );

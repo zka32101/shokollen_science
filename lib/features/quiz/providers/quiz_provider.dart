@@ -4,6 +4,7 @@ import '../models/question_model.dart';
 import '../../../data/seeds/sample_questions.dart';
 import '../../../data/seeds/stages.dart';
 import '../../mission/providers/mission_provider.dart';
+import '../../../services/retention_hooks.dart';
 
 // ─── ポイント定数 ────────────────────────────────────────
 const int kPointsPerCorrect   = 10;
@@ -133,9 +134,13 @@ class QuizNotifier extends Notifier<QuizState> {
       isAnswered: true,
     );
 
-    if (answerIndex == state.currentQuestion.correctAnswerIndex) {
+    final isCorrect = answerIndex == state.currentQuestion.correctAnswerIndex;
+    if (isCorrect) {
       ref.read(missionProvider.notifier).recordCorrectAnswer();
     }
+    // 定着率施策（連続正解ボーナス・復習キュー・通知予約）
+    onQuizAnswered(ref.read,
+        quizId: state.currentQuestion.id, correct: isCorrect);
   }
 
   /// 次の問題へ進む

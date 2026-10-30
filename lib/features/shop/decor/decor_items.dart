@@ -54,7 +54,7 @@ class DecorItem {
         description: description,
         category: kind.label,
         coinCost: coinCost,
-        kind: kind == DecorKind.background ? ShopItemKind.background : ShopItemKind.effect,
+        kind: kind == DecorKind.background ? ShopItemKind.theme : ShopItemKind.accessory,
         assetPath: thumb,
       );
 }

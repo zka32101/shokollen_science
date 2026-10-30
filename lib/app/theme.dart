@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shared_core/shared_core.dart';
+import 'package:shared_core/shared_core.dart' hide AppColors;
 import '../shared/constants/app_colors.dart';
 
 class AppTheme {

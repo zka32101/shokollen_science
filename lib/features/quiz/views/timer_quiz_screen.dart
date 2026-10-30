@@ -3,6 +3,7 @@ import '../utils/shuffle_choices.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shokollen_science/services/retention_hooks.dart';
 import 'package:go_router/go_router.dart';
 import '../../../shared/constants/app_colors.dart';
 import '../../../shared/widgets/furigana_text.dart';
@@ -77,6 +78,8 @@ class _TimerQuizScreenState extends ConsumerState<TimerQuizScreen> {
       _selected = index;
       _allSelected[_currentIndex] = index;
     });
+    recordQuestionAnswer(ref.read, _questions[_currentIndex], index,
+        context: context);
   }
 
   void _nextQuestion() {
